@@ -34,7 +34,7 @@
         "@ctrl/ngx-emoji-mart": "^5.1.0",
         "@ngx-pwa/local-storage": "^13.0.5",
         "@schematics/angular": "^12.2.10",
-        "@solana/spl-token": "^0.1.8",
+        "@solana/spl-token": "^0.3.5",
         "@solana/web3.js": "^1.36.0",
         "@types/crypto-js": "^4.0.1",
         "@videogular/ngx-videogular": "^6.0.0",
