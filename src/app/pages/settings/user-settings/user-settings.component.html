@@ -1,0 +1,93 @@
+<!-- <settings-side-nav></settings-side-nav> -->
+<div class="app-container pb-5 custom-scroll">
+    <h3 class="page-title">Settings</h3>
+    <div class="max-container">
+        <div class="d-flex justify-content-center">
+            <div class="col-sm-5">
+                <mat-card class="p-4 mat-card">
+                    <form class="ms-0 mt-3" [formGroup]="notificationForm">
+                        <div>
+                            <div class="col-sm-12 form-group" [formGroup]="settingsForm">
+                                <mat-form-field class="col-sm-8 app-settings-email" appearance="outline">
+                                    <input matInput formControlName="email" placeholder="Email" type="email" />
+                                </mat-form-field>
+                                <button mat-raised-button class="btn btn-primary" rounded="true" type="button"
+                                    (click)="saveEmail()">
+                                    Save
+                                </button>
+                            </div>
+
+                            <!-- <h6>Notifications</h6> -->
+
+                            <!-- <mat-slide-toggle [disabled]="!email" formControlName="isEmailNotificationsEnabled"
+                [checked]="isEmailNotificationsEnabled" (change)="onChangeEmail()">
+                Email Notifications</mat-slide-toggle> -->
+                        </div>
+                        <!-- <div>
+              <mat-slide-toggle formControlName="isWebNotificationsEnabled" [checked]="isWebNotificationsEnabled"
+                (change)="onChangeWeb()">
+                Web Push Notifications</mat-slide-toggle>
+            </div> -->
+                        <div>
+                            <mat-slide-toggle formControlName="isDoNotDisturbEnabled" [checked]="isDoNotDisturbEnabled"
+                                (change)="onChangeDoNotDisturb()">
+                                Do Not Disturb - prevents chat window popup</mat-slide-toggle>
+                        </div>
+
+                        <div>
+                            <mat-slide-toggle formControlName="isMessageGuardEnabled" [checked]="isMessageGuardEnabled"
+                                (change)="onChangeMessageGuard()">
+                                Prevent messages from randos</mat-slide-toggle>
+                        </div>
+
+                        <h6>Sound Effects</h6>
+
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedAll" [checked]="isMutedAll"
+                                (change)="onChangeIsMutedAll()">
+                                Mute all sfx</mat-slide-toggle>
+                        </div>
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedAskedToSpeak" [checked]="isMutedAskedToSpeak"
+                                (change)="onChangeIsMutedAskedToSpeak()">
+                                Mute asked to speak sfx</mat-slide-toggle>
+                        </div>
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedChannelUpdates" [checked]="isMutedChannelUpdates"
+                                (change)="onChangeIsMutedChannelUpdates()">
+                                Mute channel updates sfx</mat-slide-toggle>
+                        </div>
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedFriendRequestReceived"
+                                [checked]="isMutedFriendRequestReceived"
+                                (change)="onChangeIsMutedFriendRequestReceived()">
+                                Mute friend request received sfx</mat-slide-toggle>
+                        </div>
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedMicMutedAndUnmuted"
+                                [checked]="isMutedMicMutedAndUnmuted" (change)="onChangeIsMutedMicMutedAndUnmuted()">
+                                Mute mic muted and unmuted sfx</mat-slide-toggle>
+                        </div>
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedSentAndReceivedMessage"
+                                [checked]="isMutedSentAndReceivedMessage"
+                                (change)="onChangeIsMutedSentAndReceivedMessage()">
+                                Mute sent and received message sfx</mat-slide-toggle>
+                        </div>
+                        <div>
+                            <mat-slide-toggle formControlName="isMutedStartedAndStoppedSharingScreen"
+                                [checked]="isMutedStartedAndStoppedSharingScreen"
+                                (change)="onChangeIsMutedStartedAndStoppedSharingScreen()">
+                                Mute started and stopped sharing screen sfx</mat-slide-toggle>
+                        </div>
+                        <!-- <div>
+              <mat-slide-toggle formControlName="isMutedUserJoinedAndLeftChannel"
+                [checked]="isMutedUserJoinedAndLeftChannel" (change)="onChangeIsMutedUserJoinedAndLeftChannel()">
+                Mute user joined and left channel sfx</mat-slide-toggle>
+            </div> -->
+                    </form>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="panel-content" *ngIf="channelService.isFilterChannelEnabled" [@inOutAnimation] id="clickOutside">
+    <div class="panel-background" (clickOutside)="incrementClickOutsideCount()">
+        <div class="panel-inner">
+            <div class="panel-title">
+                {{ !channelService.isAddChannelEnabled ? 'Filter options' : 'Category options'}}
+                <button mat-icon-button (click)="incrementClickOutsideCount()" class="close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <div class="panel-body">
+                <mat-form-field class="app-add-channel-title" appearance="outline">
+                    <input type="text" matInput [(ngModel)]="searchText" placeholder="Search category" />
+
+                    <div style="right: 0; top: 42%" class="text-right ab-v-m" *ngIf="hasTempFilters">
+                        <span class="cursor-pointer color-pink font-14 font-w-500" (click)="removeFilters()">
+                            <img class="mt-n1 me-1" src="/assets/images/trash.svg" />
+                            <span class="mobile-none">{{ !channelService.isAddChannelEnabled ? 'Remove selected filters'
+                                : 'Remove selected categories'}}</span>
+                        </span>
+                    </div>
+                </mat-form-field>
+
+                <mat-chip-list class="selected-filters-list" aria-label="selected stacks">
+                    <span class="mb-2" *ngFor="let tech of techList; let i = index">
+                        <ng-container *ngIf="tech.item_status">
+                            <span class="tag-label me-2 cursor-pointer" (click)="toggleStatus(event, tech, i)">
+                                <b style="margin-right: 10px">
+                                    {{ tech.item_text }}
+                                </b>
+                                <img style="
+										position: absolute;
+										top: 50%;
+										right: 8px;
+										transform: translate(0, -50%);
+									" src="/assets/images/remove-white-small.svg" />
+                            </span>
+                        </ng-container>
+                    </span>
+                </mat-chip-list>
+
+                <form [formGroup]="filterChannelForm" class="filters-list-form mt-3">
+                    <label class="heading">{{ !channelService.isAddChannelEnabled ? 'Select filters' : 'Select up to (4)
+                        categories'}}</label>
+                    <div class="scrollbar">
+                        <div class="custom-checkbox"
+                            *ngFor="let tech of techList | category: searchText; let i = index">
+                            <input type="checkbox" id="tech-{{ i }}" (click)="toggleStatus(event, tech, i)"
+                                [checked]="tech.item_status" />
+                            <label for="tech-{{ i }}">
+                                <img class="techStack" src="{{ tech.item_image }}" loading="lazy" />
+                                <span>{{ tech.item_text }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel-footer">
+                <button mat-raised-button class="btn bg-white" rounded="true" type="button"
+                    (click)="incrementClickOutsideCount()">
+                    Cancel
+                </button>
+                <button mat-raised-button class="btn btn-primary" rounded="true" type="button"
+                    (click)="!channelService.isAddChannelEnabled ? filterChannels() : submitChannels()">
+                    {{ !channelService.isAddChannelEnabled ? 'Filter' : 'Submit'}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="{ panel: channelService.isFilterChannelEnabled }" (click)="incrementClickOutsideCount()"></div>

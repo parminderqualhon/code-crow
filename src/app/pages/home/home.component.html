@@ -1,0 +1,73 @@
+<div class="row home-container">
+    <div class="content-wrapper">
+        <div class="app-channels-holder">
+            <app-carousel *ngIf="featuredChannels.length" [channels]="featuredChannels"></app-carousel>
+            <div class="content-container custom-scroll">
+                <div *ngIf="stickySearchHeader" class="spacer"></div>
+                <div [ngClass]="{ 'stick-top': stickySearchHeader }" class="row border-bottom header-search sticky">
+                    <div class="app-search-bar search-area">
+                        <input type="search" [(ngModel)]="channelService.searchQuery" (search)="searchChannels()"
+                            placeholder="Search channels" />
+                        <span class="app-search-btn" (click)="searchChannels()"> </span>
+                    </div>
+
+                    <div class="filter-bar">
+                        <span class="filter-button cursor-pointer" (click)="showFilterDialog()">
+                            <span class="filter"> </span>
+                            <span class="filter-ellipse" *ngIf="channelService.hasFilters"></span>
+                        </span>
+
+                        <span class="filter-text cursor-pointer color-pink ml-4 font-14 font-w-500"
+                            *ngIf="channelService.hasFilters" (click)="channelService.getInitialChannels()">
+                            <img class="mt-n1 mr-1" src="/assets/images/trash.svg" />
+                            <span class="tab-hidden">Remove selected filters</span>
+                        </span>
+                    </div>
+
+                    <button mat-raised-button (click)="showAddChannelDialog()"
+                        class="create-channel btn btn-primary cursor-pointer" rounded="true" type="button">
+                        <img src="/assets/images/add.svg" />
+                        <span class="tab-hidden">Create a</span> new channel
+                    </button>
+                </div>
+
+                <div class="app-channels-container custom-scroll list-channel-container"
+                    [@cardAnimation]="channelService.channels.length">
+                    <div class="grid-view">
+                        <div *ngFor="let item of channelService.channels"
+                            class="col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                            <app-channel-item [channel]="item" [isGridView]="true"></app-channel-item>
+                        </div>
+                    </div>
+                    <div class="list-view">
+                        <table class="channel-list-table" matSort (matSortChange)="sortChannels($event)">
+                            <thead>
+                                <tr class="channel-list-header">
+                                    <th mat-sort-header="techStack">Category</th>
+                                    <th mat-sort-header="title">Title</th>
+                                    <th mat-sort-header="description">Description</th>
+                                    <th mat-sort-header="info">Info</th>
+                                    <th mat-sort-header="tags">Tags</th>
+                                    <th mat-sort-header="host">Host</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div *ngFor="let item of sortedChannels" class="channel-list-row">
+                                    <app-channel-item [channel]="item" [isGridView]="false"></app-channel-item>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-add-channel></app-add-channel>
+
+<app-filter-options></app-filter-options>
+
+<!-- <app-create-group></app-create-group> -->
+
+<!-- <app-edit-group></app-edit-group> -->

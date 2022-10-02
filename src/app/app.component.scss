@@ -1,0 +1,191 @@
+img {
+    max-width: 100%;
+}
+::ng-deap {
+    .mlr-auto {
+        margin: 20px auto;
+    }
+}
+
+::ng-deep .header-dropdown,
+::ng-deep .custom-dropdown {
+    min-width: 150px !important;
+    position: relative;
+    background: transparent;
+    border: none;
+    padding-top: 20px;
+    .user-menu {
+        padding: 0 !important;
+        background: #fff;
+        border: solid 1px #ddd;
+        > div,
+        a {
+            padding: 7px 13px;
+            border-bottom: solid 1px #ddd;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: block;
+        }
+        .mat-icon {
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .navIcon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 7px;
+            background-repeat: no-repeat;
+            background-size: 20px;
+            background-position: center center;
+        }
+        &:before,
+        &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-bottom: 14px solid #ddd;
+            border-top: 14px solid transparent;
+            position: absolute;
+            right: 25px;
+            top: 0;
+        }
+        &:after {
+            border-bottom: 14px solid #fff;
+            top: 2px;
+            border-top: 13px solid transparent;
+        }
+    }
+}
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+    height: 100%;
+}
+
+mat-sidenav {
+    width: 250px;
+    visibility: unset !important;
+    .mat-icon {
+        display: none;
+    }
+    .mat-list-base .mat-list-item {
+        color: rgba(0, 0, 0, 0.87);
+        border-bottom: solid 1px #e1e1e1;
+    }
+    @media (max-width: 996px) {
+        visibility: hidden;
+    }
+}
+.sticky {
+    top: 0px;
+    overflow: hidden;
+    z-index: 10;
+}
+.loader {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.sidebar-backdrop {
+    background: #a09ea3;
+    position: fixed;
+    opacity: 0.5;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10;
+    display: none;
+    transition: all 0.25s ease;
+    top: 0;
+
+    &.slide-in {
+        @media (min-width: 320px) and (max-width: 767px) {
+            display: block;
+        }
+    }
+}
+.sidebar-container {
+    position: fixed;
+    width: 350px;
+    height: 100%;
+    box-shadow: 0 0 5.9px rgb(57 73 76 / 15%);
+    overflow: auto;
+    z-index: 11;
+    transition: margin 0.25s ease;
+    overflow-x: hidden;
+
+    &.compact {
+        @media (min-width: 767px) {
+            width: 100px;
+        }
+    }
+
+    @media (min-width: 320px) and (max-width: 767px) {
+        width: 330px;
+        margin-left: -330px;
+        top: 0;
+    }
+
+    &.slide-in {
+        @media (min-width: 320px) and (max-width: 767px) {
+            margin-left: 0;
+            z-index: 11;
+        }
+    }
+}
+.mobile-header {
+    display: none;
+    grid-template-columns: repeat(2, auto);
+    align-items: center;
+    padding: 0 0.5rem;
+    @media (min-width: 320px) and (max-width: 767px) {
+        display: grid;
+    }
+}
+.wrapper-app {
+    &.with-sidebar {
+        margin-left: 350px;
+        &.compact-sidebar {
+            margin-left: 100px;
+            @media (min-width: 320px) and (max-width: 767px) {
+                margin-left: 0;
+            }
+        }
+        @media (min-width: 320px) and (max-width: 767px) {
+            margin-left: 0;
+        }
+    }
+}
+
+.app-content-messagelist {
+    position: fixed;
+    bottom: 0;
+    padding: 0 15px;
+    z-index: 100;
+    .app-content-friendchat {
+        display: flex;
+        height: auto !important;
+        bottom: 0;
+        display: flex;
+        width: 380px;
+        z-index: 999;
+        margin-right: 5px;
+    }
+    .app-content-friendchat.height-fix {
+        height: auto !important;
+        min-height: 390px !important;
+        // width: 300px;
+        position: relative;
+        margin: 0 15;
+    }
+}
+
+.chat-list {
+    display: flex;
+}

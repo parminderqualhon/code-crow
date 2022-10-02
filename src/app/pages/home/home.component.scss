@@ -1,0 +1,329 @@
+.home-container {
+    .grid-view {
+        display: none;
+
+        @media (min-width: 320px) and (max-width: 767px) {
+            display: block;
+        }
+    }
+
+    .list-view {
+        display: block;
+        width: auto;
+        min-width: fit-content;
+
+        @media (min-width: 320px) and (max-width: 767px) {
+            display: none;
+        }
+    }
+
+    .app-channels-holder {
+        width: calc(100vw - 350px);
+
+        @media (min-width: 320px) and (max-width: 767px) {
+            width: 100vw;
+        }
+
+        .app-search-bar {
+            input {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 16px;
+            }
+            .app-search-btn {
+                cursor: pointer;
+            }
+        }
+        .header-search.sticky {
+            border-bottom: none !important;
+            padding-left: 8px;
+            z-index: 1;
+            align-items: center;
+
+            @media (min-width: 320px) and (max-width: 767px) {
+                margin-bottom: 1rem;
+            }
+
+            &.stick-top {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                padding: 0.5rem;
+                animation: slideDown 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
+            }
+        }
+        .spacer {
+            height: 90px;
+            @media (min-width: 767px) and (max-width: 1023px) {
+                height: 220px;
+            }
+        }
+        .header-search {
+            margin-left: 0 !important;
+            grid-gap: 5px;
+            height: 76px;
+            display: flex;
+            padding: 0 0 0 16px;
+            margin: 0;
+            @media (min-width: 320px) and (max-width: 767px) {
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                padding: 0 12px !important;
+                height: auto !important;
+                top: 0 !important;
+                display: grid;
+                grid-template-columns: 1fr 59px;
+                grid-gap: 8px;
+                border: none !important;
+                &.stick-top {
+                    position: fixed !important;
+                    top: 0 !important;
+                    animation: slideDown 0.5s ease-in-out;
+                    width: 100% !important;
+                    padding: 0.5rem !important;
+                }
+            }
+            button {
+                @media (min-width: 320px) and (max-width: 767px) {
+                    margin: 0 !important;
+                    padding: 0 10px !important;
+                    font-size: 16px;
+                    grid-column: 1/3;
+                    width: 95% !important;
+                    justify-self: center;
+                }
+                img {
+                    @media (min-width: 767px) and (max-width: 1023px) {
+                        display: none;
+                    }
+                }
+            }
+            .search-area {
+                height: 44px;
+                opacity: 0.99;
+                margin: 0;
+                width: 354px;
+                @media (min-width: 320px) and (max-width: 767px) {
+                    width: 100%;
+                }
+                @media (min-width: 767px) and (max-width: 1023px) {
+                    width: 220px;
+                }
+                @media (min-width: 1024px) and (max-width: 1120px) {
+                    width: 275px;
+                }
+            }
+            .filter-bar {
+                position: relative;
+                display: contents;
+                grid-template-columns: 59px 1fr;
+                .filter-button {
+                    position: relative;
+                    height: 44px;
+                    width: 59px;
+                    display: grid;
+                    align-items: center;
+                    justify-content: center;
+                    .filter {
+                        width: 23px;
+                        height: 23px;
+                    }
+                    .filter-ellipse {
+                        position: absolute;
+                        top: 4px;
+                        right: 10px;
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                    }
+                }
+                .filter-text {
+                    line-height: 44px;
+                }
+            }
+            .create-channel {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 28px;
+                text-transform: uppercase;
+
+                width: 340px;
+                height: 52px;
+                margin-left: 0;
+                background: linear-gradient(16.05deg, #ec008c 7.96%, #2b328c 92.04%), #000000 !important;
+                box-shadow: 0px 0px 28.4px rgba(113, 32, 140, 0.38) !important;
+                @media (min-width: 767px) and (max-width: 1023px) {
+                    width: 195px;
+                    height: 44px;
+                }
+                @media (min-width: 1024px) and (max-width: 1120px) {
+                    width: 310px;
+                }
+            }
+        }
+        .toggle-view-buttons {
+            margin-left: 0;
+            margin: 20px 0 23px 0;
+            padding-left: 5px;
+            @media (min-width: 320px) and (max-width: 767px) {
+                margin: 12px 0 15px;
+                padding-left: 12px;
+            }
+            > div {
+                @media (min-width: 320px) and (max-width: 767px) {
+                    padding: 0 !important;
+                }
+            }
+            img {
+                width: 24px;
+                height: 22.4px;
+                cursor: pointer;
+                margin-left: 5px;
+            }
+            .ms-2 {
+                margin-left: 25px !important;
+            }
+        }
+        .app-channels-container {
+            padding: 0px 8px 25px 8px;
+            margin-left: 0;
+
+            @media (min-width: 320px) and (max-width: 767px) {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 0;
+                margin: 0 1rem;
+            }
+            > div {
+                @media (min-width: 320px) and (max-width: 767px) {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+        .app-channels-container.list-channel-container {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            @media (min-width: 320px) and (max-width: 767px) {
+                padding-left: 0;
+            }
+            .channel-list-table {
+                width: 100%;
+                min-width: 1565px;
+                .channel-list-header {
+                    cursor: pointer;
+                    display: grid;
+                    grid-template-columns: 0.8fr 1fr 1.5fr 0.7fr 218px 1fr;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 40px;
+                    margin: 0 0 10px;
+                    th {
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 34px;
+                        padding: 0 20px;
+                    }
+                }
+                .channel-list-row {
+                    font-size: 14px;
+                    height: 70px;
+                    align-items: center;
+                    cursor: pointer;
+                    margin-bottom: 5px;
+                    > tr {
+                        white-space: nowrap;
+                        display: block;
+                        text-overflow: ellipsis;
+                        line-height: 30px;
+                        position: relative;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        height: 30px;
+                        position: relative;
+                        &:first-child {
+                            border-left: none;
+                        }
+                        &:last-child {
+                            &:before {
+                                display: none;
+                            }
+                        }
+                        div.ab-v-m {
+                            left: 20px;
+                            right: 20px;
+                            display: flex;
+                            align-items: center;
+                            span {
+                                &:last-child {
+                                    margin-right: 0 !important;
+                                }
+                            }
+                        }
+                        .channel-tag {
+                            background: rgba(65, 45, 140, 0.8);
+                            border-radius: 10px;
+                            font-weight: 700;
+                            font-size: 14px;
+                            line-height: 24px;
+                            color: #ffffff;
+                            display: inline-block;
+                            padding: 0px 12px;
+                            border-radius: 13px;
+                            height: 24px;
+                        }
+                        .badge-live {
+                            color: #ba0000;
+                            font-weight: bold;
+                            font-size: 13px;
+                            border: 1px solid #ba0000;
+                            box-sizing: border-box;
+                            border-radius: 10px;
+                            width: auto;
+                            height: 24px;
+                            padding: 0px 11px 0px 11px;
+                            display: inline-block;
+                            line-height: 24px;
+                        }
+                    }
+                    &:nth-child(odd) {
+                        box-sizing: border-box;
+                    }
+                    .channel-icon {
+                        width: 40px;
+                        height: 40px;
+                        text-align: center;
+                        border: 1px solid #c1cdde;
+                        line-height: 32px;
+                        border-radius: 100%;
+                        margin-right: 9px;
+                        font-size: 24px;
+                        vertical-align: middle;
+                        display: inline-block;
+                        background-position: center center;
+                        background-size: 19px;
+                        background-repeat: no-repeat;
+                        margin-right: 7px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.row {
+    --bs-gutter-x: 0.15rem;
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,77 @@
+.friend-list-menu {
+    box-shadow: none !important;
+    border: none;
+    border-radius: 0;
+    min-height: auto;
+    position: relative;
+    margin-top: 14px;
+    background-color: transparent !important;
+    padding-top: 8px;
+    .user-menu {
+        border-radius: 0;
+        opacity: 1;
+        display: flex;
+        > div {
+            padding: 7px 0px;
+            min-width: 50%;
+            text-align: center;
+            margin: 0;
+            position: relative;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: none;
+        }
+        > div + div:before {
+            content: '';
+            position: absolute;
+            height: 22px;
+            width: 2px;
+            background: #afaeae;
+            left: 0;
+            top: 9px;
+        }
+        &:before,
+        &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            right: 10px;
+            top: -9px;
+            border: solid 10px transparent;
+        }
+
+        &:after {
+            border-width: 9px;
+
+            top: -6px;
+            right: 11px;
+        }
+    }
+    .mat-menu-content {
+        padding: 2px 0;
+        width: 241px;
+    }
+    .mat-icon {
+        vertical-align: middle;
+        margin-right: 5px;
+        position: relative;
+        top: -2px;
+        font-size: 26px;
+        margin-left: -9px;
+    }
+    .mat-icon + span {
+        margin-top: 3px;
+        display: inline-block;
+    }
+}
+.mat-icon-button {
+    width: 40px;
+    height: 40px;
+}
+
+.friends-more {
+    width: 10px;
+    height: 31px;
+    display: inline-block;
+}

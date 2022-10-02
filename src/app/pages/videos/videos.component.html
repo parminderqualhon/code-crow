@@ -1,0 +1,123 @@
+<div class="app-videos-content-holder">
+    <div class="app-video-search-bar">
+        <div class="container">
+            <div class="d-flex">
+                <div class="header-search me-4">
+                    <div class="app-search-bar">
+                        <input type="search" [(ngModel)]="searchTitle" placeholder="Search videos"
+                            (keydown.enter)="searchVideos()" />
+                        <span class="material-icons"> search </span>
+                    </div>
+                </div>
+
+                <div class="app-videos-buttons-container d-flex">
+                    <input type="file" #fileInput (change)="uploadVideo($event)" accept="video/*" class="hide" />
+
+                    <button mat-raised-button mat-mini-fab type="button" class="btn btn-primary" (click)="selectVideo()"
+                        [disabled]="isUploading">
+                        <img class="me-1" src="/assets/images/upload-video.svg" /> Upload Video
+                    </button>
+
+                    <button mat-raised-button mat-mini-fab type="button" class="btn btn-primary"
+                        (click)="navigateToCreatorSpace()">
+                        <img class="me-1" src="/assets/images/creator-space.svg" /> Creator Space
+                    </button>
+
+                    <!-- <button mat-button class="half text-center" (click)="selectVideo()" [disabled]="isUploading">
+            <div class="row justify-content-center">
+              <h5>
+                <mat-icon>cloud_upload</mat-icon>
+              </h5>
+            </div>
+            <div class="row justify-content-center">
+              <h6>
+                <span>Upload Video</span>
+              </h6>
+            </div>
+          </button> -->
+
+                    <!-- <button mat-button class="half separator text-center" (click)='navigateToCreatorSpace()'>
+            <div class="row justify-content-center">
+              <h5>
+                <mat-icon>videocam</mat-icon>
+              </h5>
+            </div>
+            <div class="row justify-content-center">
+              <h6>
+                <span>Creator Space</span>
+              </h6>
+            </div>
+          </button> -->
+                    <div class="app-videos-info-container"
+                        matTooltip="Only dev and IT related content is allowed. Anything else will be removed."
+                        matTooltipPosition="after">
+                        <mat-icon>info_outline</mat-icon>
+                    </div>
+                </div>
+
+                <div class="app-videos-upload-progress">
+                    <video class="hide" #videoPreview [src]="videoURL || ''"></video>
+                    <canvas class="hide" #videothumbnail></canvas>
+                </div>
+                <div>
+                    <video class="hide" #videoPreview [src]="videoURL || ''"></video>
+                    <canvas class="hide" #videothumbnail></canvas>
+
+                    <div class="upload-progress d-flex" *ngIf="progress || videoUploaded">
+                        <span class="upload-icon"></span>
+                        <div>
+                            <ng-container *ngIf="progress">
+                                <div class="title">
+                                    Uploading <strong>{{ file.name }}</strong> -
+                                    <i>{{ progress }}%</i>
+                                </div>
+                                <mat-progress-bar color="primary" mode="buffer" [value]="progress" [bufferValue]="0">
+                                </mat-progress-bar>
+                            </ng-container>
+                            <ng-container *ngIf="videoUploaded">
+                                <div class="title">Video has been uploaded successfully.</div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <!-- <div class="upload-progress" *ngIf='progress || videoUploaded'>
+
+            <ng-container *ngIf='progress'>
+              <div class="title">
+                Uploading <strong>{{file.name}}</strong> - <i>{{progress}}%</i>
+              </div>
+              <mat-progress-bar color="primary" mode="buffer" [value]="progress" bufferValue="0">
+              </mat-progress-bar>
+            </ng-container>
+            <ng-container  *ngIf='videoUploaded'>
+              <div class="title">
+                Video has been uploaded successfully.
+              </div>
+             
+            </ng-container>
+            
+          </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-video-list-item custom-scroll" (scroll)="onScroll($event)">
+        <div class="container">
+            <div *ngIf="videoService.isLoadingVideos">
+                <mat-spinner mode="indeterminate" diameter="30"></mat-spinner>
+            </div>
+
+            <div class="row" *ngIf="!videoService.isLoadingVideos && !searchedVideos.length">
+                <div class="col-sm-3" *ngFor="let item of videos.videos">
+                    <app-video-item [video]="item"> </app-video-item>
+                </div>
+            </div>
+            <div class="row" *ngIf="searchedVideos.length">
+                <div class="col-md-3 col-sm-6" *ngFor="let item of searchedVideos">
+                    <app-video-item [video]="item"> </app-video-item>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

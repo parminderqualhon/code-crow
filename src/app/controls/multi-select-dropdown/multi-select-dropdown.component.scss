@@ -1,0 +1,133 @@
+.drop-toggle {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    cursor: hand;
+    border: 1px solid transparent;
+    width: 100%;
+    text-align: left;
+    position: relative;
+}
+.drop-toggle i {
+    float: right;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    right: 15px;
+}
+.drop-show {
+    padding: 4px;
+    width: 100%;
+    border-top: 1px solid rgb(228, 228, 228);
+    position: initial;
+    z-index: 100;
+    -webkit-box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    margin-left: 1px;
+}
+@media (min-width: 320px) and (max-width: 767px) {
+    .drop-toggle {
+        width: 328px;
+    }
+    .drop-show {
+        width: 328px;
+    }
+}
+.drop-show label {
+    font-weight: 500;
+    display: block;
+    font-size: 15px;
+    cursor: pointer;
+}
+.drop-show label input {
+    vertical-align: top;
+}
+.drop-show label span {
+    display: inline-block;
+}
+.scrollbar {
+    overflow-y: scroll;
+    height: 200px;
+    border-top: 1px solid rgb(228, 228, 228);
+}
+.mat-checkbox-label {
+    margin-left: 0.5rem !important;
+}
+.checkboxcontainer {
+    display: block;
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 7px;
+    height: 29px;
+    box-shadow: 6px 9px 21.1px 3px rgb(149 157 165 / 13%);
+}
+/* Hide the browser's default checkbox */
+.checkboxcontainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: -2px;
+    left: -4px;
+    height: 29px;
+    width: 29px;
+}
+/* When the checkbox is checked, add a blue background */
+.checkboxcontainer input:checked ~ .checkmark {
+    /* background-color: #fff; */
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+}
+/* Show the checkmark when checked */
+.checkboxcontainer input:checked ~ .checkmark:after {
+    display: block;
+}
+/* Style the checkmark/indicator */
+.checkboxcontainer .checkmark:after {
+    border: 2px solid #e9028c;
+    border-image-slice: 1;
+    border-width: 5px;
+    left: 9px;
+    top: 8%;
+    width: 9px;
+    height: 15px;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.tech-label {
+    font-size: 16px;
+    /* color:black; */
+}
+::-webkit-scrollbar {
+    width: 7px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #5a5a5a;
+    border-radius: 4px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #3f3f3f;
+}

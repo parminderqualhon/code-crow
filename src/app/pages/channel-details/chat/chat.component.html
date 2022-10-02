@@ -1,0 +1,146 @@
+<mat-card class="mat-card p-0 app-chat-container">
+    <div class="app-chat-section">
+        <mat-toolbar class="app-friendchat-toolbar" color="primary">
+            <mat-toolbar-row class="app-friendchat-toolbar-row d-flex justify-content-between w-100">
+                <div class="app-friendchat-toolbar-title" (click)="toggleChannelDetails()">
+                    <span class="show-cursor">
+                        {{ channelService.currentChannel.title }}
+                    </span>
+                    <button mat-icon-button *ngIf="!isShowingChannelDetails">
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="isShowingChannelDetails">
+                        <mat-icon>arrow_drop_up</mat-icon>
+                    </button>
+                </div>
+
+                <div class="ml-auto">
+                    <button class="menu-trigger-btn" mat-icon-button [matMenuTriggerFor]="more_menu">
+                        <i class="chat-more"></i>
+                    </button>
+                    <mat-menu #more_menu="matMenu" class="header-dropdown" xPosition="before">
+                        <section class="user-menu mat-menu-content">
+                            <div (click)="toggleNotifications()">
+                                <span *ngIf="!isNotificationsEnabled" class="navIcon mute-notifications"></span>
+                                <span *ngIf="!isNotificationsEnabled" class="nav-caption">Notifications disabled</span>
+                                <span *ngIf="isNotificationsEnabled" class="navIcon unmute-notifications"></span>
+                                <span *ngIf="isNotificationsEnabled" class="nav-caption">Notifications enabled</span>
+                            </div>
+                            <div (click)="leaveChannel()">
+                                <span class="navIcon leave-channel"></span>
+                                <span class="nav-caption">Leave channel</span>
+                            </div>
+                        </section>
+                    </mat-menu>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div *ngIf="isShowingChannelDetails" class="mat-elevation-z8 attachment-elevation-spacing custom-scroll">
+            <app-view-channel-detail [attachments]="attachments" [host]="host"></app-view-channel-detail>
+        </div>
+        <!-- <div class="show-download-video show-cursor" (click)="toggleRecordedVideos()">
+            <span class="chat-download-video"></span>
+            <span>Recorded Videos (<b>{{videoCompositions.length}}</b>)</span>
+            <button mat-icon-button *ngIf="!streamingService.isShowingRecordedVideos">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="streamingService.isShowingRecordedVideos">
+                <mat-icon>arrow_drop_up</mat-icon>
+            </button>
+        </div> -->
+        <div class="mat-elevation-z8 videos-elevation-spacing custom-scroll" *ngIf="
+				streamingService.isShowingRecordedVideos &&
+				videoCompositions &&
+				videoCompositions.length
+			">
+            <div class="video-download-list" *ngFor="let composition of videoCompositions; let i = index">
+                <div class="video-part-title-loading">
+                    <span class="index-spacing"><b>{{ videoCompositions.length - i }}.</b></span>
+                    <mat-spinner *ngIf="
+							composition.status === 'enqueued' || composition.status === 'processing'
+						" mode="indeterminate" diameter="30">
+                    </mat-spinner>
+                    <span class="me-1">
+                        <a class="cursor-pointer" *ngIf="composition.status === 'completed'"
+                            (click)="streamingService.downloadComposition(composition.sid)" target="_blank">{{
+                            composition.dateCreated | date: 'dd MMM yyyy • H:mm a' }}</a>
+                        <span class="video-part-title" *ngIf="
+								composition.status === 'enqueued' ||
+								composition.status === 'processing'
+							">Processing video...</span>
+                    </span>
+                </div>
+                <div>
+                    <span class="duration-spacing">{{
+                        composition.duration * 1000 | date: 'H:mm:ss':'UTC'
+                        }}</span>
+                    <!-- <mat-icon svgIcon="upload-video"></mat-icon> -->
+                    <img *ngIf="
+							this.channelService.currentChannel.user === userId &&
+							composition.status === 'completed'
+						" class="mt-n1 me-1 cursor-pointer" src="/assets/images/trash.svg"
+                        (click)="showDeleteRecordedVideoDialog(composition)" />
+                </div>
+            </div>
+        </div>
+        <div class="custom-scroll app-friendchat-chatlist" [hidden]="chatService.isGettingMessages" #chatDisplay
+            infinite-scroll [scrollWindow]="false" [infiniteScrollDistance]="scrollDistance"
+            [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+            (scrolledUp)="onScrollUp($event)">
+            <div *ngFor="let item of chatService.messages">
+                <div class="app-chat-message-row d-flex justify-content-end">
+                    <app-message [Sender]="item.author" [SenderId]="item.attributes.userId"
+                        [When]="item.state.timestamp" [Content]="item.body" [Avatar]="item.attributes.avatar"
+                        [UserId]="userId" [Message]="item" [Image]="item.attributes.media"
+                        [MimeType]="item.attributes.type" [File]="item.attributes.file"
+                        [FileName]="item.attributes.text" [CurrentUser]="currentUser"
+                        [Reactions]="item?.reactions || []" [reactionUserMenu]="reactionUserMenu"
+                        [emojiMenu]="emojiMenu">
+                    </app-message>
+                </div>
+            </div>
+        </div>
+        <div class="typingIndicator" *ngIf="isTyping">
+            {{ typingUser.name }} typing
+            <div class="typing-container">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+        <div class="input-container" [hidden]="chatService.isGettingMessages">
+            <app-input [channel]="channelService.currentChannel" [show]="true"></app-input>
+        </div>
+    </div>
+</mat-card>
+
+<!-- message reactions list, it is put here because if we put it into messages component then every message has its own reaction list and code becomes heavy and performance issue arises -->
+<mat-menu #reactionUserMenu="matMenu" class="custom-dropdown arrows_hide" xPosition="before" yPosition="above">
+    <section class="user-menu mat-menu-content user-menu-toggle">
+        <ng-template matMenuContent let-react="react">
+            <div class="reaction__emoji__cnt">
+                <span>{{ react.reaction }}</span>
+            </div>
+            <div *ngFor="let user of react.users">
+                <span class="nav-caption">{{ user.displayName }}</span>
+            </div>
+        </ng-template>
+    </section>
+</mat-menu>
+
+<mat-menu class="mat__emoji__open" #emojiMenu="matMenu">
+    <ng-template matMenuContent let-message="message" let-trigger="trigger">
+        <div (click)="stopPropagation($event)" class="app-input-menu w-mc">
+            <!-- <div class="app-input-menu w-mc"> -->
+            <!-- <div class="col-12 app-attachment-close-button-container text-right">
+                <button class="app-attachment-close-button" (click)="trigger?.closeMenu()" mat-icon-button
+                    matTooltip="Close menu" matTooltipPosition="above">
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </div> -->
+            <emoji-mart #emojiPicker set="google" (emojiSelect)="onReactToMessage($event, message)"
+                title="Change color. . .">
+            </emoji-mart>
+        </div>
+    </ng-template>
+</mat-menu>

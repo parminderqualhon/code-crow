@@ -1,0 +1,92 @@
+.stream-token-wrapper{
+    margin: -24px;
+    overflow: hidden;
+    header {
+        // display:flex;
+        width: 100%;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 16px;
+        padding: 17px 30px;
+        border-radius:0px;
+    }
+    .header_{
+        background-color: #DDDDDD;
+        display:flex;
+        .pull-right{
+            padding: 17px 30px;
+
+        }
+        .btn-close{
+            outline: none;
+            box-shadow:none !important;
+        }
+    }
+    .body_{
+        padding: 30px;
+    }
+    label{
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 34px;
+    }
+}
+
+input[type=number] {
+    background-image: url(/assets/images/recursion.png);
+    background-position: 5px 2px;
+    height: 55px;
+    background-position-y: 50%;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+}
+.stepSize-wrapper{
+    padding-top: 20px;
+    .StepSize {
+        width: calc(23.5%);
+        height: 45px;
+        box-shadow: 0px 1px 3px rgb(43 132 253 / 20%);
+        border-radius: 8px;
+        outline: none;
+        &:not(:last-child){
+            margin-right: 7px;
+        }
+        &:hover {
+            background: linear-gradient(88.82deg, #2684FF -0.02%, #4285F4 100%);
+        color: #fff;
+        }
+    }
+}
+.nav{
+    .nav-item{
+        padding-left: 8px;        
+        &:first-child{
+            padding-right: 8px;
+            padding-left: 0;
+        }
+        .btn{
+            border:0px;
+            box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+        }
+    }
+}
+.processing {
+    margin-top: 5%;
+    align-items: center;
+    color: #E81313;
+}
+
+.Submit {
+    margin-top: 10%;
+    margin-left: 20%;
+    width: 50%;
+    height: 70%;
+    color: #fff;
+    background: linear-gradient(16.17deg, #ec008c 7.09%, #2b328c 93.83%);
+    border-radius: 15%;
+    border: 1px solid transparent;
+}
+
+body {
+    margin: 5%;
+}

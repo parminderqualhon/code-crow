@@ -1,0 +1,11 @@
+<div class="d-flex align-items-center" [ngClass]="showRemove ? 'show-remove ' : 'common backgroundColor'"
+    (mouseover)="showRemove = true" (mouseout)="showRemove = false">
+    <div class="d-flex justify-content-start align-items-center">
+        <span class="me-2 file"></span>
+        <a [ngStyle]="{ color: '#295ECD' }" href="{{ item }}" target="_blank">{{
+            item.substr(item.lastIndexOf('/') + 1)
+            }}</a>
+    </div>
+    <img *ngIf="!AttachmentList" class="ml-auto remove show-cursor" (click)="showDeleteMessageDialog()"
+        [ngClass]="showRemove ? 'show-remove-icon' : 'remove'" src="/assets/images/remove-red.svg" />
+</div>

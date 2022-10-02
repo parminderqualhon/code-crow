@@ -1,0 +1,151 @@
+.app-videos-content-holder {
+    .container {
+        max-width: 85%;
+    }
+
+    .app-video-search-bar {
+        padding: 15px 0;
+        margin-bottom: 30px;
+        .header-search {
+            @media (max-width: 991px) {
+                margin: 0 !important;
+            }
+        }
+        .btn {
+            margin: 0 30px 0 0;
+            font-weight: 500;
+            padding: 6px 35px;
+        }
+        .d-flex {
+            @media (max-width: 991px) {
+                flex-direction: column;
+                .btn {
+                    margin: 15px 0 0 0;
+                }
+            }
+        }
+    }
+}
+
+mat-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 90px;
+    min-width: 300px;
+}
+
+.mat-progress-bar {
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    position: relative;
+    transition: opacity 250ms linear;
+    width: 100%;
+    background: #fff;
+    border-radius: 3px;
+    margin-top: 3px;
+}
+.mat-progress-bar[mode='buffer'] .mat-progress-bar-background,
+.upload-progress svg,
+.mat-progress-bar-background {
+    display: none !important;
+}
+.app-video-search-bar {
+    position: relative;
+    width: 100%;
+}
+
+.app-videos-upload-progress {
+    margin-left: 30px;
+}
+
+.upload-progress {
+    padding: 5px 10px;
+    mix-blend-mode: normal;
+    opacity: 0.99;
+    font-size: 13px;
+    font-weight: 500;
+
+    align-items: center;
+    .title {
+        max-width: 300px;
+        width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        strong {
+            display: inline-block;
+            max-width: 204px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+    }
+    .upload-icon {
+        width: 35px;
+        height: 35px;
+        margin-right: 10px;
+        background-position: center center;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+}
+.app-videos-buttons-container {
+    left: 20px;
+    > button,
+    > div {
+        height: 45px;
+    }
+}
+
+button.half {
+    cursor: pointer;
+    flex: 1;
+}
+
+button.separator {
+    border-left: 1px dashed #dedede;
+}
+
+div.clearfix {
+    clear: both;
+}
+
+.hide {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.app-videos-unlock-button-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 40px;
+    align-items: center;
+}
+
+.app-videos-unlock-button {
+    color: #000;
+    background: #fff;
+    max-height: 40;
+}
+
+.button {
+    color: #333;
+    background-color: #fff;
+    margin-left: 10px;
+}
+
+.app-videos-info-container {
+    margin-left: 40;
+    padding: 6px 0;
+    @media (max-width: 991px) {
+        margin-left: 0 !important;
+    }
+    .mat-icon {
+        font-size: 32px;
+        cursor: pointer;
+    }
+}

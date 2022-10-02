@@ -1,0 +1,35 @@
+<div class="follower-img">
+	<img [src]="follow.avatar" alt="" />
+</div>
+<div class="follower-container">
+	<span class="follower-displayName">{{ follow.displayName }}</span>
+	<span class="follower-displayName follower-customUsername">@{{ follow.customUsername }}</span>
+</div>
+<div class="follow-btns">
+	<div
+		class="btn"
+		[ngClass]="follow.isFollowing ? 'unfollow-btn' : 'follow-btn'"
+		*ngIf="!isCurrentUser"
+		(click)="chatService.toggleFollow(follow, follow._id, authService.currentUser._id)">
+		<span
+			*ngIf="follow.isFollower"
+			[ngClass]="follow.isFollowing ? 'check-unfollow' : 'check-follow'"></span>
+		{{ follow.isFollowing ? 'Unfollow' : 'Follow' }}
+	</div>
+</div>
+
+<button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="more_menu">
+	<span class="friends-more"></span>
+</button>
+<mat-menu #more_menu="matMenu" class="custom-dropdown" [xPosition]="'before'">
+	<section class="user-menu mat-menu-content">
+		<a routerLink="/profile/{{ follow.customUsername }}" routerLinkActive="active">
+			<span class="navIcon profile"></span>
+			<span class="nav-caption">Profile</span>
+		</a>
+		<div (click)="chatService.openChat(follow)">
+			<span class="navIcon profile-chat"></span>
+			<span class="nav-caption">Message</span>
+		</div>
+	</section>
+</mat-menu>

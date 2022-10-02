@@ -1,0 +1,92 @@
+<div #resizable class="app-friendchat" [ngClass]="isMinimized ? 'app-friendchat-closed' : 'app-friendchat-open'">
+    <mat-card class="app-friendchat">
+        <mat-toolbar class="app-friendchat-toolbar" color="primary">
+            <mat-toolbar-row class="app-friendchat-toolbar-row d-flex">
+                <div class="app-friendchat-toolbar-title">
+                    <!-- <span *ngIf='friend.user.isOnline' style='margin-right: 5px; color: greenyellow'>&#9673;</span>
+                <span *ngIf='!friend.user.isOnline' style='margin-right: 5px; color: red'>&#9673;</span> -->
+                    <img src="/assets/images/group-chat-dark.svg" *ngIf="isGroupChat" />
+                    <img src="/assets/images/chat-icon.svg" *ngIf="!isGroupChat" />
+                    {{ isGroupChat ? chat.groupName : chat.displayName }}
+                </div>
+                <div class="ml-auto chat-toolbar-button-group">
+                    <button class="minimize-button" mat-icon-button (click)="isMinimized = !isMinimized">
+                        <img src="/assets/images/minimize-white.svg" />
+                    </button>
+                    <button class="minimize-button" mat-icon-button (click)="resizeChatWindow()">
+                        <img *ngIf="!isExpanded" src="/assets/images/icons8-maximize-button-32.png" />
+                        <img *ngIf="isExpanded" src="/assets/images/icons8-minimize-window-32.png" />
+                    </button>
+                    <button mat-icon-button (click)="closeChat()">
+                        <img src="/assets/images/chat-close.svg" />
+                    </button>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="group-status">
+            <div *ngIf="isGroupChat" class="icons-container" (click)="editGroup(friendGroup)">
+                <img class="icons avatar" *ngFor="let avatar of friendGroup.avatarList" src="{{ avatar }}" />
+                <span class="chat"><span class="members">{{ friendGroup.members.length + 1 }}</span> users in the
+                    group</span>
+            </div>
+            <div class="icons-container">
+                <mat-icon *ngIf="isGroupChat && isHost" class="add-member" (click)="editGroup(friendGroup)">person_add
+                </mat-icon>
+                <div *ngIf="isGroupChat" class="live" (click)="goToChannel()"></div>
+                <div (click)="toggleNotifications()" [ngClass]="
+						isNotificationsEnabled ? 'unmute-notifications' : 'mute-notifications'
+					"></div>
+                <div *ngIf="isGroupChat" class="leave-channel" (click)="leaveGroup()"></div>
+            </div>
+        </div>
+        <div [ngClass]="
+				isMinimized ? 'app-friendchat-msginput-collapse' : 'app-friendchat-msginput-expand'
+			">
+            <div class="app-friend-chat-spinner" *ngIf="isLoading">
+                <mat-spinner class="app-friend-chat-spinner" diameter="30"></mat-spinner>
+            </div>
+            <div class="app-friendchat-chatlist custom-scroll"
+                [ngClass]="isExpanded ? 'chatlist-max-height-4' : 'chatlist-max-height-3'" *ngIf="!isLoading"
+                #chatDisplay infinite-scroll [scrollWindow]="false" [infiniteScrollDistance]="scrollDistance"
+                [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+                (scrolledUp)="onScrollUp($event)">
+                <div *ngFor="let item of chat.messages">
+                    <div class="app-chat-message-row d-flex justify-content-end">
+                        <app-message [Sender]="item.author" [SenderId]="item.attributes.userId"
+                            [When]="item.state.timestamp" [Content]="item.body" [Avatar]="item.attributes.avatar"
+                            [UserId]="user._id" [Message]="item" [Image]="item.attributes.media"
+                            [MimeType]="item.attributes.type" [File]="item.attributes.file"
+                            [FileName]="item.attributes.text" [oneVone]="true">
+                        </app-message>
+                    </div>
+                </div>
+            </div>
+            <div class="typingIndicator" *ngIf="isTyping">
+                {{ typingUser.name }} typing
+                <div class="typing-container">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+            <div class="d-flex align-items-end">
+                <app-input class="app-chat-input-holder" [show]="true" [isOneToOneChat]="true" [channel]="chat"
+                    [isGroupChat]="isGroupChat" [isExpanded]="isExpanded">
+                </app-input>
+            </div>
+            <!-- 
+            <div class="app-chat-input md-form md-outline d-flex">
+                
+                <div class="app-input-container">
+                    <textarea class="md-textarea form-control app-mesage-input-content custom-scroll"
+                        rows="{{(isExpanded)?'3':'2'}}" id="input_text" type="text" placeholder="Type a message..."
+                        matInput [(ngModel)]='message' (keydown)='emitTyping($event)'
+                        (keyup)='stopTyping($event)' (keydown.enter)="sendMessage()"></textarea>
+                </div>
+                <div class="app-input-sendbtn-container">
+                    <button type="button" class="app-message-send-btn" (click)='sendMessage()'></button>
+                </div>
+            </div> -->
+        </div>
+    </mat-card>
+</div>

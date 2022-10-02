@@ -1,0 +1,90 @@
+<ng-container *ngIf="isGridView">
+    <mat-card class="app-channelitem" matRipple (click)="showDialogOrJoin()" [ngClass]="{
+			'host-channel': isHostChannel,
+			'participant-channel': isParticipantChannel
+		}">
+        <div class="row">
+            <div class="col-9 app-channelitem-techStack">
+                <img class="techAvatar" *ngFor="let url of techStackUrls" [src]="url" />
+            </div>
+            <div class="col-3 text-right pl-0">
+                <span class="badge-live" *ngIf="channel.isStreaming"><b>LIVE</b></span>
+            </div>
+        </div>
+        <div class="row app-channelitem-title">
+            <div class="col-12 d-flex align-items-center">
+                <h5 class="mb-0">{{ channel.title }}</h5>
+            </div>
+        </div>
+
+        <div class="row app-channelitem-description">
+            {{ channel.description.substring(0, 40) }}
+        </div>
+
+        <div class="row app-channelitem-detail app-channelitem-info d-flex">
+            <div class="col-12 app-channelitem-name">
+                <span class="channel-icon member"></span>
+                <span class="channel-number">{{ channel.memberCount }}</span>
+                <span *ngIf="channel.password" class="channel-icon locked"></span>
+            </div>
+        </div>
+
+        <div class="app-channelitem-tags custom-scroll" *ngIf="channel && channel.tags && channel.tags.length > 0">
+            <span class="channel-tag me-2" *ngFor="let tag of channel.tags"><b>{{ tag }}</b></span>
+        </div>
+
+        <div class="row app-channelitem-detail app-channelitem-name d-flex align-items-center">
+            <div class="col-12">
+                <app-user-avatar class="align-items-center" [avatar]="channel.avatar" [isOnline]="channel.isHostActive">
+                </app-user-avatar>
+                <span class="app-channelitem-created-by custom-scroll">{{
+                    channel.createdBy
+                    }}</span>
+            </div>
+        </div>
+    </mat-card>
+</ng-container>
+<ng-container *ngIf="!isGridView">
+    <tr class="list-grid-rows" (click)="showDialogOrJoin()" [ngClass]="{
+			'host-channel': isHostChannel,
+			'participant-channel': isParticipantChannel
+		}" matRipple>
+        <td class="list-single-item">
+            <span class="have-text">
+                <img class="techAvatar" *ngFor="let url of techStackUrls" [src]="url" />
+            </span>
+        </td>
+
+        <td class="list-single-item truncate-text">
+            <span class="have-text have-text-heading font-18 font-w-600">{{ channel.title }}</span>
+        </td>
+
+        <td class="list-single-item truncate-text">
+            <span class="have-text font-14 font-w-500">{{ channel.description }}</span>
+        </td>
+
+        <td class="list-single-item">
+            <div class="ab-v-m">
+                <span class="channel-icon member me-15"></span>
+                <span class="channel-number font-16 font-w-600 me-15">
+                    {{ channel.memberCount }}
+                </span>
+                <span *ngIf="channel.password" class="me-15 channel-icon locked"></span>
+            </div>
+        </td>
+
+        <td class="list-single-item">
+            <span class="custom-scroll app-channelitem-tags">
+                <span class="badge-live me-2" *ngIf="channel.isStreaming"><b>LIVE</b></span>
+                <span class="channel-tag me-2" *ngFor="let tag of channel.tags"><b>{{ tag }}</b></span>
+            </span>
+        </td>
+
+        <td class="list-single-item">
+            <div class="ab-v-m">
+                <app-user-avatar [avatar]="channel.avatar" [isOnline]="channel.isHostActive"></app-user-avatar>
+                <span class="font-14 font-w-500">{{ channel.createdBy }}</span>
+            </div>
+        </td>
+    </tr>
+</ng-container>

@@ -1,0 +1,20 @@
+<div class="mt-dialog-container">
+    <h2 mat-dialog-title [innerHTML]="data.title"></h2>
+    <button mat-icon-button mat-dialog-close class="close">
+        <mat-icon>close</mat-icon>
+    </button>
+    <mat-dialog-content [innerHTML]="data.message"></mat-dialog-content>
+    <mat-dialog-content *ngIf="data.showCheckbox" class="mat-dialog-checkbox">
+        <mat-checkbox [(ngModel)]="data.isChecked" style="font-size: 14px; line-height: 33px">
+            {{ data.checkboxText }}
+        </mat-checkbox>
+    </mat-dialog-content>
+    <div mat-dialog-actions class="justify-content-center mt-4 mb-0">
+        <button mat-raised-button mat-dialog-close *ngIf="data.cancelText" class="btn-cancel">
+            {{ data.cancelText }}
+        </button>
+        <button mat-raised-button *ngIf="data.okText" (click)="close()" class="btn btn-primary">
+            {{ data.okText }}
+        </button>
+    </div>
+</div>

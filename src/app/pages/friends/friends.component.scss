@@ -1,0 +1,162 @@
+.app-friends-list-container {
+    height: 100%;
+    // @media (min-width: 320px) and (max-width: 767px) {
+    //     padding-right: 0;
+    // }
+    .header-search {
+        padding: 14px 16px !important;
+        margin-bottom: 1px;
+        // @media (min-width: 320px) and (max-width: 767px) {
+        //     width: auto !important;
+        //     display: block;
+        //     top: 72px;
+        //     margin: 0px 12px;
+        //     border: none !important;
+        //     padding: 10px 0 18px !important;
+        // }
+    }
+    .header-search.sticky {
+        position: relative;
+        width: 320px;
+        z-index: 1;
+        top: 0px;
+        @media (min-width: 767px) and (max-width: 1023px) {
+            width: 250px;
+        }
+    }
+    .sidebar-list-container {
+        padding-right: 3px !important;
+        overflow-y: auto;
+        height: 100%;
+        // @media (min-width: 320px) and (max-width: 767px) {
+        //     height: auto;
+        //     overflow: hidden;
+        //     padding: 0 !important;
+        // }
+    }
+    .mat-expansion-panel {
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 15px;
+        padding: 0 12px 15px 20px;
+        background: transparent;
+        // @media (min-width: 320px) and (max-width: 767px) {
+        //     padding: 12px;
+        //     margin-bottom: 10px;
+        // }
+    }
+    .mat-expansion-panel-header {
+        box-shadow: none;
+        border: none;
+        height: auto !important;
+        padding: 15px 0px 0px;
+        background: transparent !important;
+        color: #444f58;
+        font-size: 16px;
+        font-weight: 600;
+        // @media (min-width: 320px) and (max-width: 767px) {
+        //     padding: 0;
+        // }
+        span.mat-content {
+            line-height: 24px;
+        }
+    }
+    .mat-expansion-panel-body {
+        padding: 0;
+        margin: 0;
+    }
+    .app-friends-list-item {
+        > div {
+            // @media (min-width: 320px) and (max-width: 767px) {
+            //     display: flex;
+            //     flex-direction: row;
+            //     column-gap: 10px;
+            //     overflow-y: auto;
+            //     > * {
+            //         min-width: 75vw;
+            //     }
+            // }
+        }
+    }
+}
+.hr-text {
+    line-height: 1em;
+    position: relative;
+    outline: 0;
+    border: 0;
+    color: black;
+    text-align: center;
+    height: 1.5em;
+    opacity: 0.5;
+    margin: auto;
+    &:before {
+        content: '';
+        // use the linear-gradient for the fading effect
+        // use a solid background color for a solid bar
+        background: linear-gradient(to right, transparent, #818078, transparent);
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+    }
+    &:after {
+        content: attr(data-content);
+        position: relative;
+        display: inline-block;
+        color: black;
+        padding: 0 0.5em;
+        line-height: 1.5em;
+        // this is really the only tricky part, you need to specify the background color of the container element...
+        color: #818078;
+        background-color: #fcfcfa;
+    }
+}
+.app-search-btn {
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.search-btn {
+    width: 59px;
+    display: flex;
+    justify-content: center;
+}
+.create_group_icon {
+    width: 59px;
+    height: 45px;
+    padding: 2px 27px;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 0px 28.4px rgba(113, 32, 140, 0.38) !important;
+    .tab-hiden {
+        display: none;
+    }
+    // @media (min-width: 320px) and (max-width: 767px) {
+    //     width: 100%;
+    //     color: white;
+    //     background: linear-gradient(16.05deg, #ec008c 7.96%, #2b328c 92.04%)!important;
+    //     margin: 4px 2px!important;
+    //     font-size: 20px;
+    //     .tab-hiden {
+    //         display: inline-block;
+    //     }
+    // }
+}
+
+.header-search {
+    display: flex;
+    align-items: center;
+}
+
+.hint-container {
+    margin-top: 25px;
+    span {
+        color: gray;
+        display: flex;
+        justify-content: center;
+    }
+}

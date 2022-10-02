@@ -1,0 +1,150 @@
+<div class="app-message flex-wrap" *ngIf="UserId !== SenderId" (mouseenter)="isHover = true"
+    (mouseleave)="isHover = false">
+    <div class="d-flex">
+        <div class="author-avatar">
+            <img [src]="Avatar" alt="channel_avatar" />
+        </div>
+        <div class="app-msg-content">
+            <div *ngIf="!Image && !File" class="app-msg-content-inner">
+                <p>
+                    {{ Content }}
+                </p>
+            </div>
+            <div *ngIf="Image" class="app-msg-content-inner">
+                <img src="{{ Image }}" alt="{{ Image }}" />
+            </div>
+            <div *ngIf="File" class="app-msg-content-inner">
+                <p>
+                    <a href="{{ File }}" target="_blank">{{ FileName }}</a>
+                </p>
+            </div>
+
+            <button mat-icon-button #emojiMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="emojiMenu"
+                [matMenuTriggerData]="{ message: Message, trigger: emojiMenuTrigger }"
+                class="emoji__reaction material-symbols-outlined">
+                <img src="assets/images/add-emoji-reaction.svg" />
+            </button>
+        </div>
+        <button class="h-100 py-2 more-btn" mat-button [matMenuTriggerFor]="userOptionsMenu"
+            (menuOpened)="moreMenuOpened()">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+    <!-- Reaction row -->
+    <div class="reaction-row">
+        <ul class="list-inline">
+            <li class="list-inline-item" *ngFor="let react of Reactions">
+                <button #reactionUserTrigger="matMenuTrigger" [matMenuTriggerFor]="reactionUserMenu"
+                    [matMenuTriggerData]="{ react: react }">
+                    <span>{{ react.reaction }}</span>
+                    <span>{{ react.users.length }}</span>
+                </button>
+                <!-- <span>{{ react.reaction }}</span>
+                <span>{{ react.users.length }}</span> -->
+            </li>
+        </ul>
+        <div class="app-msg-meta">
+            <span>{{ Sender }}</span> <span>{{ When | date: 'short' }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="app-message app-message-sender flex-wrap" (mouseenter)="isHover = true" *ngIf="UserId === SenderId"
+    (mouseleave)="isHover = false">
+    <div class="d-flex">
+        <button mat-button (click)="chatService.showDeleteMessageDialog(oneVone, Message)" class="app-delete-message">
+            <mat-icon> delete </mat-icon>
+        </button>
+        <div class="app-msg-content">
+            <div *ngIf="!Image && !File" class="app-msg-content-inner">
+                <p>
+                    {{ Content }}
+                </p>
+            </div>
+            <div *ngIf="Image" class="app-msg-content-inner">
+                <img src="{{ Image }}" alt="{{ Image }}" />
+            </div>
+            <div *ngIf="File" class="app-msg-content-inner">
+                <p>
+                    <a href="{{ File }}" target="_blank">{{ FileName }}</a>
+                </p>
+            </div>
+            <button mat-icon-button #emojiMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="emojiMenu"
+                [matMenuTriggerData]="{ message: Message, trigger: emojiMenuTrigger }"
+                class="emoji__reaction material-symbols-outlined">
+                <img src="assets/images/add-emoji-reaction.svg" />
+            </button>
+            <!-- <div class="app-msg-meta">
+            <span>{{ Sender }}</span> <span>{{ When | date: 'short' }}</span>
+        </div> -->
+        </div>
+    </div>
+    <!-- Reaction row -->
+    <div class="reaction-row">
+        <ul class="list-inline">
+            <li class="list-inline-item" *ngFor="let react of Reactions">
+                <button class="emoji__button" #reactionUserTrigger="matMenuTrigger"
+                    [matMenuTriggerFor]="reactionUserMenu" [matMenuTriggerData]="{ react: react }">
+                    <!-- (mouseenter)="reactionUserTrigger?.click()" (mouseleave)="reactionUserTrigger.click()" -->
+                    <span>{{ react.reaction }}</span>
+                    <span>{{ react.users.length }}</span>
+                </button>
+            </li>
+        </ul>
+        <div class="app-msg-meta mr-0">
+            <span>{{ Sender }}</span> <span>{{ When | date: 'short' }}</span>
+        </div>
+    </div>
+</div>
+
+<mat-menu #userOptionsMenu="matMenu" class="custom-dropdown custom-scroll" xPosition="before">
+    <section class="user-menu mat-menu-content">
+        <!-- <div class="message-menu-item" (click)="showTipDialog()" *ngIf='UserId !== SenderId'>
+            <span class="tip"></span>
+            <span class="nav-caption"> Tip {{Sender}} </span>
+        </div> -->
+
+        <div (click)="chatService.showDeleteMessageDialog(oneVone, Message)"
+            *ngIf="!oneVone && UserId === channelService.currentChannel.user">
+            <span class="navIcon delete-chat" style="background-size: contain;background-size:13px ;"></span>    
+            <span class="nav-caption"> Delete message </span>
+        </div>
+
+        <div class="follow-btns" *ngIf="follow" (click)="chatService.toggleFollow(follow, SenderId, UserId)">
+            <div class="btn  d-flex justify-content-center mx-0" [ngClass]="follow.isFollowing ? 'unfollow-btn' : 'follow-btn'" [disabled]="true">
+                <span *ngIf="follow.isFollower"
+                    [ngClass]="follow.isFollowing ? 'check-unfollow' : 'check-follow'"></span>
+                {{ follow.isFollowing ? 'Unfollow' : 'Follow' }}
+            </div>
+        </div>
+
+        <div *ngIf="otherUser" routerLink="/profile/{{ otherUser.customUsername }}" routerLinkActive="active">
+            <span class="navIcon profile"></span>
+            <span class="nav-caption">Profile</span>
+        </div>
+
+        <div (click)="chatService.openChat(otherUser)">
+            <span class="navIcon profile-chat"></span>
+            <span class="nav-caption">Message</span>
+        </div>
+
+        <div (click)="chatService.blockUser(SenderId, isBlocked)" *ngIf="
+				channelService.currentChannel &&
+				this.channelService.currentChannel.user === this.UserId &&
+				!isBlocked
+			">
+            
+            <span class="navIcon identity-icon-silence"></span>
+            <span class="nav-caption"> Block from channel </span>
+        </div>
+
+        <div (click)="chatService.unblockUser(SenderId, isBlocked)" *ngIf="
+				channelService.currentChannel &&
+				this.channelService.currentChannel.user === this.UserId &&
+				isBlocked
+			">
+            <mat-icon>check_circle_outline</mat-icon>
+            <span class="nav-caption"> Unblock from channel</span>
+        </div>
+    </section>
+</mat-menu>

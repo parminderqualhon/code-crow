@@ -1,0 +1,411 @@
+<ng-container>
+    <div class="page-home custom-scroll">
+        <div class="page-home-inner position-relative">
+            <div class="home-header">
+                <div class="max-container">
+                    <div class="align-items-center row">
+                        <div class="col-sm-6">
+                            <div class="home-logo float-start">
+                                <img src="/assets/images/logo-white.svg" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 ml-auto d-flex action-buttons justify-content-end">
+                            <div class="ml-auto social">
+                                <a href="https://github.com/CodeCrowCorp" target="_blank"><img alt="github social link"
+                                        src="/assets/images/github.svg" /></a>
+                                <a href="https://discord.gg/CodeCrow" target="_blank"><img alt="discord social link"
+                                        src="/assets/images/discord.svg" /></a>
+                                <a href="https://twitter.com/codecrowcorp" target="_blank"><img
+                                        alt="twitter social link" src="/assets/images/twitter.svg" /></a>
+                                <a href="https://magiceden.io" target="_blank"><img alt="magic eden social link"
+                                        src="/assets/images/magiceden.png" /></a>
+                            </div>
+                            <a matRipple class="btn-mint btn float-end" target="_blank" rel="noreferrer">
+                                <!--href="https://mint.codecrow.io"-->
+                                <img src="/assets/images/mint.svg" />MINT (SOON)
+                            </a>
+                            <a matRipple class="btn-dapp btn float-end" (click)="showLoginDialog()">
+                                <img src="/assets/images/rocket.svg" />LAUNCH DAPP
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-banner" style="background-image: url('/assets/images/home-bg.png')">
+                <div class="max-container">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="banner-text">
+                                <img src="/assets/images/login-web3-title.webp" />
+                                <p>
+                                    Code Crow is a
+                                    <span class="highlight">Stream-and-Earn</span> platform for web3
+                                    gaming, software development, and DeFi analysis
+                                </p>
+                                <p>
+                                    Powered by
+                                    <img src="/assets/images/solana-logo.svg" class="small-solana" alt="Solana logo" />
+                                </p>
+                                <div class="banner-buttons">
+                                    <a href="https://discord.gg/CodeCrow" target="_blank"><img
+                                            src="/assets/images/discord-plain.svg" alt="Discord logo" />
+                                        Join our
+                                        <img src="/assets/images/discord-text.svg" alt="Discord text" />
+                                    </a>
+                                    <a href="https://codecrow.gitbook.io/whitepaper" target="_blank">
+                                        <img src="/assets/images/whitepaper.svg" alt="white paper logo" />
+                                        Read Whitepaper</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="benefits-section" style="background-image: url('/assets/images/benefits-bg.png')">
+                <div class="row row-flex content">
+                    <div class="col-12 d-flex justify-content-center">
+                        <img class="header" src="/assets/images/utility-header.png" alt="benefits header" />
+                    </div>
+                    <div class="col-12 d-flex benefits max-container">
+                        <div class="benefit">
+                            <div class="nft-token-coin"></div>
+                            <span>
+                                <h5>EARN</h5>
+                                Earn <span class="highlight">$RCR</span> tokens for live-streaming
+                            </span>
+                        </div>
+                        <div class="benefit">
+                            <div class="nft-profit-split"></div>
+                            <span>
+                                <h5>REINVEST</h5>
+                                In-app profits will be reinvested into the liquidity pool
+                            </span>
+                        </div>
+                        <div class="benefit">
+                            <div class="nft-airdrop"></div>
+                            <span>
+                                <h5>AIRDROPS</h5>
+                                Select streamers and Access Key holders will receive
+                                <span class="highlight">$RCR</span>
+                                Airdrops
+                            </span>
+                        </div>
+                        <div class="benefit">
+                            <div class="nft-features"></div>
+                            <span>
+                                <h5>NEW FEATURES</h5>
+                                Early access to new features and the mobile apps
+                            </span>
+                        </div>
+                        <div class="benefit">
+                            <div class="nft-special-borders"></div>
+                            <span>
+                                <h5>Borders</h5>
+                                Special borders around your avatar to flex your tier
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="partnership-section" style="background-image: url('/assets/images/partnership-bg.png')">
+                <div class="max-container row d-flex justify-content-center">
+                    <img src="/assets/images/partnership-header.png" alt="partnership header" class="header" />
+                    <div class="row col-12">
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0" href="https://microsoft.com/en-us/startups"
+                            target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/microsoft.png" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0"
+                            href="https://blog.cloudflare.com/the-cloudflare-startup-enterprise-plan-helping-new-startups-bootstrap/"
+                            target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/cloudflare.png" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0" href="https://digitalocean.com/hatch" target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/digitalocean-hatch.png" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0" href="https://mongodb.com/startups" target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/mongodb.png" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0" href="https://aws.amazon.com/activate/" target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/aws-activate.png" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6" href="https://twilio.com/solutions/startups" target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/twilio-startups.png" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0"
+                            href="https://nftcalendar.io/event/code-crow-access-keys-web3-stream-to-earn-chat-platform-on-solana/"
+                            target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/nftcalendar.svg" />
+                            </div>
+                        </a>
+
+                        <a class="col-sm-2 col-6 mb-1 mb-sm-0" href="https://scrimba.com/" target="_blank">
+                            <div class="service-item">
+                                <img src="/assets/images/scrimba.png" />
+                            </div>
+                        </a>
+
+                        <div class="col-sm-2 col-6">
+                            <div class="service-item">
+                                <img src="/assets/images/coming-soon.png" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roadmap" style="background-image: url('/assets/images/roadmap-bg.png')">
+                <div class="nft-info">
+                    <div class="max-container">
+                        <div class="d-flex justify-content-center roadmap-header">
+                            <img src="/assets/images/roadmap-header.png" alt="roadmap" />
+                        </div>
+                        <div class="timeline-container">
+                            <ul class="timeline">
+                                <li class="timeline-card">
+                                    <div class="header">Phase 1</div>
+                                    <div class="body">
+                                        <ul>
+                                            <li>Build the community</li>
+                                            <li>Remove the 50 participant limit per channel</li>
+                                            <li class="completed">
+                                                <span class="checkmark">
+                                                    <div class="checkmark_stem"></div>
+                                                    <div class="checkmark_kick"></div>
+                                                </span>
+                                                Integrate User Profiles to allow users to establish
+                                                their brand
+                                            </li>
+                                            <li class="completed">
+                                                <span class="checkmark">
+                                                    <div class="checkmark_stem"></div>
+                                                    <div class="checkmark_kick"></div>
+                                                </span>
+                                                Partnership Announcements
+                                            </li>
+                                            <ol>
+                                                <li>
+                                                    <a class="completed" href="https://microsoft.com/en-us/startups"
+                                                        target="_blank">Microsoft for Startups</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed"
+                                                        href="https://blog.cloudflare.com/the-cloudflare-startup-enterprise-plan-helping-new-startups-bootstrap/"
+                                                        target="_blank">Cloudflare Startups</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed" href="https://digitalocean.com/hatch"
+                                                        target="_blank">Hatch by DigitalOcean</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed" href="https://mongodb.com/startups"
+                                                        target="_blank">MongoDB for Startups</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed" href="https://aws.amazon.com/activate/"
+                                                        target="_blank">AWS Activate</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed"
+                                                        href="https://www.twilio.com/solutions/startups"
+                                                        target="_blank">Twilio Startups</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed"
+                                                        href="https://nftcalendar.io/event/code-crow-access-keys-web3-stream-to-earn-chat-platform-on-solana/"
+                                                        target="_blank">NFTCalendar</a>
+                                                </li>
+                                                <li>
+                                                    <a class="completed" href="https://scrimba.com/"
+                                                        target="_blank">Scrimba</a>
+                                                </li>
+                                                <li>More coming soon</li>
+                                            </ol>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="timeline-card">
+                                    <div class="header">Phase 2</div>
+                                    <div class="body">
+                                        <ul>
+                                            <li>Minting 2020 Gen-0 Access Keys</li>
+                                            <!--9798-->
+                                            <li>Holding 202 Access Keys in the community wallet</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="timeline-card">
+                                    <div class="header">Phase 3</div>
+                                    <div class="body">
+                                        <ul>
+                                            <li class="completed">
+                                                <span class="checkmark">
+                                                    <div class="checkmark_stem"></div>
+                                                    <div class="checkmark_kick"></div>
+                                                </span>
+                                                Access Key benefits integration
+                                            </li>
+                                            <li class="completed">
+                                                <span class="checkmark">
+                                                    <div class="checkmark_stem"></div>
+                                                    <div class="checkmark_kick"></div>
+                                                </span>
+                                                Recursion token integration
+                                            </li>
+                                            <li>
+                                                Airdropping Recursion tokens to select streamers and
+                                                Access Key holders
+                                            </li>
+                                            <li>
+                                                20% of all in-app profits will be reinvested into
+                                                the liquidity pool
+                                            </li>
+                                            <li>
+                                                Recursion tokens will be backed by a liquidity pool,
+                                                will be tradable on a DEX, and can be used to:
+                                                <ol>
+                                                    <li>
+                                                        purchase in-app features such has BUMP (bump
+                                                        up your channel to the top to get more
+                                                        visibility)
+                                                    </li>
+                                                    <!-- <li>purchase skins in MVP</li> -->
+                                                    <li>
+                                                        purchase merchandise from our upcoming
+                                                        market
+                                                    </li>
+                                                    <li>
+                                                        show your love and support by tipping users
+                                                        on a live-stream
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                            <li>Merchandise marketplace integration</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="timeline-image">
+                                        <img src="assets/images/cro-x-solana.png" />
+                                    </div>
+                                </li>
+                                <li class="timeline-card">
+                                    <div class="header">Phase 4</div>
+                                    <div class="body">
+                                        <ul>
+                                            <li>
+                                                Bounty system integration
+                                            </li>
+                                            <li>
+                                                Video recording, library, and responses integration
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="timeline-card">
+                                    <div class="header">Phase 5</div>
+                                    <div class="body">
+                                        <ul>
+                                            <li class="completed">
+                                                <span class="checkmark">
+                                                    <div class="checkmark_stem"></div>
+                                                    <div class="checkmark_kick"></div>
+                                                </span>
+                                                Begin mobile app development
+                                            </li>
+                                            <li>Sending holders invites to Android app</li>
+                                            <li>Sending holders invites to iOS app</li>
+                                        </ul>
+                                    </div>
+                                    <div class="appstore-image">
+                                        <img src="assets/images/appstore.png" />
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="team" style="background-image: url('/assets/images/meetteam-bg.png')">
+                <div class="header">
+                    <img src="/assets/images/team-header.png" alt="meet the team" />
+                </div>
+                <div class="team-cards max-container">
+                    <div class="team-card">
+                        <img src="assets/images/team/g4g4n-profile.png" alt="G4G4N" />
+                        <h4>G4G4N</h4>
+                        <p>Founder, CEO, Developer</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/ryan-profile.png" alt="Ryan" />
+                        <h4>Ryan</h4>
+                        <p>CBDO, Project Manager</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/ilong4kombat-profile.png" alt="iLong4Kombat" />
+                        <h4>iLong4Kombat</h4>
+                        <p>Operations Officer, QA</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/s1mm1-profile.png" alt="S1MM1" />
+                        <h4>S1MM1</h4>
+                        <p>Director of Social Media Management</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/blocka-profile.png" alt="Blocka" />
+                        <h4>Blocka</h4>
+                        <p>Digital Warlock, Growth Hacker</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/solaire-profile.png" alt="Solaire" />
+                        <h4>Solaire</h4>
+                        <p>Marketing Specialist, Discord Management</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/enrgynvrdies-profile.png" alt="EnrgyNvrDies" />
+                        <h4>EnrgyNvrDies</h4>
+                        <p>Project Manager, Visionary</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/dar-profile.png" alt="Dar" />
+                        <h4>Dar</h4>
+                        <p>Market Analyst</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/team/ultra2x-profile.png" alt="Ultra2x" />
+                        <h4>Ultra2x</h4>
+                        <p>Quality Assurance Tester</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="assets/images/4266-animated.webp" alt="Contractors" />
+                        <h4>Outsourced Contractors</h4>
+                        <p>Blockchain, Web, Mobile Developers</p>
+                    </div>
+                </div>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</ng-container>

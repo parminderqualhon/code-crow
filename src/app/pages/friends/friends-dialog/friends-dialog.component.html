@@ -1,0 +1,14 @@
+<div class="panel-content custom-scroll panel-background-color" (scroll)="onScrollUsers($event)"
+    *ngIf="chatService.isChatsEnabled" [@reverseInOutAnimation] id="clickOutside">
+    <div class="panel-title">
+        Messages
+        <button mat-icon-button (click)="onNoClick()" class="close">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="panel-body">
+        <app-friends></app-friends>
+    </div>
+</div>
+<div [ngClass]="{ panel: chatService.isChatsEnabled }" (click)="onNoClick()"></div>

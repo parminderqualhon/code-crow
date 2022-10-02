@@ -1,0 +1,99 @@
+.app-videoitem {
+    margin-bottom: 30px;
+    cursor: pointer;
+    min-height: 280px;
+    border: 1px solid #e3ebf6;
+    padding-bottom: 45px;
+
+    .app-videoitem-title {
+        width: 100%;
+        margin-top: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .app-videoitem-duration-container {
+        background-color: #181b29;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        color: #fff;
+        border: none;
+        padding: 1px 5px;
+        font-size: 14px;
+    }
+
+    .app-videoitem-thumbnail-container {
+        position: relative;
+        min-height: 141px;
+        background-color: #2b328c;
+        .app-videoitem-placeholder-icon {
+            right: 0;
+            position: absolute;
+            z-index: 9999999;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: 55px;
+            height: 49px;
+            font-size: 50px;
+            opacity: 0.7;
+            color: #7f1c8c;
+        }
+    }
+
+    .app-videoitem-thumbnail {
+        width: 100%;
+        position: relative;
+    }
+
+    .app-videoitem-placeholder {
+        height: 123px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .video-meta-data {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        padding: 9px 15px 7px;
+        left: 0;
+        bottom: 0;
+        align-items: center;
+
+        .app-videoitem-detail {
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            .mat-icon {
+                margin-left: 5px;
+                position: relative;
+                top: -1px;
+                color: #a2138c;
+            }
+        }
+    }
+
+    .app-videoitem-personal-container {
+        float: left;
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        padding: 3px;
+    }
+
+    .app-videoitem-personal {
+        color: #faebd7;
+    }
+
+    .selected {
+        border: 1px solid #4285f4;
+        box-shadow: 0 0 0px 0px #4285f4;
+    }
+}

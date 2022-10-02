@@ -1,0 +1,240 @@
+.content {
+    padding: 25px 20px 10px 20px;
+}
+
+.content-input {
+    padding: 15px 10px;
+}
+
+.content:hover,
+.content-input:hover,
+.techStack:hover,
+.host:hover,
+.tags:hover,
+.setting:hover {
+    background-color: #ffffff;
+}
+
+.detail-container textarea {
+    border-style: dashed;
+    border-color: rgba(64, 64, 64, 0.4);
+    border-width: 2px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.channel-detail-cancel-btn {
+    height: 60px;
+    width: 193.63px;
+    border: 1px solid #dadada;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0.45px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.channel-detail-submit-btn {
+    height: 60px;
+    width: 193.63px;
+    background: linear-gradient(264.91deg, #2b328c 0%, #ec018c 100%);
+    border-radius: 5px;
+    letter-spacing: 0.45px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0.45px;
+    color: #ffffff;
+    margin-top: 10px;
+    border: transparent;
+}
+
+.techStack {
+    padding: 10px 20px 7.5px 20px;
+    img {
+        margin-right: 15px;
+        height: 30px;
+    }
+}
+
+.host {
+    padding: 10px 20px 7.5px 20px;
+    img {
+        margin-right: 15px;
+        height: 30px;
+        border-radius: 100%;
+    }
+}
+
+.span-color {
+    font-weight: 1000;
+    font-size: 16px;
+    line-height: 28px;
+    color: #3e2d8c;
+}
+
+.channel-users {
+    height: 28px;
+    width: 28px;
+}
+
+.channel-detail-icon-color {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #3e2d8c;
+}
+
+.tags,
+.setting {
+    padding: 7.5px 20px 7.5px 20px;
+}
+
+.tag {
+    border-radius: 10px;
+    background-color: rgba(65, 45, 140, 0.8);
+    color: white;
+    font-size: 14px;
+    height: 24px;
+    font-weight: 700;
+    text-align: center;
+    border-color: transparent;
+    margin-right: 6px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.show-cursor:hover {
+    cursor: pointer;
+}
+
+.right-margin {
+    margin-right: 10px;
+}
+
+.scroll {
+    height: 100%;
+    max-height: 210px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.child-scroll {
+    overflow-y: auto;
+    max-height: 100%;
+    box-sizing: content-box;
+}
+
+#attachment-input {
+    display: none;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+}
+
+.mat-icon:hover {
+    cursor: pointer;
+}
+
+.backgroundColor {
+    background-color: #eaeaea;
+}
+
+.description {
+    word-wrap: break-word;
+    display: block;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.show-more-button-background {
+    background-color: #eaeaea;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0px 5px;
+    margin-right: 10px;
+}
+
+.edit-button-background {
+    background-color: #eaeaea;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0px 5px;
+    margin: 5px 0;
+}
+
+.scrollbar {
+    height: calc(100vh - 420px);
+    overflow-y: scroll;
+    overflow: auto;
+}
+
+.search-bar {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.tags-chip-list {
+    width: 100%;
+}
+
+.label-tag {
+    background-color: transparent;
+    line-height: 34px;
+    background: -webkit-linear-gradient(#442c8c, #ec018c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+}
+
+.mat-chip {
+    color: #fff;
+    height: 34px;
+    background: #6757a3;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.mat-chip-remove {
+    position: sticky;
+    opacity: inherit !important;
+    margin-left: 5px;
+    width: 10px !important;
+    height: 18px !important;
+}
+
+.channeltags::placeholder {
+    opacity: 0.5;
+}
+
+.chips-container {
+    margin: 5px 0;
+}
+
+.attachments-container {
+    width: 100%;
+}
+
+.thumbnail {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    img {
+        min-height: 5rem;
+        max-height: 10rem;
+        object-fit: cover;
+    }
+    span {
+        display: block;
+        width: 100%;
+    }
+}

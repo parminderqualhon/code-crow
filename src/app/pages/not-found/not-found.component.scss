@@ -1,0 +1,24 @@
+.app-not-found-container {
+    height: calc(100vh);
+}
+
+.app-not-found-icon {
+    font-size: 50px !important;
+    color: #cccc00;
+    max-width: 100%;
+    height: auto;
+    display: block !important;
+    margin-right: 25;
+    margin-bottom: 30px;
+}
+
+.app-not-found-message {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 300 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 30px;
+}
+.btn.btn-primary {
+    padding: 11px 22px !important;
+}

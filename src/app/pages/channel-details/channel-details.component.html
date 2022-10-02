@@ -1,0 +1,14 @@
+<div class="main-container">
+    <div class="main-content">
+        <app-content (toggleMobileChat)="toggleMobileChat()" (leavegroupEvent)="removeGroup($event)"
+            (editgroupEvent)="editDialog($event)"></app-content>
+    </div>
+
+    <div *ngIf="showMobileChat" class="chat-backdrop" (click)="toggleMobileChat()"></div>
+    <div class="chat" [class]="{ 'mobile-visible': showMobileChat }">
+        <div class="app-chat-holder col-lg-3 ml-auto m-sm-2 mr-sm-0 custom-scroll overflow-auto"
+            *ngIf="channelService.currentChannel">
+            <app-chat [isTyping]="isTyping" [typingUser]="typingUser"></app-chat>
+        </div>
+    </div>
+</div>

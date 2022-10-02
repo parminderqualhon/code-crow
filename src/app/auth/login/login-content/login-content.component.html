@@ -1,0 +1,30 @@
+<div>
+    <div class="login-header text-center py-3 padd-remove">
+        <img src="/assets/images/logo-icon.svg" alt="" class="Class" />
+    </div>
+
+    <div class="px-4">
+        <a href="{{ getHref('discord') }}" rounded="true" class="my-0 waves-light app-login-btn discord">
+            <span>
+                <img src="/assets/images/discord-plain.svg" />
+            </span>
+            <p>Log in with Discord</p>
+        </a>
+        <a href="{{ getHref('google') }}" rounded="true" class="my-0 waves-light app-login-btn google">
+            <span>
+                <img src="/assets/images/logo-google.svg" />
+            </span>
+            <p>Log in with Google</p>
+        </a>
+        <a href="{{ getHref('github') }}" rounded="true" class="my-0 waves-light app-login-btn github">
+            <span>
+                <img src="/assets/images/logo-github.svg" />
+            </span>
+            <p>Log in with GitHub</p>
+        </a>
+        <p class="app-login-para">
+            By using our platform, you confirm that you are atleast 18 years old and agree to
+            <a [routerLink]="['/legal/privacy-policy']" (click)="dialogRef.close(true)">all of our policies</a>
+        </p>
+    </div>
+</div>

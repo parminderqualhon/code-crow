@@ -1,0 +1,12 @@
+<div class="hint-container" *ngIf="hint && screenContainer.childNodes.length < 1">
+    <span>Fun fact: {{ hint }}</span>
+</div>
+<div class="media-container fading-edges custom-scroll">
+    <div #screenContainer id="screen_container" [class]="screenContainer.childNodes.length ==1?'single-video':''" [ngClass]="{'video__container': screenContainer.childNodes.length > 0}">
+    </div>
+    <div id="audio_container"></div>
+    <div *ngIf="screenContainer.childNodes.length > 2" class="navigation">
+        <button (click)="sideScroll('left')"></button>
+        <button (click)="sideScroll('right')"></button>
+    </div>
+</div>

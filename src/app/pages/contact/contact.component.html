@@ -1,0 +1,81 @@
+<ng-container>
+    <div class="app-contact">
+        <div class="row m-0 app-container">
+            <div class="col-sm-6 app-contact-left wrapper-app">
+                <div class="app-contact-content">
+                    <h2>Contact Information</h2>
+                    <p class="mb-0">Contact us and we'll get back to you within 24 hours.</p>
+                    <p>Questions, feature requests, bug reports, feedback</p>
+                    <ul>
+                        <li>
+                            <span>
+                                <img src="/assets/images/location.svg" />
+                            </span>
+                            16192 Coastal Highway <br />
+                            Lewes, DE 19958 United States
+                        </li>
+                        <li>
+                            <span>
+                                <img src="/assets/images/mail-icon.svg" />
+                            </span>
+                            support@codecrow.io
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 app-contact-right wrapper-app">
+                <div class="app-contact-content">
+                    <h2>Ready to contact us?</h2>
+                    <br />
+                    <div [formGroup]="contactForm">
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <mat-form-field class="app-contact-input" appearance="outline">
+                                    <input matInput formControlName="name" placeholder="Name*" type="text" required />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <mat-form-field class="app-contact-input" appearance="outline">
+                                    <input matInput formControlName="email" placeholder="Email*" type="email"
+                                        required />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-12">
+                                <mat-form-field class="app-contact-input" appearance="outline">
+                                    <input matInput class="app-contact-subject" formControlName="subject"
+                                        placeholder="Subject*" type="text" required />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-12">
+                                <mat-form-field class="app-contact-input app-contact-message" appearance="outline">
+                                    <textarea matInput formControlName="message" placeholder="Message"
+                                        rows="10"></textarea><br />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="!isSendingMessage">
+                            <div class="col-sm-12 form-group">
+                                <button mat-raised-button class="app-contact-send-button btn btn-primary" rounded="true"
+                                    type="button" (click)="sendMessage()">
+                                    Send
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="isSendingMessage">
+                            <mat-spinner diameter="30" mode="indeterminate"></mat-spinner>
+                        </div>
+                        <div class="alert alert-danger" *ngIf="isConnectionError">
+                            Couldn't connect to email server. Please try again shortly.
+                        </div>
+                        <div class="alert alert-danger" *ngIf="isValidationError">
+                            Please fill in all required fields.
+                        </div>
+                        <div class="alert alert-success" *ngIf="isMessageSent">
+                            Your message is sent! You'll hear from us soon! :)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

@@ -1,0 +1,135 @@
+<div class="profile-container">
+    <div class="app-channels-holder">
+        <div class="header-user-info" *ngIf="otherUser">
+            <div class="user-img cursor-pointer" (click)="isCurrentUser ? fileInput.click() : null">
+                <img [src]="otherUser.avatar" alt="avatar" />
+                <input accept="image/*" hidden (change)="seletedFiles($event.target.files)" #fileInput type="file"
+                    id="file" />
+            </div>
+
+            <div class="user-info-wrapper">
+                <h2 *ngIf="!isDisplayNameEditable" (click)="isDisplayNameEditable = isCurrentUser ? true : false">
+                    {{ otherUser.displayName }}
+                </h2>
+                <div *ngIf="isCurrentUser && (isDisplayNameEditable || otherUser.displayName.length < 1)">
+                    <input [(ngModel)]="otherUser.displayName" type="text" class="form-control h2"
+                        (blur)="onBlurDisplayName()" maxlength="40" (keyup.enter)="onBlurDisplayName()" minlength="3"
+                        placeholder="display name" />
+                </div>
+                <h3 *ngIf="!isCustomUsernameEditable" (click)="isCustomUsernameEditable = isCurrentUser ? true : false"
+                    class="customUsername">
+                    @{{ otherUser.customUsername }}
+                </h3>
+                <div *ngIf="isCurrentUser && (isCustomUsernameEditable || otherUser.customUsername.length < 1)">
+                    <input [(ngModel)]="otherUser.customUsername" type="text" class="customUsername form-control h3"
+                        (blur)="onBlurCustomUsername()" maxlength="40" (keyup.enter)="onBlurCustomUsername()"
+                        (keydown.space)="$event.preventDefault()" minlength="3" placeholder="handle" />
+                </div>
+                <h3 *ngIf="!isDescriptionEditable" (click)="isDescriptionEditable = isCurrentUser ? true : false">
+                    {{ otherUser.description }}
+                </h3>
+                <div *ngIf="isCurrentUser && (isDescriptionEditable || otherUser.description.length < 1)">
+                    <input [(ngModel)]="otherUser.description" type="text" class="form-control h3"
+                        (blur)="onBlurDescription()" maxlength="65" (keyup.enter)="onBlurDescription()"
+                        placeholder="description" minlength="3" />
+                </div>
+
+                <div class="social-tech-icons">
+                    <div *ngIf="!isCurrentUser && isMessageable" class="cursor-pointer"
+                        (click)="chatService.openChat(otherUser)">
+                        <span class="profile-chat"></span>
+                    </div>
+                    <div *ngIf="otherUser.providerType === 'Github' ||
+							otherUser.providerType === 'Bitbucket' ||
+							otherUser.providerType === 'Gitlab'" class="social-icons cursor-pointer" (click)="openGitProfile(otherUser)">
+                        <img *ngIf="otherUser.providerType === 'Github'" class="fab fa-github menu-icon"
+                            src="/assets/images/profile-github.svg" />
+                        <img *ngIf="otherUser.providerType === 'Bitbucket'" class="fab fa-bitbucket menu-icon"
+                            src="/assets/images/profile-bitbucket.svg" />
+                        <img *ngIf="otherUser.providerType === 'Gitlab'" class="fab fa-gitlab menu-icon"
+                            src="/assets/images/profile-gitlab.svg" />
+                    </div>
+                    <div class="framework-icons cursor-pointer" #techMenuTrigger="matMenuTrigger"
+                        [matMenuTriggerFor]="techMenu" *ngIf="isCurrentUser">
+                        <ng-container *ngIf="otherUser.techStack.length > 0">
+                            <img class="tech-stack-icons" *ngFor="let stack of otherUser.techStack"
+                                [src]="stack.item_image" />
+                        </ng-container>
+                        <span class="menu-label" *ngIf="otherUser.techStack.length < 1">
+                            Add category
+                        </span>
+                    </div>
+                    <mat-menu #techMenu="matMenu" class="header-dropdown custom-scroll tech__stack__panel"
+                        xPosition="before" [hasBackdrop]="true">
+                        <app-tech-stack-dropdown appearance="outline" [menuTrigger]="techMenuTrigger"
+                            [list]="filteredOptions" [checkedList]="otherUser.techStack"
+                            (shareKeyword)="searchTech($event)"
+                            (shareIndividualCheckedList)="shareIndividualCheckedList($event)"
+                            (submitTechStack)="submitTechStack($event)"></app-tech-stack-dropdown>
+                    </mat-menu>
+                </div>
+
+                <div class="follow-btns">
+                    <div class="btn" [ngClass]="isFollowing ? 'unfollow-btn' : 'follow-btn'" *ngIf="!isCurrentUser"
+                        (click)="chatService.toggleFollow({isFollowing}, otherUser._id, authService.currentUser._id)">
+                        <span *ngIf="isFollower" [ngClass]="isFollowing ? 'check-unfollow' : 'check-follow'"></span>
+                        {{ isFollowing ? 'Unfollow' : 'Follow' }}
+                    </div>
+                    <!-- <button class="btn tip-btn" *ngIf="!isCurrentUser" (click)="sendTip()">Send Tip</button> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-container content-container custom-scroll">
+            <div class="hosted-channels">My Hosted Channels ({{ channelCount }})</div>
+            <div class="row header-search">
+                <div class="app-search-bar search-area">
+                    <input type="search" placeholder="Search channels" [(ngModel)]="searchQuery"
+                        (search)="searchChannels()" />
+                    <span class="app-search-btn" (click)="searchChannels()"></span>
+                </div>
+            </div>
+
+            <div class="app-channels-container custom-scroll list-channel-container" (scroll)="onScroll($event)">
+                <div class="grid-view">
+                    <div *ngFor="let item of sortedChannels" class="col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                        <app-channel-item [channel]="item" [isGridView]="true"></app-channel-item>
+                    </div>
+                </div>
+                <div class="list-view">
+                    <table class="channel-list-table" matSort (matSortChange)="sortChannels($event)">
+                        <thead>
+                            <tr class="channel-list-header">
+                                <th mat-sort-header="techStack">Category</th>
+                                <th mat-sort-header="title">Title</th>
+                                <th mat-sort-header="description">Description</th>
+                                <th mat-sort-header="info">Info</th>
+                                <th mat-sort-header="tags">Tags</th>
+                                <th mat-sort-header="host">Host</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div *ngFor="let item of sortedChannels" class="channel-list-row">
+                                <app-channel-item [channel]="item" [isGridView]="false"></app-channel-item>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="following-wrapper">
+                <div class="row mt-3">
+                    <div class="col-lg-4 col-md-5 col-sm-4 col-xs-12" *ngIf="otherUser">
+                        <app-follow-panel [user]="otherUser" [isFollower]="false"></app-follow-panel>
+                    </div>
+                    <div class="col-lg-4 col-md-5 col-sm-4 col-xs-12" *ngIf="otherUser">
+                        <app-follow-panel [user]="otherUser" [isFollower]="true"></app-follow-panel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <app-friends-dialog (closeDialog)="isTechStackEnabled = false" *ngIf="isTechStackEnabled">
+  </app-friends-dialog> -->

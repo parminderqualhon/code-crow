@@ -1,0 +1,74 @@
+<div class="panel-content" (click)="friendsDropdownVisible = false" *ngIf="channelService.isCreateGroupEnabled"
+    [@inOutAnimation] id="clickOutside">
+    <div class="panel-background" (clickOutside)="incrementClickOutsideCount()">
+        <div class="panel-inner custom-scroll">
+            <div class="panel-title">
+                Create a new group chat
+                <button mat-icon-button (click)="onNoClick()" class="close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <div class="panel-body">
+                <span class="channel-description">
+                    When you create a group chat, you can chat with friends and invite them to your
+                    channel. <br /><b>Please fill in the basic information of the group chat and add users to
+                        it.</b>
+                </span>
+
+                <div class="sticky search-friend">
+                    <input [ngClass]="{ 'input-invalid': error.groupTitle }" class="search-box" type="text"
+                        [(ngModel)]="groupTitle" placeholder="Group Chat Title" />
+                </div>
+
+                <div style="position: relative">
+                    <div [ngClass]="{ 'input-invalid': error.members }" class="sticky search-friend">
+                        <input class="search-box" type="text" [(ngModel)]="searchTerm" placeholder="Search friends"
+                            (ngModelChange)="search()" (focus)="friendsDropdownVisible = true"
+                            (click)="$event.stopPropagation()" />
+                        <span class="app-search-btn"></span>
+                    </div>
+                    <div *ngIf="friendsDropdownVisible && friends.length" class="list-group custom-scroll">
+                        <div *ngFor="let item of friends" class="list-group-item" (click)="addMember(item, $event)">
+                            <img class="app-frienditem-avatar" [src]="item.user.avatar" alt="friend_avatar" />
+                            <span class="app-frienditem-name" [matBadge]="unSeenMessagesCount" matBadgeOverlap="false"
+                                matBadgeColor="warn">
+                                @{{ item.user.customUsername }}
+                            </span>
+                            <div class="add-member">
+                                <img class="add-icon" src="../../../../assets/images/add-member.svg" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger mt-4 mb-2" *ngIf="error.groupTitle || error.members">
+                    {{ error.groupTitle ? error.groupTitle : '' }}
+                    <br *ngIf="error.members && error.groupTitle" />
+                    {{ error.members ? error.members : '' }}
+                </div>
+                <div class="group_friend">
+                    You added
+                    <span class="friend-count"> &nbsp; {{ selectedMembers.length }} &nbsp; </span>
+                    friends
+                </div>
+                <div class="friend-list custom-scroll" id="friend_list" *ngIf="selectedMembers.length">
+                    <div class="app-friends-list-item">
+                        <div *ngFor="let item of selectedMembers" (click)="removeMember(item)">
+                            <app-friend-item [friend]="item" [isGroupItem]="true" [isHost]="true">
+                            </app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button mat-raised-button class="btn bg-white" rounded="true" type="button" (click)="onNoClick()">
+                    Cancel
+                </button>
+                <button mat-raised-button class="btn btn-primary" rounded="true" type="button" (click)="createGroup()">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="{ panel: channelService.isCreateGroupEnabled }" (click)="onNoClick()"></div>

@@ -1,0 +1,114 @@
+<div class="side-bar-wrapper" *ngIf="authService.currentUser || !sharedService.isLoginPage"
+    [ngClass]="{ compact: isCompact }">
+    <div class="main-panel">
+        <div class="top-container">
+            <div *ngIf="!isCompact" class="app-header-logo cursor-pointer" (click)="themeService.playLottieAnimation()">
+                <ng-lottie class="logo" [options]="animationOpts"
+                    (animationCreated)="themeService.animationCreated($event)" width="180px" height="70px">
+                </ng-lottie>
+            </div>
+            <a *ngIf="isCompact" class="app-header-logo cursor-pointer" (click)="themeService.playLottieAnimation()">
+                <img src="/assets/images/logo_3.svg" />
+            </a>
+        </div>
+        <a class="user-info-container cursor-pointer" *ngIf="authService.currentUser"
+            routerLink="/profile/{{ authService.currentUser.customUsername }}">
+            <img class="profile-image" [src]="authService.currentUser.avatar" />
+            <div class="profile-name">
+                {{ authService.currentUser.displayName }}
+                <div class="customUsername">@{{ authService.currentUser.customUsername }}</div>
+            </div>
+        </a>
+        <div class="nav-links-container">
+            <a class="nav-link-wrapper" *ngIf="authService.currentUser" routerLink="/">
+                <span class="navIcon channel-list"></span>
+                <div>Channel List</div>
+            </a>
+            <div class="border-bottom" *ngIf="authService.currentUser"></div>
+
+            <a class="nav-link-wrapper" *ngIf="authService.currentUser" (click)="showUsersDialog()">
+                <span class="navIcon community"></span>
+                <div>Community</div>
+                <span class="navIcon chevron-right"></span>
+            </a>
+            <div class="border-bottom" *ngIf="authService.currentUser"></div>
+
+            <a class="nav-link-wrapper" *ngIf="authService.currentUser" (click)="showChatsDialog()">
+                <span class="navIcon friends-chat"></span>
+                <div>Messages</div>
+                <span class="navIcon chevron-right"></span>
+            </a>
+            <div class="border-bottom" *ngIf="authService.currentUser"></div>
+
+            <a class="nav-link-wrapper mint" target="_blank" rel="noreferrer">
+                <!--href="https://mint.codecrow.io"-->
+                <span class="navIcon mint"></span>
+                <div>Mint (Soon)</div>
+            </a>
+            <div class="border-bottom"></div>
+
+            <!-- <a class="nav-link-wrapper access-keys" *ngIf="authService.currentUser" routerLink="/premium">
+                <span class="navIcon nft"></span>
+                <div>Premium</div>
+                <span class="navIcon new-feature"></span>
+            </a>
+            <div class="border-bottom" *ngIf="authService.currentUser"></div> -->
+
+            <!-- <a class="nav-link-wrapper" routerLink="/videos">
+                <span class="navIcon videos"></span>
+                <div>Videos</div>
+            </a>
+            <a class="nav-link-wrapper" routerLink="/creator-space">
+                <span class="navIcon creator-space"></span>
+                <div>Creator Space</div>
+            </a> -->
+
+            <a class="nav-link-wrapper" routerLink="/legal/privacy-policy">
+                <span class="navIcon legel"></span>
+                <div>Legal</div>
+            </a>
+            <div class="border-bottom"></div>
+
+            <a class="nav-link-wrapper" routerLink="/contact">
+                <span class="navIcon contact"></span>
+                <div>Contact</div>
+            </a>
+            <div class="border-bottom"></div>
+
+            <a class="nav-link-wrapper" *ngIf="authService.currentUser" routerLink="/settings">
+                <span class="navIcon account-settings"></span>
+                <div>Settings</div>
+            </a>
+            <div class="border-bottom" *ngIf="authService.currentUser"></div>
+
+            <a class="nav-link-wrapper theme-selector" *ngIf="authService.currentUser"
+                (click)="$event.stopPropagation()">
+                <span class="material-icons" (click)="onModeChange()">light_mode</span>
+                <mat-slide-toggle [checked]="isDarkTheme" (change)="onModeChange()"></mat-slide-toggle>
+                <span class="material-icons">dark_mode</span>
+            </a>
+            <div class="border-bottom" *ngIf="authService.currentUser"></div>
+
+            <a class="nav-link-wrapper" *ngIf="authService.currentUser" (click)="showLogoutDialog()">
+                <span class="navIcon logout"></span>
+                <div>Log Out</div>
+            </a>
+        </div>
+    </div>
+    <div class="bottom-container">
+        <div class="social-icons">
+            <a class="github" href="https://github.com/CodeCrowCorp" target="_blank" rel="noreferrer"></a>
+            <a class="discord" href="https://discord.gg/CodeCrow" target="_blank" rel="noreferrer"></a>
+            <a class="twitter" href="https://twitter.com/codecrowcorp" target="_blank" rel="noreferrer"></a>
+            <a class="magiceden" href="https://magiceden.io" target="_blank" rel="noreferrer"></a>
+        </div>
+        <div class="copyright-version">
+            <div class="copyright">Code Crow Corp &copy; 2022</div>
+            <div class="version">{{ versionAndEnv }}</div>
+        </div>
+    </div>
+</div>
+
+<app-community-dialog> </app-community-dialog>
+
+<app-friends-dialog> </app-friends-dialog>

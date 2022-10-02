@@ -1,0 +1,40 @@
+
+<div class="stream-token-wrapper">
+<div class="header_">
+    <header>Tip Host</header> 
+    <span class="pull-right">
+
+        <button type="button" class="btn-close" aria-label="Close" (click)="ngOnDestroy()"></button>
+    </span>
+</div>
+
+<div class="body_">
+    <h6>
+         How much would you like to tip?  
+    </h6>
+    
+    <div class="amount-wrapper">
+        <label for="">Amount</label>
+        <input type="number" class="form-control" name="amount" id="amount" step="1" min="1" value="1" />   
+    </div>
+    <!-- <div class="StepSize"> -->
+    <div class="stepSize-wrapper">
+        <button class="StepSize" name="1" (click)="incrementAmount(1)">+1</button>
+    <button class="StepSize" name="5" (click)="incrementAmount(5)">+5</button>
+    <button class="StepSize" name="10" (click)="incrementAmount(10)">+10</button>
+    <button class="StepSize" name="50" (click)="incrementAmount(50)">+50</button>
+    </div>
+    
+    <div class="processing text-center">There is 5% processing fee</div>
+    
+    <div class="text-center mt-4">
+        <ul class=" nav nav-justified">
+            <li class="nav-item pr-2"><button class="btn btn-outline-secondary btn-block w-100 btn-lg" (click)="ngOnDestroy()" >Close</button></li>
+            <li class="nav-item pl-2"><button class="btn btn-primary btn-block w-100 btn-lg" name="submit" (click)="transferTokens()">Submit</button></li>
+        </ul>
+        
+    </div>
+    
+    <!-- </div> -->
+</div>
+</div>

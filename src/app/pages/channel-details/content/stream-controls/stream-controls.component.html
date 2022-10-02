@@ -1,0 +1,259 @@
+<div class="stream-container d-block" [ngClass]="{ 'room-members-list': streamingService.roomMembers.length >= 0 }">
+    <div class="stream-holder d-block">
+        <div class="hint">
+            <app-video class="app-content-video">
+            </app-video>
+            <!-- <div *ngIf="streamingService.streamOptions.isRecording" class="recording-indicator">
+                <i class="stream-control-icon recording-icon"></i>
+                <div class="recording-text">RECORDING IN PROGRESS</div>
+            </div> -->
+        </div>
+        <div class="fixed-stream-bottom">
+            <div style="min-height: 168px;">
+                <ng-container *ngIf="isUserList">
+                    <mat-card
+                        class="mat-elevation-z user-list custom-scroll d-flex align-items-start justify-content-center"
+                        *ngIf="streamingService.roomMembers && streamingService.roomMembers.length >= 1"
+                        style="background-color: transparent;">
+                        <div
+                            class="custom-scroll my-0 room-members-block flex-row {{ streamingService.userData.userType }}">
+                            <div *ngFor="let user of streamingService.roomMembers"
+                                class="identity-block mw-250 {{ user.userType }}" id="block_{{ user.id }}">
+                                <div class="name-block">
+                                    <img class="app-stream-controls-avatar" [src]="user.avatar" alt="user_avatar" />
+                                    <span [class]="{ 'is-live': user.webcamState === 'live' }"
+                                        class="name custom-scroll">
+                                        {{ user.displayName }}</span>
+                                </div>
+                                <button class="remove-button" mat-icon-button *ngIf="
+                            streamingService.userData.userType === 'host' &&
+                            user.userType !== 'host' &&
+                            user.id !== userId
+                        " [matMenuTriggerFor]="more_menu">
+                                    <i class="header-more"></i>
+                                </button>
+                                <mat-menu #more_menu="matMenu" class="header-dropdown" xPosition="before">
+                                    <section class="user-menu mat-menu-content">
+                                        <div (click)="showSilenceUserDialog(user)">
+                                            <span *ngIf="user.userType !== 'listener'"
+                                                class="navIcon identity-icon-silence"></span>
+                                            <span *ngIf="user.userType === 'listener'"
+                                                class="navIcon identity-icon-unsilence"></span>
+                                            <span class="nav-caption">{{
+                                                user.userType === 'listener' ? 'Unsilence' : 'Silence'
+                                                }}</span>
+                                        </div>
+                                        <div (click)="showRemoveUserDialog(user)">
+                                            <span class="navIcon identity-icon-remove" style="height:12px;"></span>
+                                            <span class="nav-caption">Remove</span>
+                                        </div>
+                                    </section>
+                                </mat-menu>
+                                <div [class]="{ 'is-live': user.webcamState === 'live' }" class="identity-icons">
+                                    <button mat-stroked-button class="silenced" [disabled]="true" *ngIf="(user.userType !== 'host' 
+                                        && streamingService.streamOptions.isEveryoneSilenced) 
+                                        || user.userType === 'listener'">
+                                        Silenced
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </ng-container>
+            </div>
+            <mat-card class="stream-details my-0 mat-elevation-z8 Position-static user-action-item">
+                <span class="social-icons" [matTooltip]="!isUserList ? 'Show participants' : 'Hide participants'">
+                    <i class="participants" (click)="isUserList=!isUserList"></i>
+                    &nbsp;{{ channelService.currentChannel.memberCount }}
+                </span>
+                <div class="separator"></div>
+                <span [matTooltip]="'View all members'">
+                    <i class="channel-users cursor-pointer" (click)="showChannelSettingsDialog()"></i>
+                    &nbsp;{{ channelService.currentChannel.memberCount }}
+                </span>
+                <div class="separator"></div>
+                <!-- <span [matTooltip]="'Tip channel host'" *ngIf="host && host.walletAddress"><img
+                        class="cursor-pointer spacing-right" src="/assets/images/recursion.png"
+                        (click)="showTokenDialog()" />
+                    {{ channelService.currentChannel.tips || '0' }}</span>
+                <div class="separator" *ngIf="host && host.walletAddress"></div> -->
+                <span class="social-icons" (click)="tweetLiveStream()" [matTooltip]="'Tweet'"><i
+                        class="twitter"></i></span>
+                <div class="separator mobile-only"></div>
+                <span class="mobile-only" (click)="toggleMobileChat.emit()" [matTooltip]="'Open channel chat'">
+                    <i class="channel-chat cursor-pointer"></i>
+                </span>
+            </mat-card>
+            <mat-card class="stream-controls mat-elevation-z8 Position-static user-action-item"
+                *ngIf="streamingService.userData.userType === 'host'">
+                <button mat-button class="half text-center" (click)="
+                        streamingService.userData.screenStream
+                            ? streamingService.stopScreenStream()
+                            : streamingService.startScreenStream()
+                    "
+                    [disabled]="!streamingService.streamOptions.hasWaitedOneSecondScreen || !streamingService.streamOptions.hasWaitedOneSecondWebcam || !streamingService.streamOptions.hasWaitedOneSecondAudio"
+                    [matTooltip]="'Import stream'">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-import-source"
+                            *ngIf="streamingService.userData.screenStream"></i>
+                        <i class="stream-control-icon stream-control-start-import-source"
+                            *ngIf="!streamingService.userData.screenStream"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="
+                        streamingService.userData.screenStream
+                            ? streamingService.stopScreenStream()
+                            : streamingService.startScreenStream()
+                    " [disabled]="!streamingService.streamOptions.hasWaitedOneSecondScreen" [matTooltip]="
+                        streamingService.userData.screenStream ? 'Stop sharing' : 'Share screen'
+                    ">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-screen-share"
+                            *ngIf="streamingService.userData.screenStream"></i>
+                        <i class="stream-control-icon stream-control-start-screen-share"
+                            *ngIf="!streamingService.userData.screenStream"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="
+                        streamingService.userData.webcamStream
+                            ? streamingService.stopWebcamStream()
+                            : streamingService.startWebcamStream()
+                    " [disabled]="!streamingService.streamOptions.hasWaitedOneSecondWebcam" [matTooltip]="
+                        streamingService.userData.webcamStream ? 'Stop sharing' : 'Share webcam'
+                    ">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-webcam"
+                            *ngIf="streamingService.userData.webcamStream"></i>
+                        <i class="stream-control-icon stream-control-start-webcam"
+                            *ngIf="!streamingService.userData.webcamStream"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="
+                        streamingService.userData.audioStream
+                            ? streamingService.stopAudioStream()
+                            : streamingService.startAudioStream()
+                    " [disabled]="!streamingService.streamOptions.hasWaitedOneSecondAudio"
+                    [matTooltip]="streamingService.userData.audioState === 'live' ? 'Mute' : 'Unmute'">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-mute"
+                            *ngIf="streamingService.userData.audioState === 'live'"></i>
+                        <i class="stream-control-icon stream-control-unmute"
+                            *ngIf="streamingService.userData.audioState !== 'live'"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center"
+                    [disabled]="!streamingService.streamOptions.hasWaitedOneSecondSilence"
+                    (click)="streamingService.toggleSilenceOnEveryone()" [matTooltip]="
+                        streamingService.streamOptions.isEveryoneSilenced
+                            ? 'Unsilence all participants'
+                            : 'Silence all participants'
+                    ">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-silence-all"
+                            *ngIf="!streamingService.streamOptions.isEveryoneSilenced"></i>
+                        <i class="stream-control-icon stream-control-unsilence-all"
+                            *ngIf="streamingService.streamOptions.isEveryoneSilenced"></i>
+                    </div>
+                </button>
+                <!-- <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="showRecordingDialog()" [disabled]="
+                        !streamingService.streamOptions.hasWaitedOneSecondRecord ||
+                        !streamingService.hasActiveTracks
+                    ">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-recording"
+                            *ngIf="streamingService.streamOptions.isRecording"></i>
+                        <i class="stream-control-icon stream-control-start-recording"
+                            *ngIf="!streamingService.streamOptions.isRecording"></i>
+                    </div>
+                </button> -->
+            </mat-card>
+
+            <mat-card class="stream-controls mat-elevation-z8 Position-static user-action-item"
+                *ngIf="streamingService.userData.userType !== 'host'">
+                <button mat-button class="half text-center" (click)="
+                                                        streamingService.userData.screenStream
+                                                            ? streamingService.stopScreenStream()
+                                                            : streamingService.startScreenStream()
+                                                    " [disabled]="streamingService.userData.screenState === 'restricted' 
+                    || !streamingService.streamOptions.hasWaitedOneSecondScreen 
+                    || !streamingService.streamOptions.hasWaitedOneSecondWebcam 
+                    || !streamingService.streamOptions.hasWaitedOneSecondAudio
+                    || streamingService.userData.userType === 'listener' 
+                    || streamingService.streamOptions.isEveryoneSilenced" [matTooltip]="'Import stream'">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-import-source"
+                            *ngIf="streamingService.userData.screenStream"></i>
+                        <i class="stream-control-icon stream-control-start-import-source"
+                            *ngIf="!streamingService.userData.screenStream"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="streamingService.userData.screenStream
+                            ? streamingService.stopScreenStream()
+                            : streamingService.startScreenStream()" [disabled]="streamingService.userData.screenState === 'restricted' 
+                    || !streamingService.streamOptions.hasWaitedOneSecondScreen 
+                    || streamingService.userData.userType === 'listener' 
+                    || streamingService.streamOptions.isEveryoneSilenced"
+                    [matTooltip]="streamingService.userData.screenStream ? 'Stop sharing' : 'Share screen'">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-screen-share"
+                            *ngIf="streamingService.userData.screenStream"></i>
+                        <i class="stream-control-icon stream-control-start-screen-share"
+                            *ngIf="!streamingService.userData.screenStream"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="
+                        streamingService.userData.webcamStream
+                            ? streamingService.stopWebcamStream()
+                            : streamingService.startWebcamStream()
+                    " [disabled]="
+                        streamingService.userData.webcamState === 'restricted' ||
+                        !streamingService.streamOptions.hasWaitedOneSecondWebcam ||
+                        streamingService.userData.userType === 'listener' ||
+                        streamingService.streamOptions.isEveryoneSilenced
+                    " [matTooltip]="
+                        streamingService.userData.webcamStream ? 'Stop sharing' : 'Share webcam'
+                    ">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-stop-webcam"
+                            *ngIf="streamingService.userData.webcamStream"></i>
+                        <i class="stream-control-icon stream-control-start-webcam"
+                            *ngIf="!streamingService.userData.webcamStream"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center" (click)="
+                        streamingService.userData.audioStream
+                            ? streamingService.stopAudioStream()
+                            : streamingService.startAudioStream()
+                    " [disabled]="
+                        streamingService.userData.audioState === 'restricted' ||
+                        !streamingService.streamOptions.hasWaitedOneSecondAudio ||
+                        streamingService.userData.userType === 'listener' ||
+                        streamingService.streamOptions.isEveryoneSilenced
+                    " [matTooltip]="streamingService.userData.audioState === 'live' ? 'Mute' : 'Unmute'">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-mute"
+                            *ngIf="streamingService.userData.audioState === 'live'"></i>
+                        <i class="stream-control-icon stream-control-unmute"
+                            *ngIf="streamingService.userData.audioState !== 'live'"></i>
+                    </div>
+                </button>
+                <div class="separator"></div>
+                <button mat-button class="half text-center"
+                    [disabled]="!streamingService.streamOptions.hasWaitedOneSecondRaiseHand"
+                    (click)="streamingService.toggleRaiseHand()" matTooltip="Raise hand to participate">
+                    <div class="row justify-content-center">
+                        <i class="stream-control-icon stream-control-raise-hand"></i>
+                    </div>
+                </button>
+            </mat-card>
+        </div>
+    </div>
+</div>

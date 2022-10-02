@@ -1,0 +1,49 @@
+<div *ngIf="isLoading; else loadHome" class="loader">
+    <mat-spinner style="margin: 50px auto" mode="indeterminate" diameter="60"></mat-spinner>
+</div>
+
+<ng-template #loadHome>
+    <mat-sidenav-container>
+        <mat-sidenav-content class="custom-scroll" [ngClass]="{
+				userlogin: !sharedService.isLoginPage,
+				'mt-0 pb-0 h-auto': sharedService.isLoginPage
+			}" (scroll)="onScrollChannels($event)">
+            <div *ngIf="showSideBar" class="mobile-header">
+                <div class="d-block d-md-none mobile-nav-icon">
+                    <button id="side-bar-menu-trigger" mat-icon-button (click)="onToggleSidenav()"></button>
+                </div>
+                <div class="app-header-logo" (click)="themeService.playLottieAnimation()">
+                    <ng-lottie class="logo" [options]="animationOpts"
+                        (animationCreated)="themeService.animationCreated($event)" width="180px" height="70px">
+                    </ng-lottie>
+                </div>
+            </div>
+            <div *ngIf="showSideBar || !sharedService.isLoginPage"
+                [ngClass]="{ 'slide-in': showMobileSideBar, compact: isCompactSideBar }"
+                class="sidebar-container custom-scroll">
+                <app-side-bar [isCompact]="isCompactSideBar"></app-side-bar>
+            </div>
+            <div *ngIf="showSideBar" [ngClass]="{ 'slide-in': showMobileSideBar }" class="sidebar-backdrop"
+                (click)="onToggleSidenav()"></div>
+            <div class="wrapper-app" [ngClass]="{
+					'with-sidebar': showSideBar || !sharedService.isLoginPage,
+					'compact-sidebar': isCompactSideBar
+				}">
+                <router-outlet *ngIf="!error"></router-outlet>
+                <div class="row app-content-messagelist">
+                    <div class="custom-scroll chat-list">
+                        <div class="app-content-friendchat height-fix" *ngFor="let chat of chatService.activeTabs">
+                            <app-friend-chat [chat]="chat" [isGroupChat]="false" [friendGroup]="chat"
+                                (leaveGroupEvent)="leaveGroup($event)" (editGroupEvent)="editGroup($event)"
+                                (leaveMemberEvent)="leaveGroup($event)">
+                            </app-friend-chat>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger" *ngIf="error">
+                    Connection error. Please try again later.
+                </div>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</ng-template>

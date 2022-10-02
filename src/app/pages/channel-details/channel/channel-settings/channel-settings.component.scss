@@ -1,0 +1,56 @@
+:host ::ng-deep .mat-tab-body-wrapper {
+    overflow-y: hidden;
+    .mat-tab-body.mat-tab-body-active {
+        overflow-y: hidden;
+    }
+    .mat-tab-body-content {
+        overflow: hidden;
+    }
+}
+
+.app-channel-settings-container {
+    max-height: 700px;
+}
+
+.tab-icon {
+    margin-right: 8px;
+}
+
+.tab-title {
+    margin: 20px 0 0 0;
+}
+
+.row {
+    margin: 0 !important;
+}
+
+.users {
+    overflow-y: auto;
+    height: 100%;
+    padding: 5px;
+}
+
+.user-avatar {
+    position: relative;
+    border-radius: 100% !important;
+    width: 30px;
+}
+
+.user-name {
+    position: relative;
+    left: 5px;
+}
+
+.col-4 {
+    padding: 0 !important;
+}
+
+.menu-icon {
+    font-size: 20px !important;
+}
+
+.app-channel-settings-user-button {
+    outline: none;
+    width: 40px;
+    height: 40px;
+}

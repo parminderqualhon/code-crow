@@ -1,0 +1,225 @@
+mat-card {
+    align-self: flex-end;
+}
+
+.app-friendchat {
+    width: 380px;
+    height: inherit;
+    margin: 0 5px;
+    bottom: 0px;
+    border-radius: 3px;
+    padding: 0;
+}
+
+.minimize-chat {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-top: 2px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.chat-toolbar-button-group {
+    position: absolute;
+    right: 0;
+}
+
+.minimize-button {
+    img {
+        cursor: pointer;
+        width: 28px;
+        height: 28px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 28px 28px;
+    }
+}
+
+.app-friendchat-chatlist {
+    min-height: 300px;
+    width: 100%;
+    flex: 1;
+    align-self: flex-start;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+mat-toolbar-row.app-friendchat-toolbar-bottom.mat-toolbar-row {
+    height: auto;
+    padding: 8px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0px;
+    z-index: 999;
+}
+
+:host {
+    width: 100%;
+    color: #fff;
+}
+
+.app-chat-input {
+    width: 100%;
+    margin: 0;
+    .app-input-container {
+        flex: 3;
+    }
+    .app-mesage-input-content {
+        padding: 14px !important;
+        float: left;
+        border: none !important;
+        outline: none !important;
+        border-radius: 0 !important;
+        margin: 0;
+        font-weight: 500;
+        width: 100%;
+        @media (max-width: 576px) {
+            width: -webkit-calc(100% - 44px);
+            width: -moz-calc(100% - 44px);
+            width: calc(100% - 44px);
+        }
+        &:focus {
+            border: none !important;
+            outline: none !important;
+            background: initial;
+        }
+    }
+
+    .app-message-send-btn {
+        border: 0 !important;
+        margin: 0 !important;
+        box-shadow: none;
+        width: 40px;
+        height: 40px;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+        .mat-icon {
+            font-size: 34px;
+            transform: rotate(-45deg);
+        }
+    }
+
+    .app-input-sendbtn-container {
+        flex: 1;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.app-friendchat-msginput-collapse {
+    height: inherit;
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
+    overflow: hidden;
+}
+
+.app-friendchat-msginput-expand {
+    height: inherit;
+    width: 100%;
+    transition: max-height 0.2s ease-in;
+    display: flex;
+    flex-flow: column;
+}
+
+.app-friendchat-closed {
+    position: absolute;
+    height: 47px !important;
+}
+
+.app-friendchat-open {
+    position: absolute;
+    overflow: visible;
+}
+
+.app-friend-chat-spinner {
+    margin: 0 auto;
+}
+
+.chatlist-max-height-4 {
+    max-height: 600px;
+}
+
+.chatlist-max-height-3 {
+    max-height: 300px;
+}
+.chat {
+    margin-left: 12px;
+}
+.group-status {
+    display: flex;
+    align-items: center;
+    z-index: 10;
+    justify-content: space-between;
+    padding: 0 12px;
+    height: 40px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+}
+.icons {
+    width: 19px;
+    height: 19px;
+}
+
+.group-chat-icon {
+    width: 19px;
+    height: 21px;
+}
+
+.icons-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add-member {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+    margin-right: 10px;
+}
+
+.live {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+    margin-right: 10px;
+}
+
+.mute-notifications {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+    margin-right: 10px;
+}
+
+.unmute-notifications {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+    margin-right: 10px;
+}
+
+.leave-channel {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+}
+
+.avatar {
+    mix-blend-mode: normal;
+    // opacity: 0.99;
+    border-radius: 100%;
+    margin-right: -8px;
+}

@@ -1,0 +1,195 @@
+<div class="host backgroundColor">
+    <img [src]="host.avatar" />
+    <span>{{host.displayName}}</span>
+</div>
+<div class="content backgroundColor">
+    <div class="thumbnail">
+        <img *ngIf="thumbnail" [src]="thumbnail" />
+        <span *ngIf="!thumbnail">No thumbnail set</span>
+        <input hidden (change)="onThumbnailUpdate()" #thumbnailInput type="file" id="file" />
+    </div>
+    <div *ngIf="isOwner" class="edit-button-background">
+        <span class="span-color show-cursor" (click)="thumbnailInput.click()">edit</span>
+    </div>
+</div>
+<div [ngClass]="editDetail === true ? 'content-input backgroundColor' : 'content backgroundColor'">
+    <div *ngIf="!isOwner">
+        <span class="show-cursor description custom-scroll">{{ description }}</span>
+        <div *ngIf="channelService.currentChannel.description?.length >= 129" class="show-more-button-background">
+            <span class="span-color show-cursor" (click)="toggleDetail()">{{
+                description?.length > 129 ? 'show less' : 'show more'
+                }}</span>
+        </div>
+    </div>
+    <div *ngIf="isOwner" class="detail-container">
+        <div *ngIf="!editDetail">
+            <span class="show-cursor description custom-scroll">{{ description }}</span>
+            <div *ngIf="channelService.currentChannel.description?.length >= 129" class="show-more-button-background">
+                <span class="span-color show-cursor" (click)="toggleDetail()">{{
+                    description?.length > 129 ? 'show less' : 'show more'
+                    }}</span>
+            </div>
+            <div class="edit-button-background">
+                <span class="span-color show-cursor" (click)="toggleDetailEdit()">edit</span>
+            </div>
+        </div>
+        <textarea [(ngModel)]="description" *ngIf="editDetail" class="custom-scroll" [maxLength]="5000"></textarea>
+        <div class="d-flex justify-content-between" *ngIf="editDetail">
+            <button matRipple class="channel-detail-cancel-btn" (click)="toggleDetailEdit()">
+                CANCEL
+            </button>
+            <button matRipple (click)="descriptionUpdate()" class="channel-detail-submit-btn">
+                SUBMIT
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="techStack backgroundColor">
+    <div *ngIf="!techStack?.length && !editTechStack">
+        <span>No category</span>
+    </div>
+    <div *ngIf="techStack?.length && !editTechStack">
+        <img [src]="getImagePath(tech)" *ngFor="let tech of techStack" />
+    </div>
+    <div *ngIf="isOwner">
+        <div *ngIf="!editTechStack" class="edit-button-background">
+            <span class="span-color show-cursor" (click)="toggleTechStackEdit()">edit</span>
+        </div>
+        <div class="custom-scroll scrollbar" *ngIf="editTechStack">
+            <ng-container *ngFor="let tech of techList">
+                <img *ngIf="tech.item_status" src="{{ tech.item_image }}" (click)="removeTech(tech)" />
+            </ng-container>
+            <mat-form-field class="search-bar" appearance="outline" style="position: relative">
+                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search category" />
+            </mat-form-field>
+            <div class="custom-checkbox" *ngFor="let tech of techList | category: searchText; let i = index">
+                <input type="checkbox" id="tech-{{ i }}" #techStackVal (change)="setTechStatus(tech)"
+                    (click)="toggleStatus($event, tech)" [checked]="tech.item_status" />
+                <label for="tech-{{ i }}">
+                    <img src="{{ tech.item_image }}" />
+                    <span>{{ tech.item_text }}</span>
+                </label>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between" *ngIf="editTechStack">
+            <button matRipple class="channel-detail-cancel-btn" (click)="toggleTechStackEdit()">
+                CANCEL
+            </button>
+            <button matRipple (click)="techStackUpdate()" class="channel-detail-submit-btn">
+                SUBMIT
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="tags backgroundColor">
+    <div *ngIf="!tags?.length && !editTags"><span>No tags</span></div>
+    <mat-chip-list *ngIf="tags?.length && !editTags">
+        <span *ngFor="let tag of tags" class="chips-container">
+            <ng-container *ngIf="tag">
+                <span class="tag-label me-2">
+                    {{ tag }}
+                </span>
+            </ng-container>
+        </span>
+    </mat-chip-list>
+    <div *ngIf="isOwner">
+        <div *ngIf="!editTags" class="edit-button-background">
+            <span class="span-color show-cursor" (click)="toggleTagsEdit()">edit</span>
+        </div>
+        <div *ngIf="editTags">
+            <mat-form-field class="tags-chip-list" appearance="outline">
+                <mat-chip-list #chipList>
+                    <span *ngFor="let tag of tempTags">
+                        <ng-container *ngIf="tag">
+                            <span class="tag-label me-2 cursor-pointer" (click)="removeTag(tag)">
+                                <b style="margin-right: 10px">
+                                    {{ tag }}
+                                </b>
+                                <img style="
+										position: absolute;
+										top: 50%;
+										right: 8px;
+										transform: translate(0, -50%);
+									" src="/assets/images/remove-white-small.svg" />
+                            </span>
+                        </ng-container>
+                    </span>
+                    <input class="channeltags" matInput
+                        [placeholder]="tempTags?.length > 2 ? '(max reached)' : 'Channel tags (press enter)'"
+                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="add($event)" />
+                </mat-chip-list>
+            </mat-form-field>
+
+            <div class="mb-3 sug-label">
+                <mat-label>
+                    Suggested Tags
+                    <!-- <i class="fa fa-question-circle" aria-hidden="true"></i> -->
+                </mat-label>
+                <br />
+                <label class="label-tag me-3" (click)="addTags('Question')">Question</label>
+                <label class="label-tag me-3" (click)="addTags('Tutorial')">Tutorial</label>
+                <label class="label-tag me-3" (click)="addTags('Meeting')">Meeting</label>
+                <label class="label-tag me-3" (click)="addTags('Event')">Event</label>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between" *ngIf="editTags">
+            <button matRipple class="channel-detail-cancel-btn" (click)="toggleTagsEdit()">
+                CANCEL
+            </button>
+            <button matRipple (click)="tagsUpdate()" class="channel-detail-submit-btn">
+                SUBMIT
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex align-items-center justify-content-start backgroundColor setting"
+    (click)="showChannelSettingsDialog()">
+    <span class="right-margin channel-users"></span>
+    <span class="channel-detail-icon-color">Users</span>
+</div>
+
+<div class="d-flex align-items-center justify-content-start backgroundColor setting" *ngIf="isPrivate"
+    (click)="copyToClipboard()">
+    <mspan class="right-margin channel-lock" (click)="makePublic()"></mspan>
+    <span class="channel-detail-icon-color">{{ password }}</span>
+</div>
+<div class="d-flex align-items-center justify-content-start backgroundColor setting" *ngIf="!isPrivate">
+    <span class="right-margin channel-unlock" (click)="makePrivate()"></span>
+    <span class="channel-detail-icon-color">Public</span>
+</div>
+
+<!--TODO: show if replying to a video-->
+<!-- <div class="setting backgroundColor d-flex">
+  <div>
+    <h6>Replying to :</h6>
+  </div>
+  <div class="span-color">
+    <h6><u>How do i center a div</u></h6>
+  </div>
+</div> -->
+
+<div class="d-flex setting backgroundColor" (click)="toggleAttachment()">
+    <div class="d-flex justify-content-start attachments-container">
+        <span class="show-cursor">Attachments (<b>{{ attachments?.length }}</b>)</span>
+        <input id="attachment-input" onclick="value=null" (change)="seletedFiles($event.target.files)" #fileInput
+            type="file" name="attachments" placeholder="Attachment"
+            accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*, 
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+            application/vnd.openxmlformats-officedocument.presentationml.slideshow, .mp3, audio/*, video/mp4,video/x-m4v,video/*" />
+        <mat-icon *ngIf="!showAttachment">arrow_drop_down</mat-icon>
+        <mat-icon *ngIf="showAttachment">arrow_drop_up</mat-icon>
+    </div>
+    <img *ngIf="isOwner" class="ml-auto cursor-pointer" src="/assets/images/upload.svg" (click)="fileInput.click()" />
+</div>
+
+<div class="scroll" *ngIf="showAttachment">
+    <div class="child-scroll backgroundColor custom-scroll">
+        <div *ngFor="let item of attachments">
+            <app-attachment [item]="item" (removeAttachment)="deleteAttachment($event)"></app-attachment>
+        </div>
+    </div>
+</div>

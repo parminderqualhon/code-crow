@@ -1,0 +1,11 @@
+<app-creator-sidenav></app-creator-sidenav>
+
+<div class="settings-container pb-5 pt-5" *ngIf="videos">
+    <div class="max-container pb-5">
+        <app-creator-videos-insights [videos]="videos"></app-creator-videos-insights>
+
+        <app-creator-videos-statistics [videos]="videos"></app-creator-videos-statistics>
+
+        <app-creator-videos-table [videos]="videos" (videosEvent)="ngOnInit()"></app-creator-videos-table>
+    </div>
+</div>

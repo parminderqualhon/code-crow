@@ -1,0 +1,9 @@
+<div class="card-body">
+    <mat-form-field style="width: 95%">
+        <input matInput [(ngModel)]="text" placeholder="Hint text" />
+    </mat-form-field>
+
+    <button mat-icon-button style="float: right" (click)="createHint(text)">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

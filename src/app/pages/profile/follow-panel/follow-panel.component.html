@@ -1,0 +1,19 @@
+<div class="followers-list-wrapper" [ngClass]="{ 'following-list-wrapper': isFollower }">
+    <div class="followers-list">
+        <h2>{{ isFollower ? 'Followers' : 'Following' }} ({{ followCount }})</h2>
+        <div class="row header-search">
+            <div class="app-search-bar search-area">
+                <input type="search" placeholder="Search {{ isFollower ? 'followers' : 'following' }}"
+                    [(ngModel)]="searchQuery" (search)="searchFollows()" />
+                <span class="app-search-btn" (click)="searchFollows()"> </span>
+            </div>
+        </div>
+
+        <div class="followers-listitem-wrapper custom-scroll" *ngIf="follows && follows.length > 0"
+            (scroll)="onScroll($event)">
+            <mat-card class="follower-listitem-container" *ngFor="let item of follows">
+                <app-follow-item class="followers-listitem" [follow]="item"> </app-follow-item>
+            </mat-card>
+        </div>
+    </div>
+</div>

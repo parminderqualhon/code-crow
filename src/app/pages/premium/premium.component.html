@@ -1,0 +1,168 @@
+<div class="home-container nft-page-wrapper">
+    <div class="container py-4">
+        <div class="row align-items-start ">
+            <div class="col-12 col-md-4 order-0 order-md-0">
+
+            </div>
+            <div class="col-md-4 order-1 order-md-1">
+                <div class="heading">
+                    <img src="../../../assets/images/premium-header.png" />
+                </div>
+            </div>
+            <div class="col-md-4  btn-right order-md-2 order-0">
+                <!-- <button [ngClass]="'btn btn-primary not-connected text-uppercase ' "
+                    (click)="saveWalletAddress()">
+                      {{walletAddress}} 
+                </button> -->
+                <button mat-raised-button class="btn btn-primary"
+                    [ngClass]="isConnected?'btn-connected':'not-connected'" (click)="saveWalletAddress()" rounded="true"
+                    type="button">
+                    <span>
+                        <div>{{walletAddress}}</div>
+                    </span>
+                </button>
+            </div>
+
+        </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-12">
+                <div class="nft-tabs-wrapper">
+                    <button class="text-uppercase" [ngClass]="(bntStyle == 'earned')?'btn clicked':'btn'" rounded="true"
+                        (click)="handleClick('earned')">
+                        Earned
+                    </button>
+                    <button class="text-uppercase" [ngClass]="(bntStyle == 'tip')?'btn clicked':'btn'" rounded="true"
+                        (click)="handleClick('tip')">
+                        Tips
+                    </button>
+                    <button class="text-uppercase" [ngClass]="(bntStyle == 'nft')?'btn clicked':'btn'" rounded="true"
+                        (click)="handleClick('nft')">
+                        NFT
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 table-responsive nft-table">
+                <div class="d-flex justify-content-end mb-2" *ngIf="currentButton == 'earned'"><a href="#"
+                        class="exportTrans"><img src="assets/images/premium-export.svg" alt="">&nbsp; Export
+                        Transactions</a></div>
+                <table class="table" matSort>
+                    <ng-container *ngIf="currentButton == 'earned'; else tip">
+                        <thead>
+                            <tr class="channel-list-header">
+                                <th scope="col" mat-sort-header="date">Date</th>
+                                <th scope="col" mat-sort-header="transactionId">Transaction ID</th>
+                                <th scope="col" mat-sort-header="solscanUrl">Solscan URL</th>
+                                <th scope="col" mat-sort-header="channelId">Channel ID</th>
+                                <th scope="col" mat-sort-header="amount">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="token_">
+                            <tr *ngFor="let token of earnedTokens">
+                                <td>{{token.date}}
+                                    <span class="v1"></span>
+                                </td>
+                                <td>{{token.transactionId}}
+                                    <span class="v1"></span>
+                                </td>
+                                <td><a [href]="token.solscanUrl">{{token.solscanUrl}}</a>
+                                    <span class="v1"></span>
+                                </td>
+                                <td>{{token.channelId}}
+                                    <span class="v1"></span>
+                                </td>
+                                <td><img src="../../../assets/recursion.png" />{{token.amount}}</td>
+                            </tr>
+                        </tbody>
+                    </ng-container>
+                    <ng-template #tip>
+                        <ng-container *ngIf="currentButton == 'tip'; else nft">
+                            <thead>
+                                <tr class="channel-list-header">
+                                    <th scope="col" mat-sort-header="date">Date</th>
+                                    <th scope="col" mat-sort-header="transactionId">Transaction ID</th>
+                                    <th scope="col" mat-sort-header="solscanUrl">Solscan URL</th>
+                                    <th scope="col" mat-sort-header="sName">Sender Name</th>
+                                    <th scope="col" mat-sort-header="rName">Receipent Name</th>
+                                    <th scope="col" mat-sort-header="amount">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tip_">
+                                <tr *ngFor="let token of earnedTips">
+                                    <td>{{token.date}}
+                                        <span class="v1"></span>
+                                    </td>
+                                    <td>{{token.transactionId}}
+                                        <span class="v1"></span>
+                                    </td>
+                                    <td><a [href]="token.solscanUrl">{{token.solscanUrl}}</a>
+                                        <span class="v1"></span>
+                                    </td>
+                                    <td>{{token.sName}}
+                                        <span class="v1"></span>
+                                    </td>
+                                    <td>{{token.rName}}
+                                        <span class="v1"></span>
+                                    </td>
+                                    <td><img src="../../../assets/image/premium-rcr-light.png" />{{token.amount}}</td>
+                                </tr>
+                            </tbody>
+                        </ng-container>
+                    </ng-template>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <ng-template #nft>
+                    <ng-container *ngIf="earnedNFT?.length == 0; else empty">
+                        <div class="container nft-wrap">
+                            <div class="row align-items-center">
+                                <div class="col-md-6  ">
+                                    <div class="nft-content">
+                                        <h3> Level 1 Access Key</h3>
+                                        <p> <img src="assets/images/premium-benefit-1.svg" alt="">&nbsp; 10% increase in
+                                            $RCR
+                                            tokens.</p>
+                                        <p> <img src="assets/images/premium-benefit-2.svg" alt="">&nbsp; A lvl 1 border
+                                            around your
+                                            pfp</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="container nft-image">
+                                        <img src="../../../assets/nft-placeholder.png" />
+                                        <div class="nft-image-content">
+                                            <h3>Hello</h3>
+                                            <p>Percentage increase <span
+                                                    style="color: #EC008C;font-weight: 600;margin-left: 5%; ">17,84%</span>
+                                            </p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped" role="progressbar"
+                                                    style="width: 75%;background:#EC008C !important" aria-valuenow="70"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- <ng-template #empty> -->
+                    <div>
+                        <!-- <div class="container"> -->
+                        <div class="empty-nft">
+                            <div class="wrap">
+                                <h3>No NFT loaded</h3>
+                                <p>Please connect a wallet that contains a Code Crow NFT</p>
+                                <img src="assets/images/premium-no-nft.svg" alt="">
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    <!-- <ng-template> -->
+
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

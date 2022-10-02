@@ -1,0 +1,205 @@
+.app-channelitem {
+    // margin-right: 15px;
+    margin-bottom: 30px;
+    min-height: 196px;
+    cursor: pointer;
+    overflow: hidden;
+    mix-blend-mode: normal;
+    opacity: 0.99;
+    padding: 14px 12px;
+    @media (min-width: 320px) and (max-width: 767px) {
+        height: initial;
+        min-height: initial;
+        width: calc(100% - 2rem);
+        margin-bottom: 1rem;
+        width: calc(100% - 1rem);
+        margin: 0 auto 10px;
+    }
+}
+
+.channel-icon {
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    line-height: 32px;
+    border-radius: 100%;
+    margin-right: 15px;
+    font-size: 24px;
+    vertical-align: middle;
+    display: inline-block;
+    background-size: 19px;
+    background-repeat: no-repeat;
+    @media (min-width: 320px) and (max-width: 767px) {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+.app-channelitem-tags {
+    min-height: 24px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    display: inline-flex;
+    width: 100%;
+    .channel-tag {
+        background: rgba(65, 45, 140, 0.8);
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 14px;
+        height: 24px;
+        line-height: 24px;
+        color: #ffffff;
+        display: inline-block;
+        padding: 0 12px;
+        margin: 0 3px;
+    }
+}
+
+.list-grid-rows {
+    .app-channelitem-tags {
+        margin: 0;
+    }
+}
+
+.badge-live {
+    color: #ba0000;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid #ba0000;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 57px;
+    height: 24px;
+    line-height: 20px;
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.channel-number {
+    margin-right: 15px;
+    font-size: 16px;
+}
+
+.app-channelitem {
+    .app-channelitem-name {
+        display: flex;
+        align-items: center;
+    }
+    .app-channelitem-techStack {
+        margin: 0px 0 10px;
+    }
+    .app-channelitem-title {
+        font-size: 16px;
+        font-weight: 600;
+        // white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        h5 {
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 24px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+    }
+    .app-channelitem-description {
+        width: 100%;
+        align-self: center;
+        margin: 0px 0 10px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 24px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: block;
+        word-wrap: break-word;
+    }
+    .app-channelitem-detail {
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .app-channelitem-info {
+        margin-bottom: 15px;
+    }
+    .app-channelitem-created-by {
+        overflow-x: auto;
+        width: calc(100% - 60px);
+        display: inline-flex;
+    }
+}
+.app-channelitem-name {
+    font-weight: 600;
+}
+.host-channel {
+    border: gold solid 2px !important;
+    box-shadow: 0 0 0px 0px gold !important;
+}
+.participant-channel {
+    border: #4285f4 solid 2px !important;
+    box-shadow: 0 0 0px 0px #4285f4;
+}
+span.online,
+span.offline {
+    position: absolute;
+    top: -4px;
+    left: 20px;
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+}
+span.offline {
+    background-color: red;
+}
+:host ::ng-deep div.listViewOnline span {
+    left: 1378px !important;
+}
+.techAvatar {
+    height: 32px;
+    width: 32px;
+    margin-right: 8px !important;
+}
+
+.list-grid-rows {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1.5fr 0.7fr 218px 1fr;
+    align-items: center;
+    height: 70px;
+    padding: 12px 0;
+
+    .list-single-item {
+        position: relative;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+
+        &.truncate-text {
+            overflow: hidden;
+        }
+
+        &:first-child {
+            border-left: none;
+        }
+
+        span.have-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            max-width: calc(100%);
+            display: inline-block;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+.remove {
+    display: none;
+}
+
+.show-remove-icon {
+    display: block;
+}
+
+.show-remove {
+    display: block;
+    background-color: #ffffff;
+    padding: 7.5px 20px 7.5px 20px;
+}
+
+.show-cursor:hover {
+    cursor: pointer;
+}
+
+.common {
+    padding: 7.5px 20px 7.5px 20px;
+}
+
+.backgroundColor {
+    background-color: #eaeaea;
+}
+
+.file {
+    width: 24px;
+    height: 24px;
+}

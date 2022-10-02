@@ -1,0 +1,24 @@
+:host .ng2-pdf-viewer-container {
+    height: auto !important;
+    overflow: auto;
+}
+
+button {
+    width: 100%;
+    text-align: left;
+}
+
+iframe {
+    width: 100%;
+    height: 85vh;
+}
+
+.app-legal-footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+app-legal {
+    margin-top: 32px;
+    display: block;
+}

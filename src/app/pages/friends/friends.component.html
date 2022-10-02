@@ -1,0 +1,128 @@
+<div class="app-friends-list-container">
+    <div class="border-bottom header-search sticky">
+        <div class="app-search-bar" (click)="$event.stopPropagation()">
+            <input type="search" [(ngModel)]="chatService.searchQuery" (change)="chatService.searchChats()"
+                placeholder="Search messages" (click)="$event.stopPropagation()" />
+            <span class="app-search-btn search-btn" (click)="chatService.searchChats()"> </span>
+        </div>
+        <!-- <span class="material-icons create_group_icon cursor-pointer" (click)="showCreateGroupDialog()">
+            <span class="tab-hiden">
+                <img src='/assets/images/group-chat-dark.svg'>
+                Create Group Chat</span>
+        </span> -->
+    </div>
+
+    <div class="sidebar-list-container custom-scroll">
+        <div class="hint-container" *ngIf="!chatService.isShowingSearchResults && !chatService.chats.length">
+            <span>No messages available</span>
+        </div>
+        <div *ngIf="friendService.isGettingFriends">
+            <mat-spinner style="margin: 0 auto; position: absolute; bottom: 0; right: 50%" mode="indeterminate"
+                diameter="30">
+            </mat-spinner>
+        </div>
+
+        <div class="friends-card bg-green" *ngIf="chatService.isShowingSearchResults && chatService.chats.length">
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Search Results</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="app-friends-list-item">
+                    <div class="custom-scroll" [@cardAnimation]="chatService.chats.length">
+                        <div *ngFor="let item of chatService.chats">
+                            <app-friend-item [chat]="item" [isChat]="true"></app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div>
+
+        <!-- <div class="friends-card bg-seagreen"
+            *ngIf='!friendService.isShowingSearchResults && friendService.receivedRequests.length'>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Received Requests</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="app-friends-list-item">
+                    <div class="custom-scroll" [@cardAnimation]="friendService.receivedRequests.length">
+                        <div *ngFor="let item of friendService.receivedRequests">
+                            <app-friend-item [friend]="item"></app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div> -->
+
+        <!-- <div class="bg-green" *ngIf="!friendService.isShowingSearchResults && groupChats.length">
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Groups</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="app-friends-list-item">
+                    <div class="custom-scroll" [@cardAnimation]="groupChats.length">
+                        <div *ngFor="let item of groupChats">
+                            <app-friend-item [friendGroup]="item" [isGroupItem]="false"
+                                (leaveGroup)="removeGroup($event)">
+                            </app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div> -->
+
+        <div class="friends-card bg-blue" *ngIf="!chatService.isShowingSearchResults && chatService.chats.length">
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>DMs</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="app-friends-list-item">
+                    <div class="custom-scroll" [@cardAnimation]="chatService.chats.length">
+                        <ng-container *ngIf="chatService.chats">
+                            <div *ngFor="let item of chatService.chats">
+                                <app-friend-item [chat]="item" [isChat]="true"></app-friend-item>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div>
+
+        <!-- <div class="friends-card bg-purple"
+            *ngIf='!friendService.isShowingSearchResults && friendService.sentRequests.length'>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Sent Requests</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="app-friends-list-item">
+                    <div class="custom-scroll" [@cardAnimation]="friendService.sentRequests.length">
+                        <div *ngFor="let item of friendService.sentRequests">
+                            <app-friend-item [friend]="item"></app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div> -->
+
+        <!-- <div class="friends-card bg-yellow"
+            *ngIf='!friendService.isShowingSearchResults && friendService.blockedUsers.length'>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Blocked Users</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="app-friends-list-item">
+                    <div class="custom-scroll" [@cardAnimation]="friendService.blockedUsers.length">
+                        <div *ngFor="let item of friendService.blockedUsers">
+                            <app-friend-item [friend]="item"></app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </div> -->
+    </div>
+</div>

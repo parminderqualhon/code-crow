@@ -1,0 +1,35 @@
+<mat-card *ngIf="video" class="app-videoitem" matRipple (click)="playVideo(video._id)"
+    [class.selected]="isCurrentVideo">
+    <div class="app-videoitem-thumbnail-container">
+        <img class="app-videoitem-thumbnail" *ngIf="video.thumbnail && video.thumbnail.Location"
+            [src]="video.thumbnail.Location" alt="video_placeholder" />
+        <div class="app-videoitem-placeholder" *ngIf="!video.thumbnail || !video.thumbnail.Location">
+            <mat-icon class="app-videoitem-placeholder-icon">movie</mat-icon>
+        </div>
+        <mat-icon class="app-videoitem-placeholder-icon">play_arrow</mat-icon>
+        <mat-card class="app-videoitem-personal-container" *ngIf="video.isOwner">
+            <div class="app-videoitem-personal">personal</div>
+        </mat-card>
+        <mat-card class="app-videoitem-duration-container">
+            <div class="app-videoitem-duration">
+                {{ toHHMMSS(video.duration) }}
+            </div>
+        </mat-card>
+    </div>
+    <div class="app-videoitem-title">
+        {{ video.title }}
+    </div>
+    <div class="app-videoitem-detail">
+        {{ video.user?.customUsername }}
+    </div>
+
+    <div class="video-meta-data">
+        <div class="app-videoitem-detail">
+            <span class="me-2 mt-1">{{ likes || 0 }}%</span>
+            <img src="/assets/images/video-thumbs-up.svg" />
+        </div>
+        <div class="app-videoitem-detail ml-auto">
+            {{ views || 0 }} views • {{ video.createdAt | date: 'MM-dd-yy' }}
+        </div>
+    </div>
+</mat-card>

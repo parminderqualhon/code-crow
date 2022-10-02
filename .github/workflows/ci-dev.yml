@@ -1,0 +1,44 @@
+name: ci-dev.yml
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: "Test using Playwright"
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder
+        run: echo "Placeholder"
+
+  deploy:
+    name: Deploy to Cloudflare Pages (Dev)
+    needs: [test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.15.1
+
+      - name: Install NPM and build
+        run: npm install && npm run build
+
+      - name: Publish
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: "cro-client"
+          directory: "dist/code-crow/browser"
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

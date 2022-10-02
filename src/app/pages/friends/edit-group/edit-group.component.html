@@ -1,0 +1,82 @@
+<div class="panel-content" (click)="friendsDropdownVisible = false" *ngIf="channelService.isEditGroupEnabled"
+    [@inOutAnimation] id="clickOutside">
+    <div class="test" (clickOutside)="incrementClickOutsideCount()">
+        <div class="panel-inner custom-scroll">
+            <div class="panel-title">
+                Edit your friends list
+                <button mat-icon-button (click)="onNoClick()" class="close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="panel-body">
+                <span class="channel-description"><b>You can change the list of users in this group chat. Add or remove
+                        friend
+                        from a group chat.
+                    </b>
+                </span>
+
+                <div class="sticky search-friend">
+                    <input [disabled]="!isHost" [ngClass]="{ 'input-invalid': error.groupTitle }" class="search-box"
+                        type="text" [(ngModel)]="groupTitle" placeholder="Group Chat Title" />
+                </div>
+
+                <div style="position: relative">
+                    <div [ngClass]="{ 'input-invalid': error.members }" class="sticky search-friend">
+                        <input class="search-box" type="text" [(ngModel)]="searchTitle" placeholder="Search friends"
+                            (focus)="friendsDropdownVisible = true" (click)="$event.stopPropagation()"
+                            (ngModelChange)="search()" />
+                        <span class="app-search-btn"></span>
+                    </div>
+                    <div *ngIf="friendsDropdownVisible && friends.length && isHost" id="browsers"
+                        class="list-group custom-scroll">
+                        <div *ngFor="let item of friends" class="list-group-item" (click)="addMember(item, $event)">
+                            <img class="app-frienditem-avatar" [src]="item.avatar" alt="friend_avatar" />
+                            <span class="app-frienditem-name" [matBadge]="unSeenMessagesCount" matBadgeOverlap="false"
+                                matBadgeColor="warn">
+                                @{{ item.user.customUsername }}
+                            </span>
+                            <div class="add-member">
+                                <img class="add-icon" src="../../../../assets/images/add-member.svg" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger mt-4 mb-2" *ngIf="error.groupTitle || error.members">
+                    {{ error.groupTitle ? error.groupTitle : '' }}
+                    <br *ngIf="error.members && error.groupTitle" />
+                    {{ error.members ? error.members : '' }}
+                </div>
+                <div *ngIf="isHost; else notHost" class="group_friend">
+                    You added
+                    <span class="friend-count"> &nbsp; {{ selectedMembers.length }} &nbsp; </span>friends
+                </div>
+                <ng-template #notHost>
+                    <div class="group_friend">
+                        This group has
+                        <span class="friend-count">
+                            &nbsp; {{ friendGroup.members.length + 1 }} &nbsp; </span>members
+                    </div>
+                </ng-template>
+
+                <div class="friend-list custom-scroll" id="friend_list" *ngIf="selectedMembers.length">
+                    <div class="app-friends-list-item">
+                        <div *ngFor="let item of selectedMembers" (click)="removeMember(item)">
+                            <app-friend-item [friend]="item" [isGroupItem]="true" [isHost]="isHost">
+                            </app-friend-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button mat-raised-button class="btn bg-white" rounded="true" type="button" (click)="onNoClick()">
+                    Cancel
+                </button>
+                <button [disabled]="!isHost" mat-raised-button class="btn btn-primary" rounded="true" type="button"
+                    (click)="updateGroup()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="{ paneledit: channelService.isEditGroupEnabled }" (click)="onNoClick()"></div>

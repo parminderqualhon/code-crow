@@ -1,0 +1,112 @@
+<mat-card *ngIf="isGroupItem" class="app-frienditem">
+    <div class="friend-view-content">
+        <div>
+            <table class="full-width">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th scope="row">
+                            <div class="friend-view">
+                                <img class="app-frienditem-avatar" [src]="chat.avatar" alt="friend_avatar" />
+                                <span class="app-frienditem-name" [matBadge]="chat.chat && chat.chat.unreadMessageCount"
+                                    matBadgeOverlap="false" matBadgeColor="warn">
+                                    @{{ friend.customUsername }}
+                                </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <img *ngIf="isHost" class="remove-friend" src="/assets/images/remove-red.svg" />
+                            </div>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</mat-card>
+<mat-card *ngIf="!isGroupItem" class="app-frienditem" matRipple
+    (click)="isMessageable && isChat ? chatService.openChat(chat) : noOp()" style="padding-right: 0;">
+    <div class="d-flex align-items-center justify-content-between">
+        <app-user-avatar *ngIf="chat" [avatar]="chat.avatar" [isOnline]="chat.isOnline">
+        </app-user-avatar>
+        <div *ngIf="friendGroup" class="groupView">
+            <div class="avatar-main avatar">
+                <div class="avatar-item" *ngFor="let item of friendGroup.avatarList"
+                    [ngStyle]="{ 'background-image': 'url(' + item + ')' }"></div>
+            </div>
+        </div>
+        <div>
+            <span class="name" *ngIf="chat.chat && chat.chat.unreadMessageCount > 0"
+                [matBadge]="chat.chat && chat.chat.unreadMessageCount" matBadgeOverlap="false" matBadgeColor="warn">
+                {{ chat.displayName }}
+            </span>
+            <span class="name" *ngIf="chat || (chat.chat && !chat.chat.unreadMessageCount)">
+                {{ chat.displayName }}
+            </span>
+            <span class="name customUsername" *ngIf="
+					chat || (chat.chat && !chat.chat.unreadMessageCount && !chat.chat.lastMessage)
+				" matTooltip="@{{ chat.customUsername }}">
+                @{{ chat.customUsername }}
+            </span>
+            <span class="name" *ngIf="friendGroup">
+                {{ friendGroup.groupName }}
+            </span>
+            <br *ngIf="chat.chat && chat.chat.lastMessage" />
+            <span class="name app-frienditem-last-message" *ngIf="chat.chat && chat.chat.lastMessage">
+                {{ chat.chat.lastMessage }}
+            </span>
+        </div>
+        <div>
+            <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="more_menu">
+                <span class="friends-more"></span>
+            </button>
+        </div>
+        <mat-menu #more_menu="matMenu" class="header-dropdown" xPosition="before">
+            <section class="user-menu mat-menu-content" style="min-width: 200px;">
+                <div class="follow-btns">
+                    <div class="btn d-flex justify-content-center mx-0"
+                        [ngClass]="chat.isFollowing ? 'unfollow-btn' : 'follow-btn'" (click)="
+							chatService.toggleFollow(chat, chat._id, authService.currentUser._id)
+						">
+                        <span *ngIf="chat.isFollower"
+                            [ngClass]="chat.isFollowing ? 'check-unfollow' : 'check-follow'"></span>
+                        {{ chat.isFollowing ? 'Unfollow' : 'Follow' }}
+                    </div>
+                </div>
+                <div routerLink="/profile/{{ chat.customUsername }}" routerLinkActive="active"
+                    (click)="userService.isUsersEnabled = false">
+                    <span class="navIcon profile"></span>
+                    <span class="nav-caption">Profile</span>
+                </div>
+                <div *ngIf="isMessageable" (click)="chatService.openChat(chat)">
+                    <span class="navIcon profile-chat"></span>
+                    <span class="nav-caption">Message</span>
+                </div>
+                <div (click)="chatService.blockUser(SenderId, isBlocked)">
+                    <span class="navIcon identity-icon-silence" style="background-size:17px"></span>
+                    <span class="nav-caption"> Block </span>
+                </div>
+
+                <div (click)="chatService.deleteChat(chat)" *ngIf="isChat">
+                    <span class="navIcon delete-chat" style="background-size: contain;background-size:13px"></span>
+                    <span class="nav-caption">Delete</span>
+                </div>
+                <!-- <div (click)="blockUser()">
+                    <mat-icon>block</mat-icon>
+                    <span class="nav-caption">Block</span>
+                </div> -->
+            </section>
+        </mat-menu>
+        <!-- <friends-menu-one [friend]='friend.user' *ngIf='!friend.status'></friends-menu-one> -->
+        <!-- <friends-menu-two [friend]='friend.user' *ngIf='friend.status == 1'></friends-menu-two>
+            <friends-menu-three [friend]='friend.user' *ngIf='friend.status == 2'></friends-menu-three>
+            <friends-menu-four [friend]='friend.user' *ngIf='friend.status == 3'></friends-menu-four>
+            <friends-menu-five [friend]='friend.user' *ngIf='friend.status == 4'></friends-menu-five> -->
+        <div *ngIf="friendGroup" class="menu">
+            <app-friends-menu-six [friendGroup]="friendGroup" (leaveMemberEvent)="leave($friendGroup)">
+            </app-friends-menu-six>
+        </div>
+    </div>
+</mat-card>

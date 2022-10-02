@@ -1,0 +1,92 @@
+@import '~assets/scss/_varriable.scss';
+
+.login-header {
+    background: #ffffff;
+    margin-bottom: 30px;
+    margin-top: -15px;
+}
+.padd-remove {
+    margin-left: -24px;
+    margin-right: -24px;
+}
+.app-login-btn {
+    display: block;
+    width: 100%;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0;
+    color: #fff !important;
+    text-decoration: none !important;
+    position: relative;
+    padding: 15px 72px;
+    text-align: center;
+    margin-bottom: 25px !important;
+    border-radius: 8px;
+    outline: none !important;
+    p {
+        display: block;
+        width: 100%;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0;
+        @media (max-width: 991px) {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 991px) {
+        padding: 15px 55px;
+    }
+    span {
+        width: 43px;
+        position: absolute;
+        left: 0;
+        color: #fff;
+        top: 7px;
+        left: 8px;
+        padding: 2px;
+        text-align: center;
+        border-radius: 3px;
+        height: 40px;
+        img {
+            max-width: 100%;
+        }
+        @media (max-width: 991px) {
+            width: 35px;
+            height: 35px;
+        }
+    }
+    &.discord {
+        background: #5865f2;
+    }
+    &.github {
+        background: #000;
+    }
+    &.google {
+        background: #eeeeee;
+        border: 1px solid #000000;
+        color: #25252a !important;
+    }
+    img {
+        vertical-align: -webkit-baseline-middle;
+        vertical-align: -moz-middle-with-baseline;
+    }
+    svg {
+        width: 100%;
+    }
+}
+
+p.app-login-para {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    /* or 171% */
+    text-align: center;
+    color: #434f59;
+    margin-top: 40px;
+}

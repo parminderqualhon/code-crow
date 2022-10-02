@@ -1,0 +1,44 @@
+.mt-dialog-container {
+    position: relative !important;
+}
+.mat-dialog-title {
+    display: block;
+    background: #ddd;
+    padding: 12px 18px;
+    margin: -25px -24px 30px;
+    font-size: 18px;
+    color: #060606;
+    opacity: 1;
+}
+
+.mat-dialog-content {
+    font-weight: 500;
+    text-align: center;
+}
+
+app-dialog {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+::ng-deep .mat-checkbox-inner-container {
+    height: 32px !important;
+    width: 32px !important;
+    margin-right: 20px !important;
+}
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #e9028c;
+}
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #e9028c;
+}
+
+::ng-deep .mat-dialog-container {
+    overflow-y: hidden;
+}
+
+.mat-dialog-checkbox {
+    margin-top: 10px;
+    height: 40px;
+}

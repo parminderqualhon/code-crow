@@ -1,0 +1,250 @@
+:host {
+    width: 100%;
+    color: #fff;
+}
+
+.md-form {
+    // /deep/
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.app-input-giphy-dark {
+    color: #fff;
+}
+
+.app-gif-search-bar {
+    position: -webkit-sticky;
+    position: sticky;
+    padding: 10 2;
+}
+
+.app-gif-search-bar input {
+    // color: #F5F5F5 !important;
+    width: 100%;
+    margin-top: 5px;
+    border: none;
+    box-shadow: none !important;
+}
+
+.app-input-menu {
+    position: absolute;
+    bottom: 140px;
+    left: 0;
+    border-radius: 6px;
+    z-index: 10;
+    padding: 0;
+    max-width: 98%;
+    margin: 0 auto;
+    right: 0;
+    border: solid 1px #a5a5a5;
+    z-index: 50;
+}
+.app-input-menu:before,
+.app-input-menu:after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    border: solid 10px transparent;
+    left: 95px;
+    transition: all 0.5s ease;
+}
+
+.app-input-menu > div {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px 2px 11px 2px;
+    margin-bottom: 2px;
+    color: #3c3c3c;
+}
+
+.app-input-menu:before {
+    z-index: 9;
+    border-width: 9px;
+    bottom: -17px;
+    left: 96px;
+}
+
+.app-attachment-close-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0;
+    color: #000;
+}
+
+.app-attachment-close-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.app-chat-input {
+    margin: 0;
+    .app-mesage-input-content {
+        padding: 14px !important;
+        border: none !important;
+        outline: none !important;
+        border-radius: 0 !important;
+        margin: 0;
+        font-weight: 500;
+        @media (max-width: 576px) {
+            width: -webkit-calc(100% - 65px);
+            width: -moz-calc(100% - 65px);
+            width: calc(100% - 65px);
+        }
+    }
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+    }
+    .app-message-send-btn {
+        box-shadow: none !important;
+        outline: none !important;
+        border: 0 !important;
+        margin: 0 !important;
+        border-radius: 0;
+        outline: none !important;
+    }
+
+    .app-input-container {
+        display: block;
+        width: 85%;
+    }
+
+    .app-input-sendbtn-container {
+        display: block;
+    }
+}
+
+.app-input-menu.showAttachment:before {
+    left: 19px;
+}
+
+.app-input-menu.showAttachment:after {
+    left: 19px;
+}
+
+.app-input-menu.showGiphySearch:before {
+    left: 102px;
+}
+
+.app-input-menu.showGiphySearch:after {
+    left: 102px;
+}
+
+.app-input-menu.showEmojiPicker:before {
+    left: 61px;
+}
+
+.app-input-menu.showEmojiPicker:after {
+    left: 61px;
+}
+.app-attachment-content {
+    // display        : flex;
+    // justify-content: space-between;
+    // flex-wrap      : wrap;
+}
+
+.app-message-attachment-btn {
+    // color: #333232 !important;
+    // position: relative;
+    // right: 5px;
+    // width: 50px;
+    // height: 36px;
+    background: #fff !important;
+    border-radius: 3px;
+    border: 0;
+    width: 34px;
+    height: 27px;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    // float: left;
+}
+
+.giphy-search {
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.message-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.user-message {
+    margin-top: 10px;
+}
+
+.user-message span {
+    display: block;
+}
+
+.giphy-search input {
+    width: 95%;
+}
+
+img {
+    max-width: 100%;
+}
+
+.search-results {
+    min-height: 70%;
+}
+
+.gif-result img {
+    cursor: pointer;
+    padding: 5 0;
+}
+
+.gif-logo-container {
+    position: relative;
+    margin: 10 0;
+    background-repeat: no-repeat;
+    height: 23px;
+    opacity: 0.3;
+}
+
+.gif-logo {
+    max-width: 150;
+}
+
+.attachment {
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    height: 60px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.app-choose-file-button {
+    color: white;
+    background: #2980b9;
+}
+.app-input-menu.bottom-for-one-to-one {
+    bottom: 126px;
+}
+
+.input-button-row {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    grid-gap: 0.5rem;
+    padding: 8px;
+}
+
+.input-button-row .mat-button-base {
+    // margin: 8px 8px 8px 0;
+}

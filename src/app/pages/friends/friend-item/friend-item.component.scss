@@ -1,0 +1,124 @@
+.app-frienditem {
+    font-weight: 500;
+    cursor: pointer;
+    padding: 9px 13px;
+    span.name {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 16ch;
+        @media (min-width: 767px) and (max-width: 1023px) {
+            width: 10ch;
+        }
+    }
+    span.customUsername {
+        color: #ec008c;
+    }
+    .app-frienditem-last-message {
+        color: gray;
+        width: 150px;
+        color: gray;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: flow-root;
+    }
+}
+
+.groupView {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.avatar-main {
+    width: 46px;
+    height: 46px;
+    background: #eee;
+    border-radius: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    margin: 0 10px 0 0;
+}
+.avatar-item {
+    width: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.group-name {
+    font-style: normal;
+    font-weight: 500;
+    padding-left: 12px;
+    font-size: 1.01rem;
+    line-height: 24px;
+}
+
+.app-frienditem-avatar {
+    float: left;
+    height: 46px;
+    width: 46.1px;
+    border-radius: 100%;
+    position: relative;
+    margin-right: 8px;
+}
+.full-width {
+    table-layout: auto;
+    width: 100%;
+}
+.friend-view {
+    display: flex;
+    align-items: center;
+}
+.remove-friend {
+    float: right;
+}
+
+.friends-more {
+    width: 10px;
+    height: 31px;
+    display: inline-block;
+}
+
+.follower-container {
+    display: grid;
+    .follower-displayName {
+        font-size: 14px;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow-wrap: anywhere;
+        font-weight: 500;
+    }
+    .follower-customUsername {
+        color: #ec008c;
+    }
+}
+
+.mat-icon-button {
+    width: 40px;
+    height: 40px;
+}
+
+.friends-more {
+    width: 10px;
+    height: 31px;
+    display: inline-block;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+    margin-right: 10px;
+}
+
+.channel-chat {
+    display: flex;
+    align-items: center;
+    width: 29px;
+    height: 29px;
+    margin-right: 10px;
+}

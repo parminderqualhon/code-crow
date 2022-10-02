@@ -1,0 +1,176 @@
+.app-message {
+    display: flex;
+    padding: 10px;
+    &:hover .emoji__reaction {
+        opacity: 1 !important;
+        transform: scale(1);
+    }
+    // flex-wrap: wrap;
+    .author-avatar {
+        min-width: 42px;
+        min-width: 42px;
+        min-height: 42px;
+        border-radius: 50%;
+        border: solid 1px #fff;
+        margin-right: 15px;
+        overflow: hidden;
+        line-height: 38px;
+        text-align: center;
+        background: #ddd;
+        max-height: 42px;
+        max-width: 42px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .app-msg-content {
+        word-break: break-word;
+        position: relative;
+        button.emoji__reaction {
+            position: absolute;
+            bottom: -10px;
+            right: -26px;
+            opacity: 0;
+            transition: 0.3s all ease;
+            z-index: 66;
+            mat-icon {
+                font-size: 18px;
+                width: 20px;
+            }
+        }
+    }
+    .app-msg-meta {
+        position: relative;
+        margin: 0 11px;
+        font-weight: 500;
+        font-size: 11px;
+        span {
+            position: relative;
+            margin: 0 8px;
+        }
+        span + span:before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            position: absolute;
+            left: -11px;
+            background: #000;
+            top: 4px;
+            background: #716d6d;
+            border-radius: 100%;
+            opacity: 0.7;
+        }
+    }
+
+    .app-msg-content-inner {
+        padding: 9px 11px;
+        border-radius: 5px 5px 5px 5px;
+        margin-bottom: 5px;
+        position: relative;
+        img {
+            max-width: 100%;
+        }
+        &:before {
+            content: '';
+            position: absolute;
+            left: -19px;
+            top: 9px;
+            border: solid 10px transparent;
+        }
+    }
+
+    .app-msg-content-inner p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    &.app-message-sender {
+        justify-content: flex-end;
+        text-align: right;
+        .app-msg-meta {
+            margin-right: 15px;
+        }
+        .app-msg-content-inner {
+            text-align: left;
+            margin-left: 0;
+            &:before {
+                left: auto;
+                right: -19px;
+                border-right-color: transparent;
+            }
+        }
+        .app-delete-message {
+            padding: 0 6px;
+            min-width: auto;
+            min-height: auto;
+            height: 41px;
+            line-height: initial;
+            margin-right: 7px;
+
+            background-color: transparent;
+            opacity: 0;
+            visibility: hidden;
+        }
+        &.app-message-sender:hover {
+            .app-delete-message {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+}
+
+.message-menu-item {
+    display: flex !important;
+}
+.app-message-sender {
+    button.emoji__reaction {
+        left: -24px;
+        bottom: -12px !important;
+        right: auto !important;
+    }
+}
+.tip {
+    height: 24px;
+    width: 24px;
+    margin-right: 8px;
+    display: inline-block;
+}
+.mr-0 {
+    margin-right: 0 !important;
+}
+.app-chat-message-row {
+    .app-message {
+        flex-wrap: wrap;
+    }
+}
+.reaction-row {
+    width: 100%;
+    padding-left: 50px;
+    padding-top: 0px;
+    .list-inline {
+        margin-bottom: 0;
+        padding-bottom: 5px;
+
+        li {
+            button {
+                padding: 0;
+                margin: 0;
+                border: none;
+                outline: none;
+                color: white;
+                width: 41.52px;
+                background: #484b5d;
+                border-radius: 3px;
+                height: 22.1px;
+            }
+            font-size: 14px;
+            margin-right: 0.2rem;
+            span:last-child {
+                font-weight: 600;
+                margin-left: 2px;
+            }
+        }
+    }
+}

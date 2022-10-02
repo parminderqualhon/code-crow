@@ -1,0 +1,5 @@
+<!-- <app-login *ngIf="!isAuthenticated"></app-login> -->
+<div *ngIf="authService.currentUser">
+	<router-outlet></router-outlet>
+</div>
+<!-- <app-home *ngIf="authService.currentUser"></app-home> -->

@@ -1,0 +1,11 @@
+<div class="tab-links">
+    <div class="max-container">
+        <nav mat-tab-nav-bar>
+            <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive
+                #rla="routerLinkActive" [active]="rla.isActive">
+                <span class="tab-nav-icon {{ link.iconClass }} "> </span>
+                {{ link.label }}
+            </a>
+        </nav>
+    </div>
+</div>

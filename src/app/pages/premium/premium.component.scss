@@ -1,0 +1,316 @@
+h3.page-title {
+    margin: 0;
+    padding: 25px 0;
+    font-size: 22px;
+    text-align: center;
+}
+.list-view {
+    display: block;
+    width: auto;
+    min-width: fit-content;
+    @media (min-width: 320px) and (max-width: 767px) {
+        display: none;
+    }
+}
+h6 {
+    margin: 20px 0;
+}
+.heading {
+    margin-bottom: 30px;
+    margin-top: 20px;
+    text-align: center;
+}
+.btn-right {
+    text-align: right;
+    @media (min-width: 320px) and (max-width: 767px) {
+        text-align: center;
+    }
+}
+img {
+    max-width: 100%;
+}
+
+.home-container {
+    height: 100%;
+    min-height: 100vh;
+}
+.row {
+    --bs-gutter-x: 0.15rem;
+}
+.table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    // margin: 2% 0% 0% 2%;
+    // width: 95%;
+}
+.table tr td {
+    // border-bottom: none;
+    // border-right: none;
+    // max-width: 70%;
+    // justify-content: left;
+    :after {
+        display: border-box;
+        border-right: 1px solid;
+    }
+    img {
+        margin-right: 15%;
+    }
+}
+.v2 {
+    position: absolute;
+    border-color: inherit;
+    border-right: 1px solid;
+    height: 20px;
+    margin: 0 5% 5% 3%;
+}
+// .btn {
+//     width: 50% !important;
+//     height: 100% !important;
+//     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.12);
+//     border-radius: 4px;
+// }
+.empty-nft {
+    box-shadow: 0px 12px 30px rgba(236, 0, 140, 0.22);
+    border: 2px solid rgba(236, 0, 140, 0.22);
+    margin: 20px auto;
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    box-shadow: 0px 12px 30px rgba(236, 0, 140, 0.22);
+    border-radius: 5px;
+    padding: 60px;
+    text-align: center;
+    .wrap {
+        h3 {
+            font-weight: 700;
+            font-size: 29px;
+            line-height: 35px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 50px;
+        }
+        img {
+            opacity: 0.5;
+        }
+    }
+}
+.channel-list-header {
+    cursor: pointer;
+    // display: grid;
+    // grid-template-columns: 0.8fr 1fr 1.5fr 0.7fr 218px 1fr;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 40px;
+    margin: 0 0 10px;
+    th {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.8;
+        padding: 10px 20px;
+    }
+}
+.clicked {
+    color: #fff !important;
+    background: #ec008c !important;
+}
+
+.nft-wrap {
+    margin-top: 0;
+    .nft {
+        // margin: 2% 10% 10% 5%;
+        h3 {
+            margin-top: 15%;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 29px;
+            color: #ec008c !important;
+        }
+        p {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+
+            margin-top: 5%;
+        }
+    }
+    .nft-image {
+        width: 100%;
+        max-width: 420px;
+        height: 100%;
+        box-shadow: 0px 12px 30px rgba(236, 0, 140, 0.22);
+        border: 2px solid rgba(236, 0, 140, 0.22);
+        border-radius: 5px;
+        padding: 20px;
+        .nft-image-content {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            h3 {
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 28px;
+            }
+            p {
+                font-weight: 500;
+                font-size: 18px;
+                line-height: 28px;
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
+
+.nft-tabs-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    .btn {
+        background: #fafafa;
+        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.12);
+        border-radius: 4px;
+        min-width: 240px;
+        font-weight: 700;
+        &:hover {
+            color: #000;
+        }
+        &:focus {
+            outline: 0;
+            border: none;
+        }
+    }
+}
+.nft-content {
+    h3 {
+        background: linear-gradient(90deg, #ec008c 0%, #2b328c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        font-weight: 700;
+        font-size: 29px;
+
+        margin-bottom: 50px;
+    }
+    p {
+        // color: #19191D;
+        font-weight: 600;
+        font-size: 18px;
+    }
+}
+
+.token_ tr td,
+.tip_ tr td {
+    position: relative;
+    padding: 14px 20px;
+}
+.token_ tr td::before,
+.tip_ tr td::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 30px;
+    background: #9388be;
+}
+.tip_ tr td::before {
+    background: #f46abc;
+}
+.token_ tr td:first-child:before,
+.tip_ tr td:first-child:before {
+    display: none;
+}
+@media screen and (max-width: 800px) {
+    .nft-tabs-wrapper {
+        .btn {
+            min-width: 100px;
+        }
+    }
+    .empty-nft {
+        padding: 15px;
+    }
+    .nft-page-wrapper > .container {
+        max-width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+// Main wrapper
+
+.nft-page-wrapper > .container {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.exportTrans {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 13px;
+    letter-spacing: 0.35px;
+    text-transform: capitalize;
+    color: #d55aaa;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+.exportTrans:hover {
+    background: none;
+}
+.token_ tr td a:hover,
+.tip_ tr td a:hover {
+    background: none;
+}
+
+.not-connected {
+    padding: 10px 30px;
+    position: relative;
+    width: 250px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.btn.btn-connected {
+    padding: 2px;
+    width: 250px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.btn.btn-connected > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 8px 20px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+
+.btn.btn-connected > span * {
+    background-image: linear-gradient(90deg, #ec008c 0%, #2b328c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

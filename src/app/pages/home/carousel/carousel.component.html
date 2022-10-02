@@ -1,0 +1,5 @@
+<div class="carousel-slider" [ngStyle]="carouselStyle()" #carouselContainer>
+    <app-carousel-card *ngFor="let channel of channels; let i = index" [channelData]="channel"
+        [activeChannel]="channels[2 - animateDirection]?._id === channel._id ? true : false" (prev)="prevSlide()"
+        (next)="nextSlide()"></app-carousel-card>
+</div>

@@ -1,0 +1,186 @@
+<mat-tab-group class="app-channel-settings-container">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">supervisor_account</mat-icon>
+            Active Users
+        </ng-template>
+
+        <div>
+            <h3 class="text-center tab-title">Active Users</h3>
+            <div class="search">
+                <mat-form-field style="width: 33%">
+                    <input matInput placeholder="Search..." [(ngModel)]="searchTitle" />
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="isLoadingMembers">
+                <mat-spinner style="margin: 0 auto" mode="indeterminate" diameter="30"></mat-spinner>
+            </div>
+
+            <div class="users row custom-scroll" *ngIf="!isLoadingMembers" (scroll)="onScroll($event)">
+                <div class="col-12" *ngFor="let member of members | filter: searchTitle">
+                    <div class="row">
+                        <div class="username col-7 align-items-center">
+                            <img class="avatar d-inline-block user-avatar" [src]="member.avatar" alt="User Avatar" />
+                            <div class="name d-inline-block">
+                                <span class="user-name">
+                                    {{ member.displayName }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="options col-4" style="padding: 0 !important" *ngIf="user._id !== member.id">
+                            <button class="app-channel-settings-user-button" mat-icon-button matTooltip="Options"
+                                [matMenuTriggerFor]="userOptionsMenu" (menuOpened)="moreMenuOpened(member._id)">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #userOptionsMenu="matMenu" class="custom-dropdown custom-scroll"
+                                xPosition="before">
+                                <section class="user-menu mat-menu-content">
+                                    <!-- <div class="message-menu-item" (click)="showTipDialog()" *ngIf='user._id !== member._id'>
+                                        <span class="tip"></span>
+                                        <span class="nav-caption"> Tip {{member.displayName}} </span>
+                                    </div> -->
+
+                                    <div class="follow-btns" *ngIf="follow" (click)="
+											chatService.toggleFollow(follow, member.id, user._id)
+										">
+                                        <div class="btn" [ngClass]="
+												follow.isFollowing ? 'unfollow-btn' : 'follow-btn'
+											" [disabled]="true">
+                                            <span *ngIf="follow.isFollower" [ngClass]="
+													follow.isFollowing
+														? 'check-unfollow'
+														: 'check-follow'
+												"></span>
+                                            {{ follow.isFollowing ? 'Unfollow' : 'Follow' }}
+                                        </div>
+                                    </div>
+
+                                    <a *ngIf="member" routerLink="/profile/{{ member.customUsername }}"
+                                        routerLinkActive="active">
+                                        <span class="navIcon profile"></span>
+                                        <span class="nav-caption">Profile</span>
+                                    </a>
+
+                                    <div (click)="chatService.openChat(member)">
+                                        <span class="navIcon profile-chat"></span>
+                                        <span class="nav-caption">Message</span>
+                                    </div>
+
+                                    <div (click)="chatService.blockUser(member.id, isBlocked)" *ngIf="
+											channelService.currentChannel &&
+											channelService.currentChannel.user === user._id &&
+											!isBlocked
+										">
+                                        <mat-icon>block</mat-icon>
+                                        <span class="nav-caption"> Block from channel</span>
+                                    </div>
+
+                                    <div (click)="chatService.unblockUser(member.id, isBlocked)" *ngIf="
+											channelService.currentChannel &&
+											channelService.currentChannel.user === user._id &&
+											isBlocked
+										">
+                                        <mat-icon>check_circle_outline</mat-icon>
+                                        <span class="nav-caption"> Unblock from channel</span>
+                                    </div>
+                                </section>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="user && user._id === channelService.currentChannel.user">
+        <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">block</mat-icon>
+            Blocked Users
+        </ng-template>
+        <h3 class="text-center tab-title">Blocked Users</h3>
+        <div class="search">
+            <mat-form-field style="width: 33%">
+                <input matInput placeholder="Search..." [(ngModel)]="searchTitle" />
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="isLoadingBlockedMembers">
+            <mat-spinner style="margin: 0 auto" mode="indeterminate" diameter="30"></mat-spinner>
+        </div>
+
+        <div class="users row" *ngIf="!isLoadingBlockedMembers">
+            <div class="col-12" *ngFor="let member of blockedMembers | filter: searchTitle">
+                <div class="row">
+                    <div class="username col-7 align-items-center">
+                        <img class="avatar d-inline-block user-avatar" [src]="member.avatar" alt="User Avatar" />
+                        <div class="name d-inline-block">
+                            <span class="user-name">
+                                {{ member.displayName }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="options col-4" style="padding: 0 !important" *ngIf="user._id !== member.id">
+                        <button class="app-channel-settings-user-button" mat-icon-button matTooltip="Options"
+                            [matMenuTriggerFor]="userOptionsMenu" (menuOpened)="moreMenuOpened(member.id)">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+
+                        <mat-menu #userOptionsMenu="matMenu" class="custom-dropdown custom-scroll" xPosition="before">
+                            <section class="user-menu mat-menu-content">
+                                <!-- <div class="message-menu-item" (click)="showTipDialog()" *ngIf='user._id !== member._id'>
+                                                            <span class="tip"></span>
+                                                            <span class="nav-caption"> Tip {{member.displayName}} </span>
+                                                        </div> -->
+
+                                <div class="follow-btns" *ngIf="follow"
+                                    (click)="chatService.toggleFollow(follow, member.id, user._id)">
+                                    <div class="btn" [ngClass]="
+											follow.isFollowing ? 'unfollow-btn' : 'follow-btn'
+										" [disabled]="true">
+                                        <span *ngIf="follow.isFollower" [ngClass]="
+												follow.isFollowing
+													? 'check-unfollow'
+													: 'check-follow'
+											"></span>
+                                        {{ follow.isFollowing ? 'Unfollow' : 'Follow' }}
+                                    </div>
+                                </div>
+
+                                <a *ngIf="member" routerLink="/profile/{{ member.customUsername }}"
+                                    routerLinkActive="active">
+                                    <span class="navIcon profile"></span>
+                                    <span class="nav-caption">Profile</span>
+                                </a>
+
+                                <div (click)="chatService.openChat(member)">
+                                    <span class="navIcon profile-chat"></span>
+                                    <span class="nav-caption">Message</span>
+                                </div>
+
+                                <div (click)="chatService.blockUser(member.id, isBlocked)" *ngIf="
+										channelService.currentChannel &&
+										channelService.currentChannel.user === user._id &&
+										!isBlocked
+									">
+                                    <mat-icon>block</mat-icon>
+                                    <span class="nav-caption"> Block from channel</span>
+                                </div>
+
+                                <div (click)="chatService.unblockUser(member.id, isBlocked)" *ngIf="
+										channelService.currentChannel &&
+										channelService.currentChannel.user === user._id &&
+										isBlocked
+									">
+                                    <mat-icon>check_circle_outline</mat-icon>
+                                    <span class="nav-caption"> Unblock from channel</span>
+                                </div>
+                            </section>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

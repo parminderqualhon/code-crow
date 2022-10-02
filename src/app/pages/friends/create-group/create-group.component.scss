@@ -1,0 +1,221 @@
+.panel-content {
+    .panel-title {
+        margin: 0 0 25px;
+    }
+    .panel-body {
+        height: 100%;
+    }
+}
+
+textarea {
+    height: 200px;
+    resize: none;
+}
+.channel-description {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 500;
+    b {
+        display: block;
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 24px;
+        font-style: normal;
+    }
+}
+.mat-form-field {
+    width: 100%;
+}
+.app-add-channel-title {
+    margin-top: 10px;
+}
+.full-width {
+    table-layout: auto;
+    width: 100%;
+}
+.app-frienditem {
+    float: left;
+    width: 94%;
+    margin: 10px 0 0 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    cursor: pointer;
+    background-color: #181b29;
+}
+.app-frienditem-avatar {
+    float: left;
+    height: 46px;
+    width: 46.1px;
+    border-radius: 100%;
+    position: relative;
+    margin-right: 8px;
+}
+.app-frienditem-text {
+    width: 130;
+    height: 60px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+.app-frienditem-name {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+}
+.app-frienditem-last-message {
+    width: auto;
+    color: gray;
+}
+.app-frienditem-status-online {
+    height: 100%;
+    width: 5px;
+    background-color: greenyellow;
+    margin-right: 8px;
+}
+.app-frienditem-status-offline {
+    height: 100%;
+    width: 5px;
+    background-color: red;
+    margin-right: 8px;
+}
+.selected {
+    border: 1px solid #4285f4;
+    box-shadow: 0 0 0px 0px #4285f4;
+}
+.app-frienditem-td {
+    height: 100%;
+}
+.app-friends-search-bar {
+    position: sticky;
+    width: 100%;
+    padding: 10 2;
+    background-color: #ffffff;
+}
+.app-search-btn {
+    width: 26px;
+    height: 26px;
+    margin-right: 16px;
+}
+.sticky {
+    top: 0px;
+    overflow: hidden;
+    z-index: 10;
+}
+.mat-form-field {
+    width: 100%;
+}
+.app-add-channel-title {
+    margin-top: 10px;
+}
+.app-ok-button {
+    max-height: 52px;
+}
+.search-box {
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 52px;
+    padding: 19px;
+}
+.search-friend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.heading-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.close-btn {
+    width: 22px !important;
+    height: 22px !important;
+    cursor: pointer;
+}
+.heading-contain {
+    display: flex;
+}
+.dialog-btn {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+}
+.dialog-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.btn-container {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 62px;
+}
+.friend-list {
+    height: 225px;
+    overflow-y: auto;
+    margin-top: 12px;
+}
+.dialog-content {
+    overflow: hidden;
+}
+//scroll bar
+/* width */
+.scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.list-group {
+    display: flex;
+    height: 300px;
+    overflow-y: auto;
+    flex-direction: column;
+    position: absolute;
+    z-index: 20;
+    top: 50px;
+    width: 100%;
+}
+.list-group-item {
+    display: flex;
+    align-items: center;
+    border-radius: 0px !important;
+    cursor: pointer;
+    height: 62px;
+}
+.add-member {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+.add-icon {
+    cursor: pointer;
+}
+.group_friend {
+    display: flex;
+    align-items: center;
+    padding-left: 19px;
+    height: 34px;
+    margin-top: 21px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    opacity: 0.99;
+    mix-blend-mode: normal;
+}
+.input-invalid {
+    border: 1px solid red !important;
+}
+.panel {
+    z-index: 20 !important;
+}
+.paneledit {
+    z-index: 100 !important;
+}

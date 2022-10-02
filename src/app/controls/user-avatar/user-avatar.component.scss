@@ -1,0 +1,39 @@
+.app-avatar {
+    height: 46px;
+    width: 46px;
+    border-radius: 100%;
+    position: relative;
+    margin: 0 10px 0 0;
+    @media (min-width: 320px) and (max-width: 767px) {
+        width: 22px;
+        height: 22px;
+    }
+    @media (min-width: 767px) and (max-width: 1023px) {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+span.online,
+span.offline {
+    position: absolute;
+    left: 42px;
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    @media (min-width: 320px) and (max-width: 767px) {
+        width: 8px;
+        height: 8px;
+        left: 32px;
+    }
+    @media (min-width: 767px) and (max-width: 1023px) {
+        left: 40px;
+    }
+}
+
+
+span.offline {
+    background-color: red;
+}

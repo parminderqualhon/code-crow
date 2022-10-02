@@ -1,0 +1,52 @@
+{
+    "compileOnSave": false,
+    "exclude": [
+        "functions/**/*","test"
+    ],
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "importHelpers": true,
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "target": "es2020",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "es2020", 
+            "esnext",
+            "dom"
+        ],
+        "skipLibCheck": true,
+        "baseUrl": "./",
+        "paths": {
+            "path": [
+                "./node_modules/path-browserify"
+            ],
+            "core-js/es7/reflect": [
+                "../node_modules/core-js/proposals/reflect-metadata"
+            ],
+            "core-js/es6/*": [
+                "../node_modules/core-js/es/*"
+            ],
+            "crypto": [
+                "../node_modules/crypto-js"
+            ]
+        }
+    },
+    "angularCompilerOptions": {
+        "enableIvy": true,
+        "strictTemplates": false,
+        "disableTypeScriptVersionCheck": true,
+        "strictInjectionParameters": true,
+        "strictDomEventTypes": false,
+        "types": [
+            "jasmine",
+            "node"
+        ]
+    }
+}

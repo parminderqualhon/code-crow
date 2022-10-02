@@ -1,0 +1,131 @@
+<div *ngIf="channelService.isAddChannelEnabled" [@inOutAnimation] class="panel-content" id="clickOutside">
+    <div class="panel-background" (clickOutside)="incrementClickOutsideCount()">
+        <div class="panel-inner">
+            <div class="panel-title">
+                Create a new channel
+                <button mat-icon-button (click)="incrementClickOutsideCount()" class="close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <div class="panel-body">
+                <form [formGroup]="addChannelForm">
+                    <span class="channel-description">
+                        When you create a channel, you may allow viewer's to observe your desktop as
+                        you host your channel.
+                    </span>
+
+                    <h2 class="channel-form-title">
+                        Please hide all sensitive data before going live.
+                    </h2>
+
+                    <mat-label> Upload a Thumbnail (used for featured channels)</mat-label>
+                    <div (click)="fileInput.click()" class="thumbnail">
+                        <img *ngIf="thumbnail" [src]="thumbnail" />
+                        <input accept="image/*" hidden (change)="onFileSelected()" #fileInput type="file" id="file" />
+                    </div>
+
+                    <mat-form-field class="app-add-channel-title" appearance="outline">
+                        <input matInput placeholder="Channel title" formControlName="title" [maxLength]="26" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <textarea matInput placeholder="Channel description" formControlName="description"
+                            [maxLength]="5000"></textarea>
+                    </mat-form-field>
+
+                    <div class="mb-3 sug-label">
+                        <mat-label> Suggested Tags </mat-label>
+                        <br />
+                        <ng-container *ngFor="let tag of tags">
+                            <label class="label-tag me-3" (click)="addTags(tag.name)">
+                                {{ tag.name }}</label>
+                        </ng-container>
+                    </div>
+
+                    <mat-form-field class="tags-chip-list" appearance="outline">
+                        <mat-chip-list #chipList formControlName="tags">
+                            <span *ngFor="let tag of selectedTags">
+                                <ng-container *ngIf="tag">
+                                    <span class="tag-label me-2 cursor-pointer" (click)="removeTag(tag)">
+                                        <b style="margin-right: 10px">
+                                            {{ tag }}
+                                        </b>
+                                        <img style="
+												position: absolute;
+												top: 50%;
+												right: 8px;
+												transform: translate(0, -50%);
+											" src="/assets/images/remove-white-small.svg" />
+                                    </span>
+                                </ng-container>
+                            </span>
+
+                            <input class="channeltags" matInput [placeholder]="
+									selectedTags.length > 0 ? '' : 'Channel tags (press enter)'
+								" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="add($event)" />
+
+                            <span class="ab-v-m custom-placeholder tech-label">{{
+                                selectedTags.length > 2 ? '(max reached)' : '(max 3 tags)'
+                                }}</span>
+                        </mat-chip-list>
+                    </mat-form-field>
+
+                    <div [ngClass]="{ 'red-border': submitted && selectedTech.length < 1 }"
+                        (click)="showFilterDialog()">
+                        <div class="mat-form-field-outline add-channel-multi-select" (mouseover)="hover = true"
+                            (mouseleave)="hover = false">
+                            <div style="
+                        			box-shadow: 0px 0px 22.1px rgba(149, 157, 165, 0.13);
+                        			border: 1px solid rgb(228, 228, 228);
+                        		">
+                                <button on-focus="focus = true" on-focusout="focus = false" class="drop-toggle flat"
+                                    mat-button (click)="showDropDown = !showDropDown">
+                                    <mat-label class="tech-label">
+                                        Channel category
+                                        <span style="opacity: 0.5; position: absolute; right: 30px">
+                                            {{ selectedTech.length < 4 ? '(max 4 categories)' : '(max reached)' }}
+                                                </span>
+                                    </mat-label>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="label m-2" *ngFor="let val of selectedTech">
+                        <span class="cursor-pointer" (click)="removeTech(val.item_text)">
+                            <img class="techStack" src="{{ val.item_image }}" height="15px" />
+                            {{ val.item_text }}
+                            <img height="13px" width="13px" src="/assets/images/remove-red-small.svg"
+                                style="margin-left: 9px" />
+                        </span>
+                    </label>
+
+                    <div class="mt-4 mb-3">
+                        <mat-checkbox formControlName="isPrivate" style="font-size: 14px; line-height: 33px">
+                            Is Private?
+                        </mat-checkbox>
+                    </div>
+
+                    <div class="alert alert-danger mt-2 mb-2" *ngIf="error.message">
+                        {{ error.message }}
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel-footer">
+                <button mat-raised-button class="btn bg-white" rounded="true" type="button"
+                    (click)="incrementClickOutsideCount()">
+                    Cancel
+                </button>
+                <button mat-raised-button class="btn btn-primary" rounded="true" type="button" (click)="addChannel()">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="{ panel: channelService.isAddChannelEnabled }" (click)="incrementClickOutsideCount()">
+</div>

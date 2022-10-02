@@ -1,0 +1,14 @@
+.panel-content {
+    left: 0 !important;
+    width: 320px !important;
+    overflow-y: auto;
+    height: 100%;
+    overflow-x: hidden;
+    .panel-title {
+        margin: 0 0 0px;
+    }
+
+    .panel-body {
+        padding: 0px !important;
+    }
+}

@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+
+        {
+            "name": "Server",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "nodemon",
+            "program": "${workspaceFolder}/server/index.js",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Client",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/cro-client"
+        },
+        {
+            "name": "Attach Client",
+            "type": "chrome",
+            "request": "attach",
+            "port": 4200,
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/cro-client"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Compound",
+            "configurations": [
+                "Server",
+                "Client"
+            ]
+        }
+    ]
+}
