@@ -11,7 +11,7 @@
     &nbsp;
     <a href="https://github.com/CodeCrowCorp/cro-website"><img src="https://img.shields.io/badge/built_with-angular-DD0032.svg"></a>
     &nbsp;
-    <a href="https://github.com/CodeCrowCorp/cro-website/actions"><img src="https://github.com/CodeCrowCorp/cro-website/actions/workflows/production.yml/badge.svg"></a>
+    <a href="https://github.com/CodeCrowCorp/cro-website/actions"><img src="https://github.com/CodeCrowCorp/cro-website/actions/workflows/ci-prod.yml/badge.svg"></a>
     &nbsp;
 </p>
 
