@@ -31,13 +31,12 @@ jobs:
         run: npm install && npm run build-prod
 
       - name: Publish
-        uses: cloudflare/pages-action@1
+        uses: cloudflare/wrangler-action@2.0.0
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "cro-client"
-          directory: "dist/code-crow/browser"
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            command: pages publish --project-name=cro-website
+            workingDirectory: 'dist/code-crow/browser'
 
 
   create-tag:
