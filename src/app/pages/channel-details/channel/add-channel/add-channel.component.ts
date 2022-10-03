@@ -40,7 +40,7 @@ export class AddChannelComponent implements OnInit {
     ) {}
 
     async ngOnInit() {
-        this.channelService.addChannelDialogBehavior.subscribe(async data => {
+        this.channelService.addChannelDialogBehavior.subscribe(async (data) => {
             if (data) {
                 this.tags = await this.tagsService.getTags()
             }
@@ -51,7 +51,7 @@ export class AddChannelComponent implements OnInit {
             tags: [null, Validators.required],
             isPrivate: [null]
         })
-        this.channelService.addTechListBehavior.subscribe(async selectedTech => {
+        this.channelService.addTechListBehavior.subscribe(async (selectedTech) => {
             this.selectedTech = selectedTech
         })
     }
@@ -89,7 +89,7 @@ export class AddChannelComponent implements OnInit {
     }
 
     removeTech(value) {
-        const selectedTextIndex = this.selectedTech.findIndex(item => item.item_text === value)
+        const selectedTextIndex = this.selectedTech.findIndex((item) => item.item_text === value)
         this.selectedTech.splice(selectedTextIndex, 1)
     }
 
@@ -133,7 +133,11 @@ export class AddChannelComponent implements OnInit {
     async addChannel() {
         this.submitted = true
         this.addChannelForm.markAllAsTouched()
-        if (this.addChannelForm.valid && this.selectedTags.length > 0 && this.selectedTech.length > 0) {
+        if (
+            this.addChannelForm.valid &&
+            this.selectedTags.length > 0 &&
+            this.selectedTech.length > 0
+        ) {
             const user = this.authService.currentUser
             try {
                 for (let val of this.selectedTags) {
@@ -146,7 +150,7 @@ export class AddChannelComponent implements OnInit {
                     this.addChannelForm.value.title,
                     this.addChannelForm.value.description,
                     thumbnailUrl,
-                    this.selectedTech.map(item => item.item_text),
+                    this.selectedTech.map((item) => item.item_text),
                     this.selectedTags,
                     this.addChannelForm.value.isPrivate,
                     user
@@ -167,6 +171,9 @@ export class AddChannelComponent implements OnInit {
 
     showFilterDialog() {
         this.channelService.isFilterChannelEnabled = true
-        this.channelService.filterChannelDialogBehavior.next({ isOpen: true, selectedTech: this.selectedTech })
+        this.channelService.filterChannelDialogBehavior.next({
+            isOpen: true,
+            selectedTech: this.selectedTech
+        })
     }
 }

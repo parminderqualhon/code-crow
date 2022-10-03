@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, EventEmitter, Inject, OnDestroy, OnInit, Output, PLATFORM_ID, } from '@angular/core'
+import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Inject,
+    OnDestroy,
+    OnInit,
+    Output,
+    PLATFORM_ID
+} from '@angular/core'
 import { Title } from '@angular/platform-browser'
 import { Sort } from '@angular/material/sort'
 import { Util } from '../../util/util'
@@ -41,7 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.titleService.setTitle(title)
         window.addEventListener('scroll', this.scrollEvent, true)
         this.isDarkTheme = await this.themeService.isDarkTheme()
-        this.channelService.channelsBehavior.subscribe(async channels => {
+        this.channelService.channelsBehavior.subscribe(async (channels) => {
             this.sortedChannels = channels
             this.featuredChannels = channels
                 .slice()

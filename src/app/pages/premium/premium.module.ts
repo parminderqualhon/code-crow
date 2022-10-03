@@ -6,7 +6,6 @@ import { PremiumComponent } from './premium.component'
 
 @NgModule({
     declarations: [PremiumComponent],
-    imports: [CommonModule, PremiumRoutingModule],
-
+    imports: [CommonModule, PremiumRoutingModule]
 })
 export class PremiumModule {}

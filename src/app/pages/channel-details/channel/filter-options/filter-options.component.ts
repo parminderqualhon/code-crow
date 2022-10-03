@@ -17,13 +17,10 @@ export class FilterOptionsComponent implements OnInit {
     clickedOutsideCount: any = 0
     private selectedTech: any = []
 
-    constructor(
-        private fb: FormBuilder,
-        public channelService: ChannelService
-    ) {}
+    constructor(private fb: FormBuilder, public channelService: ChannelService) {}
 
     ngOnInit() {
-        this.channelService.filterChannelDialogBehavior.subscribe(async data => {
+        this.channelService.filterChannelDialogBehavior.subscribe(async (data) => {
             if (data && data.isOpen) {
                 this.filterChannelForm = this.fb.group({ techStack: '' })
                 this.selectedTech = this.channelService.isAddChannelEnabled ? data.selectedTech : []
@@ -57,18 +54,20 @@ export class FilterOptionsComponent implements OnInit {
     }
 
     initFilterList() {
-        this.hasTempFilters = !this.channelService.isAddChannelEnabled ? this.channelService.hasFilters : false
+        this.hasTempFilters = !this.channelService.isAddChannelEnabled
+            ? this.channelService.hasFilters
+            : false
         this.techList = this.channelService.techList
-        this.techList.forEach(item => {
+        this.techList.forEach((item) => {
             item.item_status = false
             if (!this.channelService.isAddChannelEnabled) {
-                this.channelService.filterTechList.forEach(selected => {
+                this.channelService.filterTechList.forEach((selected) => {
                     if (selected.item_text == item.item_text) {
                         item.item_status = true
                     }
                 })
             } else {
-                this.selectedTech.forEach(selected => {
+                this.selectedTech.forEach((selected) => {
                     if (selected.item_text == item.item_text) {
                         item.item_status = true
                     }
@@ -85,21 +84,21 @@ export class FilterOptionsComponent implements OnInit {
     }
 
     removeFilters() {
-        this.techList.forEach(item => item.item_status = false)
+        this.techList.forEach((item) => (item.item_status = false))
         this.hasTempFilters = false
         this.selectedTech = []
     }
 
     async filterChannels() {
         this.channelService.filterTechList = []
-        this.techList.forEach(item => {
+        this.techList.forEach((item) => {
             if (item.item_status) {
                 this.channelService.filterTechList.push(Object.assign({}, item))
             }
         })
         const channels = await this.channelService.searchChannels()
         this.channelService.channelsBehavior.next(channels)
-        this.channelService.hasFilters = this.techList.some(item => item.item_status)
+        this.channelService.hasFilters = this.techList.some((item) => item.item_status)
         this.incrementClickOutsideCount()
     }
 

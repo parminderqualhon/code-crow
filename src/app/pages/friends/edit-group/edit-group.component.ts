@@ -91,7 +91,7 @@ export class EditGroupComponent implements OnInit {
             ].filter(
                 (member) =>
                     member.customUsername.toLowerCase().indexOf(this.searchTitle.toLowerCase()) >=
-                    0 && this.authService.currentUser._id !== member._id
+                        0 && this.authService.currentUser._id !== member._id
             ))
         } else {
             if (!this.searchTitle.length) {

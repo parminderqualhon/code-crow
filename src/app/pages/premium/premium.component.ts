@@ -31,7 +31,7 @@ const test_data: any[] = [
         transactionId: '1234-5678-9012-3456',
         solscanUrl: 'https://www.temporary-url.com/064C41',
         channelId: '1234-5678-9012-3456',
-        amount: 10,
+        amount: 10
     },
     {
         date: '8/1/2022',
@@ -126,8 +126,7 @@ const test_data_tip: any[] = [
         sName: 'temp',
         rName: 'temp',
         amount: 10
-    },
-
+    }
 ]
 
 @Component({
@@ -145,8 +144,12 @@ export class PremiumComponent implements OnInit {
     public earnedTips: any[]
     public earnedNFT: any[]
     public test: any[]
-    isConnected: boolean = false;
-    constructor(private userService: UserService, private themeService: ThemeService, private authService: AuthService) {}
+    isConnected: boolean = false
+    constructor(
+        private userService: UserService,
+        private themeService: ThemeService,
+        private authService: AuthService
+    ) {}
 
     async ngOnInit() {
         this.currentButton = 'earned'
