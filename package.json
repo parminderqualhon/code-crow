@@ -55,7 +55,7 @@
         "moment": "^2.29.4",
         "ng2-dragula": "^2.1.1",
         "ng2-pdf-viewer": "6.3.2",
-        "ngx-infinite-scroll": "^9.0.0",
+        "ngx-infinite-scroll": "^14.0.0",
         "ngx-lottie": "^7.0.3",
         "pdfjs-dist": "2.5.207",
         "rxjs": "6.6.7",
