@@ -1,13 +1,11 @@
 
 {
     "/api/*": {
-        "target": "http://localhost:8787",
+        "target": "http://localhost:8787/",
         "secure": false,
-        "logLevel": "debug"
-    },
-    "/api/auth/github/callback": {
-        "target": "http://localhost:8787/auth/github/callback",
-        "secure": false,
-        "logLevel":"debug"
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api": ""
+          }
     }
 }
