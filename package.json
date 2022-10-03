@@ -57,7 +57,7 @@
         "ng2-pdf-viewer": "9.1.2",
         "ngx-infinite-scroll": "^14.0.0",
         "ngx-lottie": "^9.1.0",
-        "pdfjs-dist": "2.5.207",
+        "pdfjs-dist": "2.16.105",
         "rxjs": "7.5.7",
         "socket.io": "^4.5.2",
         "socket.io-client": "^4.5.2",
