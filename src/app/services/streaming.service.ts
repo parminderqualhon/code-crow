@@ -41,20 +41,20 @@ export class StreamingService {
         webcamStream: any
         audioStream: any
     } = {
-            id: null,
-            avatar: null,
-            customUsername: null,
-            displayName: null,
-            userType: 'listener',
-            screenState: 'restricted',
-            webcamState: 'restricted',
-            audioState: 'restricted',
-            isHandRaised: false,
-            screenStream: null,
-            screenAudioStream: null,
-            webcamStream: null,
-            audioStream: null
-        }
+        id: null,
+        avatar: null,
+        customUsername: null,
+        displayName: null,
+        userType: 'listener',
+        screenState: 'restricted',
+        webcamState: 'restricted',
+        audioState: 'restricted',
+        isHandRaised: false,
+        screenStream: null,
+        screenAudioStream: null,
+        webcamStream: null,
+        audioStream: null
+    }
 
     public streamOptions: {
         isRecording: boolean
@@ -70,19 +70,19 @@ export class StreamingService {
         isTimedOut: boolean
         isMaxLimitReached: boolean
     } = {
-            isRecording: false,
-            isLiveStreaming: false,
-            isEveryoneSilenced: true,
-            duration: 0,
-            hasWaitedOneSecondScreen: true,
-            hasWaitedOneSecondWebcam: true,
-            hasWaitedOneSecondAudio: true,
-            hasWaitedOneSecondRecord: true,
-            hasWaitedOneSecondRaiseHand: true,
-            hasWaitedOneSecondSilence: true,
-            isTimedOut: false,
-            isMaxLimitReached: false
-        }
+        isRecording: false,
+        isLiveStreaming: false,
+        isEveryoneSilenced: true,
+        duration: 0,
+        hasWaitedOneSecondScreen: true,
+        hasWaitedOneSecondWebcam: true,
+        hasWaitedOneSecondAudio: true,
+        hasWaitedOneSecondRecord: true,
+        hasWaitedOneSecondRaiseHand: true,
+        hasWaitedOneSecondSilence: true,
+        isTimedOut: false,
+        isMaxLimitReached: false
+    }
 
     constructor(
         public http: HttpClient,
@@ -856,8 +856,8 @@ export class StreamingService {
     updateLiveStream(): Promise<any> {
         return this.videoStreamId
             ? this.http
-                .patch(`${environment.apiUrl}/liveStreaming/${this.videoStreamId}/end`, {})
-                .toPromise()
+                  .patch(`${environment.apiUrl}/liveStreaming/${this.videoStreamId}/end`, {})
+                  .toPromise()
             : null
     }
 

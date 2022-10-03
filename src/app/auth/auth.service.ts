@@ -7,10 +7,7 @@ import { environment } from '../../environments/environment'
     providedIn: 'root'
 })
 export class AuthService {
-    constructor(
-        public http: HttpClient,
-        private tokenStorage: TokenStorage,
-    ) {}
+    constructor(public http: HttpClient, private tokenStorage: TokenStorage) {}
 
     public currentUser: any = false
     private userPromise: any

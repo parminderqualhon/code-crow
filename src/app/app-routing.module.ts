@@ -120,7 +120,6 @@ const routes: Routes = [
         // component: NFTComponent,
         loadChildren: () => import('./pages/premium/premium.module').then((m) => m.PremiumModule),
         canActivate: [AuthGuard, MaintenanceGuard]
-
     },
     {
         path: 'profile/:customUsername',

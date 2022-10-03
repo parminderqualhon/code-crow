@@ -18,7 +18,7 @@ export class TokenStorage {
     }
 
     public saveUserId(userId: string) {
-        localStorage.setItem("userId", userId)
+        localStorage.setItem('userId', userId)
     }
 
     public saveTheme(theme) {
