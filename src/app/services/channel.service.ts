@@ -164,7 +164,8 @@ export class ChannelService {
     addAttachments({ channelId, attachmentUrl }): Promise<any> {
         return this.http
             .put(
-                `${environment.apiUrl
+                `${
+                    environment.apiUrl
                 }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
                     attachmentUrl
                 )}`,
@@ -176,7 +177,8 @@ export class ChannelService {
     deleteAttachment({ channelId, attachmentUrl }): Promise<any> {
         return this.http
             .delete(
-                `${environment.apiUrl
+                `${
+                    environment.apiUrl
                 }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
                     attachmentUrl
                 )}`
@@ -273,7 +275,7 @@ export class ChannelService {
             .get(`${environment.apiUrl}/channels`, {
                 params: {
                     searchQuery: this.searchQuery,
-                    techStack: this.filterTechList.map(item => item.item_text).join(),
+                    techStack: this.filterTechList.map((item) => item.item_text).join(),
                     skip: this.skip,
                     limit: this.limit
                 }

@@ -18,7 +18,11 @@ export class FriendItemComponent implements OnInit {
     @Output() leaveGroup = new EventEmitter<any>()
     public isMessageable: boolean
 
-    constructor(public chatService: ChatService, public authService: AuthService, public userService: UserService) {}
+    constructor(
+        public chatService: ChatService,
+        public authService: AuthService,
+        public userService: UserService
+    ) {}
 
     ngOnInit() {
         this.isMessageable = this.chat.isMessageGuardEnabled ? this.chat.isFollower : true
