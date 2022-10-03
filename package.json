@@ -58,7 +58,7 @@
         "ngx-infinite-scroll": "^14.0.0",
         "ngx-lottie": "^7.0.3",
         "pdfjs-dist": "2.5.207",
-        "rxjs": "6.6.7",
+        "rxjs": "7.5.7",
         "socket.io": "^4.5.2",
         "socket.io-client": "^4.5.2",
         "tslib": "^2.3.1",
