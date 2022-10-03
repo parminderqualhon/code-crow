@@ -6,10 +6,10 @@
 export const environment = {
     production: false,
     name: 'development',
-    // hostUrl: 'http://dev.codecrow.io',
-    // apiUrl: 'https://dev.api.codecrow.io',
-    hostUrl: 'http://localhost:4200',
-    apiUrl: 'http://localhost:8787',
+    hostUrl: 'http://dev.codecrow.io',
+    apiUrl: 'https://dev.api.codecrow.io',
+    // hostUrl: 'http://localhost:4200',
+    // apiUrl: 'http://localhost:8787',
     webSocketUrl: 'ws://localhost:8787',
     serviceFeeWallet: 'EoQb4mKYmxEPRi4i8kXyWuSXQXgevkuPUKE4FRdqdRAF'
 }
