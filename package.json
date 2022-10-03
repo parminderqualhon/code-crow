@@ -8,6 +8,7 @@
         "serve": "node server",
         "build": "ng build",
         "build-prod": "ng build --configuration production",
+        "build-dev": "ng build --configuration development",
         "dev": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build && ng serve",
         "lint": "npx eslint --max-warnings=0 './**/*.{js,ts}' && prettier --check '*.{json,js}' './**/*.{js,ts}'",
         "lint:fix": "npm run lint --fix",
