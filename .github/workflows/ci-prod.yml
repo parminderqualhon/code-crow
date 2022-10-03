@@ -35,9 +35,7 @@ jobs:
         with:
             apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
             accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            command: pages publish "dist/code-crow/browser" --project-name=cro-website 
-
-
+            command: pages publish "dist/code-crow/browser" --project-name=cro-website
 
   create-tag:
     name: Create Tag

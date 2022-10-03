@@ -1,15 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import '~@angular/material/theming';
-@import '~dragula/dist/dragula.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '@angular/material/theming';
+@import 'dragula/dist/dragula.css';
 
 $custom-typography: mat.define-typography-config(
     $font-family: 'Montserrat',
 );
-@import '~assets/scss/_varriable.scss';
-@import '~assets/scss/_buttons.scss';
+@import 'assets/scss/_varriable.scss';
+@import 'assets/scss/_buttons.scss';
 @import '../node_modules/bootstrap/scss/bootstrap';
 
 @include mat.core($custom-typography);
