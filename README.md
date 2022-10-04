@@ -13,7 +13,7 @@
     &nbsp;
     <a href="https://github.com/CodeCrowCorp/cro-website/actions"><img src="https://github.com/CodeCrowCorp/cro-website/actions/workflows/ci-prod.yml/badge.svg"></a>
     &nbsp;
-    <a href="https://about.codecov.io/"><img src="https://codecov.io/gh/CodeCrowCorp/cro-website/branch/master/graph/badge.svg?token=J3XRJHNPEO"></a>
+    <a href="https://about.codecov.io/"><img src="https://codecov.io/gh/CodeCrowCorp/cro-website/branch/main/graph/badge.svg?token=J3XRJHNPEO"></a>
     &nbsp;
     <a href="https://dependabot.com/"><img src="https://img.shields.io/badge/dependabot-enabled-025e8c?logo=Dependabot"></a>
     &nbsp;
