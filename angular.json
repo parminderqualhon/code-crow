@@ -83,8 +83,7 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "code-crow:build",
-                        "proxyConfig": "src/proxy.conf.json"
+                        "browserTarget": "code-crow:build"
                     },
                     "configurations": {
                         "production": {
