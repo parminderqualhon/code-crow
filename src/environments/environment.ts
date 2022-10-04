@@ -7,7 +7,7 @@ export const environment = {
     production: false,
     name: 'local',
     hostUrl: 'http://localhost:4200',
-    apiUrl: 'http://localhost:4200/api',
+    apiUrl: 'http://localhost:8787',
     webSocketUrl: 'ws://localhost:8787',
     serviceFeeWallet: 'EoQb4mKYmxEPRi4i8kXyWuSXQXgevkuPUKE4FRdqdRAF'
 }

@@ -16,7 +16,7 @@ export class Socket {
     constructor(@Inject(PLATFORM_ID) private platformId: Object) {
         this.isBrowser = isPlatformBrowser(this.platformId)
         if (this.isBrowser) {
-            this.apiSocket = new WebSocket(`${environment.webSocketUrl}/chat-room/websocket`)
+            this.apiSocket = new WebSocket(`${environment.webSocketUrl}/websocket/room/websocket`)
         }
     }
 
