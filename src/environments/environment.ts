@@ -7,7 +7,7 @@ export const environment = {
     production: false,
     name: 'development',
     hostUrl: 'http://localhost:4200',
-    apiUrl: 'http://localhost:4200/api',
+    apiUrl: 'http://localhost:8787',
     // hostUrl: 'http://localhost:4200',
     // apiUrl: 'http://localhost:8787',
     webSocketUrl: 'ws://localhost:8787',

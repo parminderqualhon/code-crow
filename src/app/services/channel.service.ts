@@ -256,7 +256,12 @@ export class ChannelService {
     }
 
     async getMyChannels(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/channels/me/hosted`).toPromise()
+        return this.http.get(`${environment.apiUrl}/channels/me/hosted`,{
+            headers:{
+            userId: localStorage.getItem('userId'),
+            authorization: localStorage.getItem('jwt')
+        }
+    }).toPromise()
     }
 
     async getChannelsByUserId({ userId, searchQuery = null, skip = 0, limit = 50 }): Promise<any> {
@@ -278,6 +283,10 @@ export class ChannelService {
                     techStack: this.filterTechList.map((item) => item.item_text).join(),
                     skip: this.skip,
                     limit: this.limit
+                },
+                headers:{
+                    userId: localStorage.getItem('userId'),
+                    authorization: localStorage.getItem('jwt')
                 }
             })
             .toPromise()
