@@ -30,7 +30,7 @@
         "@angular/router": "^14.2.3",
         "@angular/service-worker": "^14.2.3",
         "@babel/runtime": "^7.14.0",
-        "@ctrl/ngx-emoji-mart": "^5.1.0",
+        "@ctrl/ngx-emoji-mart": "^7.0.0",
         "@ngx-pwa/local-storage": "^13.0.5",
         "@schematics/angular": "^14.2.3",
         "@solana/spl-token": "^0.1.8",
