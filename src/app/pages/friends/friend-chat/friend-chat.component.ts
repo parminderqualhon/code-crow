@@ -24,7 +24,6 @@ import { GroupchatService } from '../../../services/groupchat.service'
 import { FriendService } from '../../../services/friend.service'
 import { SharedService } from '../../../services/shared.service'
 import { environment } from '../../../../environments/environment'
-import { SwPush } from '@angular/service-worker'
 
 @Component({
     selector: 'app-friend-chat',
@@ -77,7 +76,6 @@ export class FriendChatComponent implements OnInit, AfterViewChecked, OnDestroy 
         public sharedService: SharedService,
         private router: Router,
         private snackBar: MatSnackBar,
-        private swPush: SwPush
     ) {}
 
     async ngOnInit() {

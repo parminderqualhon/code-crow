@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.sortedChannels = channels
             this.featuredChannels = channels
                 .slice()
-                .filter((channel) => !channel.password)
+                .filter((channel) => !channel.isPrivate)
                 .sort((a, b) => b.roomMembers - a.roomMembers)
                 .slice(0, 5)
         })
@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.sortedChannels.length < 5) return
         this.featuredChannels = channels
             .slice()
-            .filter((channel) => !channel.password)
+            .filter((channel) => !channel.isPrivate)
             .sort((a, b) => b.roomMembers - a.roomMembers)
             .slice(0, 5)
     }

@@ -85,7 +85,7 @@ import { CreateGroupComponent } from './pages/friends/create-group/create-group.
 import { LoadingDialogComponent } from './controls/loading-dialog/loading-dialog.component'
 // import { HomeComponent } from './pages/home/home.component'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
-import { PasswordDialogComponent } from './pages/channel-details/channel/password-dialog/password-dialog.component'
+import { WaitingRoomDialogComponent } from './pages/channel-details/channel/waiting-room-dialog/waiting-room-dialog.component'
 // import { FooterComponent } from './footer/footer.component'
 // import { UserAvatarComponent } from './controls/user-avatar/user-avatar.component'
 import { ViewChannelDetailComponent } from './pages/channel-details/chat/view-channel-detail/view-channel-detail.component'
@@ -191,7 +191,7 @@ export function playerFactory() {
         CreateGroupComponent,
         LoadingDialogComponent,
 
-        PasswordDialogComponent,
+        WaitingRoomDialogComponent,
         //  ? UserAvatarComponent,
         // ? FilterOptionsComponent,
         // ? MultiSelectDropdownComponent,

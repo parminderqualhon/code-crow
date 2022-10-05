@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { AuthService } from '../../../../auth/auth.service'
 import { ChannelService } from '../../../../services/channel.service'
 import { LoadingDialogComponent } from '../../../../controls/loading-dialog/loading-dialog.component'
-import { PasswordDialogComponent } from '../../../../pages/channel-details/channel/password-dialog/password-dialog.component'
+import { WaitingRoomDialogComponent } from '../../../channel-details/channel/waiting-room-dialog/waiting-room-dialog.component'
 
 @Component({
     selector: 'app-carousel-card',
@@ -55,11 +55,11 @@ export class CarouselCardComponent implements OnInit {
                 })
             } else {
                 if (
-                    channel.password &&
+                    channel.isPrivate &&
                     channel.user != this.user._id &&
                     !channel.notificationSubscribers.includes(this.user._id)
                 ) {
-                    this.showPasswordDialog()
+                    this.showWaitingRoomDialog()
                 } else {
                     this.showLoadingDialog()
                     this.router.navigate(['/channel', channel._id])
@@ -73,8 +73,8 @@ export class CarouselCardComponent implements OnInit {
         }
     }
 
-    showPasswordDialog() {
-        this.dialog.open(PasswordDialogComponent, {
+    showWaitingRoomDialog() {
+        this.dialog.open(WaitingRoomDialogComponent, {
             width: '400px',
             data: {
                 channel: this.channelData

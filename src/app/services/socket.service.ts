@@ -86,6 +86,50 @@ export class Socket {
         this.apiSocket.send(JSON.stringify({ eventName: `channel-update`, channelId }))
     }
 
+    listenToChannelAccessRequest({ channelId }): Observable<any> {
+        return new Observable((observer) => {
+            this.apiSocket.addEventListener(`message`, (data) => {
+                if (data.eventName === `channel-access-request`
+                    && data.channelId === channelId) {
+                    observer.next(data)
+                }
+            })
+        })
+    }
+
+    emitChannelAccessRequest({ channelId, userId }) {
+        this.apiSocket.send(
+            JSON.stringify({
+                eventName: `channel-access-request`,
+                channel: channelId,
+                user: userId
+            })
+        )
+    }
+
+    listenToChannelAccessResponse({ channelId }): Observable<any> {
+        return new Observable((observer) => {
+            this.apiSocket.addEventListener(`message`, (data) => {
+                if (data.eventName === `channel-access-response`
+                    && data.channelId === channelId) {
+                    observer.next(data)
+                }
+            })
+        })
+    }
+
+    emitChannelAccessResponse({ channelId, userId, isGrantedAccess }) {
+        this.apiSocket.send(
+            JSON.stringify({
+                eventName: `channel-access-response`,
+                channel: channelId,
+                user: userId,
+                isGrantedAccess
+            })
+        )
+    }
+
+
     /************ Recording ****************/
 
     emitVideoRecordingStarted({ channelId }) {
