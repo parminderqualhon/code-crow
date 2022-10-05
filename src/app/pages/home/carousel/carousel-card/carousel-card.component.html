@@ -1,47 +1,39 @@
 <div class="carousel-card-container {{ activeChannel ? 'active' : '' }}">
-	<div class="cover-img cursor-pointer">
-		<img
-			*ngIf="channelData.thumbnail"
-			[src]="channelData.thumbnail || '/assets/images/logo_3.svg'"
-			(click)="showDialogOrJoin()" />
-		<div
-			*ngIf="!channelData.thumbnail"
-			class="techgroup"
-			(click)="showDialogOrJoin()"
-			[ngStyle]="{
+    <div class="cover-img cursor-pointer">
+        <img *ngIf="channelData.thumbnail" [src]="channelData.thumbnail || '/assets/images/logo_3.svg'"
+            (click)="showDialogOrJoin()" />
+        <div *ngIf="!channelData.thumbnail" class="techgroup" (click)="showDialogOrJoin()" [ngStyle]="{
 				'grid-template-columns': 'repeat(' + channelData.techStack.length + ', 1fr);'
 			}">
-			<div
-				class="avatar-item"
-				*ngFor="let item of channelData.techStack"
-				[ngStyle]="{ 'background-image': 'url(' + getImagePath(item) + ')' }"></div>
-		</div>
-	</div>
-	<div class="metadata cursor-pointer" (click)="showDialogOrJoin()">
-		<div class="channel-info">
-			<div class="title">{{ channelData.title }}</div>
-			<div class="desc">{{ channelData.description }}</div>
-			<div class="host">
-				<img [src]="channelData.avatar" />
-				<div>{{ channelData.createdBy }}</div>
-			</div>
-		</div>
-		<div class="text-right">
-			<div class="tech-stack">
-				<img *ngFor="let tech of channelData.techStack" [src]="getImagePath(tech)" />
-			</div>
-			<div class="info">
-				<span class="channel-icon member"></span>
-				<span class="channel-number">{{ channelData.memberCount }}</span>
-				<span *ngIf="channelData.password" class="channel-icon locked"></span>
-			</div>
-			<div class="tags custom-scroll">
-				<span *ngFor="let tag of channelData.tags">{{ tag }}</span>
-			</div>
-		</div>
-	</div>
-	<div class="controls">
-		<span class="prev" (click)="prev.emit()"></span>
-		<span class="next" (click)="next.emit()"></span>
-	</div>
+            <div class="avatar-item" *ngFor="let item of channelData.techStack"
+                [ngStyle]="{ 'background-image': 'url(' + getImagePath(item) + ')' }"></div>
+        </div>
+    </div>
+    <div class="metadata cursor-pointer" (click)="showDialogOrJoin()">
+        <div class="channel-info">
+            <div class="title">{{ channelData.title }}</div>
+            <div class="desc">{{ channelData.description }}</div>
+            <div class="host">
+                <img [src]="channelData.avatar" />
+                <div>{{ channelData.createdBy }}</div>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="tech-stack">
+                <img *ngFor="let tech of channelData.techStack" [src]="getImagePath(tech)" />
+            </div>
+            <div class="info">
+                <span class="channel-icon member"></span>
+                <span class="channel-number">{{ channelData.memberCount }}</span>
+                <span *ngIf="channelData.isPrivate" class="channel-icon locked"></span>
+            </div>
+            <div class="tags custom-scroll">
+                <span *ngFor="let tag of channelData.tags">{{ tag }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="controls">
+        <span class="prev" (click)="prev.emit()"></span>
+        <span class="next" (click)="next.emit()"></span>
+    </div>
 </div>

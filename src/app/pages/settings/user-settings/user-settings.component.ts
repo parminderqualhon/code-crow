@@ -1,6 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-// import { SwPush } from '@angular/service-worker';
 // import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../services/user.service'
 import { SfxService, SoundEffect } from '../../../services/sfx.service'
@@ -32,7 +31,6 @@ export class UserSettingsComponent implements AfterViewInit {
         private formbuilder: FormBuilder,
         private userService: UserService,
         private fb: FormBuilder,
-        // private swPush: SwPush,
         private sfxService: SfxService,
         private authService: AuthService
     ) {

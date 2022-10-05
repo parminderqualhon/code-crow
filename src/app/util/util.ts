@@ -1,7 +1,5 @@
 import { environment } from '../../environments/environment'
-import * as CryptoJS from 'crypto-js'
 import { trigger, transition, style, animate, stagger, keyframes, query } from '@angular/animations'
-import { HttpClient } from '@angular/common/http'
 
 export class Util {
     static inOutAnimation: [any] = [
@@ -114,14 +112,6 @@ export class Util {
             imageHeight: '358',
             url: environment.hostUrl
         }
-    }
-
-    static decrypt(value, key): string {
-        return CryptoJS.AES.decrypt(value, key).toString(CryptoJS.enc.Utf8)
-    }
-
-    static encrypt(value, key): string {
-        return CryptoJS.AES.encrypt(JSON.stringify({ value }), key).toString()
     }
 
     static compare(a: number | string, b: number | string, isAsc: boolean) {
