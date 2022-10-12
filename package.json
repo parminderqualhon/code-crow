@@ -27,7 +27,7 @@
         "@angular/platform-browser": "^14.2.4",
         "@angular/platform-browser-dynamic": "^14.2.4",
         "@angular/pwa": "^14.2.5",
-        "@angular/router": "^14.2.5",
+        "@angular/router": "^14.2.6",
         "@angular/service-worker": "^14.2.4",
         "@babel/runtime": "^7.19.4",
         "@ctrl/ngx-emoji-mart": "^7.0.0",
