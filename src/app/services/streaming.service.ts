@@ -106,8 +106,8 @@ export class StreamingService {
 
     async getRoomMembers({ channelId, isParticipant, skip, limit }): Promise<any> {
         return await lastValueFrom(this.http
-            .get(`${environment.apiUrl}/channelMembers/${channelId}`, {
-                params: { isParticipant, skip, limit }
+            .get(`${environment.apiUrl}/channel-members`, {
+                params: { channelId, isParticipant, skip, limit }
             }))
     }
 

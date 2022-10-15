@@ -55,7 +55,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         try {
             this.user = this.authService.currentUser
             if (this.user) {
-                await this.connectToChannel(this.user)
+                this.connectToChannel()
                 this.sharedService.wasHomePressed = true
             }
         } catch (err) {
@@ -63,7 +63,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    connectToChannel(user) {
+    connectToChannel() {
         this.activatedRoute.params.subscribe(async ({ channelId }) => {
             try {
                 var channel = await this.channelService.getChannel({ channelId })
@@ -77,26 +77,26 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                     return
                 } else if (
                     channel.isPrivate &&
-                    channel.user != user._id &&
-                    !channel.notificationSubscribers.includes(user._id)
+                    channel.user != this.user._id &&
+                    !channel.notificationSubscribers.includes(this.user._id)
                 ) {
                     this.router.navigate(['/'])
                     this.showWaitingRoomDialog(channel)
                 } else {
                     channel = await this.channelService.enterChannel(channel)
                     this.updateMetaTags(channel)
-                    this.socket.emitChannelSubscribeByUser(channelId, user._id)
+                    this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
                 }
 
                 this.socket.listenToRemovedUser(channel._id).subscribe((request) => {
-                    if (!user.isAdmin && request.userId == user._id) {
-                        this.channelService.leaveChannel(user._id)
+                    if (!this.user.isAdmin && request.userId == this.user._id) {
+                        this.channelService.leaveChannel(this.user._id)
                         this.router.navigate(['/'])
                     }
                 })
 
                 this.socket.listenToChannelTyping(channel._id).subscribe((data) => {
-                    if (data.user && data.user._id != user._id) {
+                    if (data.user && data.user._id != this.user._id) {
                         this.typingUser = data.user
                         this.isTyping = data.user.isTyping
                     }

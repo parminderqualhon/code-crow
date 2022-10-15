@@ -48,7 +48,7 @@ export class ChannelService {
         isGroupChat: boolean = false
     ) {
         const channel: any = await this.http
-            .put(`${environment.apiUrl}/channel`, {
+            .post(`${environment.apiUrl}/channel`, {
                 title,
                 description,
                 thumbnail,
