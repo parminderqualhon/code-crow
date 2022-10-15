@@ -1,4 +1,3 @@
-import { SwPush } from '@angular/service-worker'
 import { VideoService } from './../../../services/video.service'
 import { StreamingService } from './../../../services/streaming.service'
 import { SfxService, SoundEffect } from './../../../services/sfx.service'
@@ -19,12 +18,10 @@ import { ChannelSettingsComponent } from '../channel/channel-settings/channel-se
 import { UserService } from '../../../services/user.service'
 import { DialogService } from '../../../services/dialog.service'
 import { DialogData } from '../../../shared/dialog-data'
-import { Util } from '../../../util/util'
 import { Socket } from '../../../services/socket.service'
 import { Subscription } from 'rxjs'
 import { AuthService } from '../../../auth/auth.service'
 import { SharedService } from '../../../services/shared.service'
-import { environment } from '../../../../environments/environment'
 import { MatMenu } from '@angular/material/menu'
 
 @Component({
@@ -44,7 +41,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     public currentUser: any
     public notificationObject: any
     private hasScrolledBottom = false
-    public password: string
     public hasInitialMessages: boolean = false
     public isShowingChannelDetails: boolean = false
     public attachments: string[]
@@ -72,7 +68,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         public videoService: VideoService,
         private authService: AuthService,
         private sharedService: SharedService,
-        private swPush: SwPush
     ) {}
 
     async ngOnInit() {
@@ -81,12 +76,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.userId = _id
         this.host = await this.userService.getUserById(this.channelService.currentChannel.user)
         this.notificationObject = notificationObject
-        if (this.channelService.currentChannel.password) {
-            this.password = Util.decrypt(
-                this.channelService.currentChannel.password,
-                this.channelService.currentChannel.user
-            )
-        }
         this.attachments = this.channelService.currentChannel.attachments
         this.chatService.messages = []
         this.chatService.isGettingMessages = true

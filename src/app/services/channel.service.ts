@@ -16,7 +16,6 @@ export class ChannelService {
     public currentChannel: any
     private skip: any
     private limit: any
-    public hasAccess: boolean = false
     private user: any
     public searchQuery: string = ''
     public isAddChannelEnabled: boolean = false
@@ -164,8 +163,7 @@ export class ChannelService {
     addAttachments({ channelId, attachmentUrl }): Promise<any> {
         return this.http
             .put(
-                `${
-                    environment.apiUrl
+                `${environment.apiUrl
                 }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
                     attachmentUrl
                 )}`,
@@ -177,8 +175,7 @@ export class ChannelService {
     deleteAttachment({ channelId, attachmentUrl }): Promise<any> {
         return this.http
             .delete(
-                `${
-                    environment.apiUrl
+                `${environment.apiUrl
                 }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
                     attachmentUrl
                 )}`
@@ -192,8 +189,7 @@ export class ChannelService {
         thumbnail,
         techStack,
         tags,
-        password,
-        makeChange,
+        isPrivate,
         userId
     }): Promise<any> {
         return this.http
@@ -203,8 +199,7 @@ export class ChannelService {
                 thumbnail,
                 techStack,
                 tags,
-                password,
-                makeChange,
+                isPrivate,
                 userId
             })
             .toPromise()
@@ -256,12 +251,12 @@ export class ChannelService {
     }
 
     async getMyChannels(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/channels/me/hosted`,{
-            headers:{
-            userId: localStorage.getItem('userId'),
-            authorization: localStorage.getItem('jwt')
-        }
-    }).toPromise()
+        return this.http.get(`${environment.apiUrl}/channels/me/hosted`, {
+            headers: {
+                userId: localStorage.getItem('userId'),
+                authorization: localStorage.getItem('jwt')
+            }
+        }).toPromise()
     }
 
     async getChannelsByUserId({ userId, searchQuery = null, skip = 0, limit = 50 }): Promise<any> {
@@ -284,7 +279,7 @@ export class ChannelService {
                     skip: this.skip,
                     limit: this.limit
                 },
-                headers:{
+                headers: {
                     userId: localStorage.getItem('userId'),
                     authorization: localStorage.getItem('jwt')
                 }
@@ -339,12 +334,6 @@ export class ChannelService {
             }
             this.currentChannel = null
         }
-    }
-
-    confirmPassword(channel, password) {
-        const decryptedPassword = Util.decrypt(channel.password, channel.user)
-        this.hasAccess = decryptedPassword == password
-        return this.hasAccess
     }
 
     async enterChannel(channel): Promise<any> {

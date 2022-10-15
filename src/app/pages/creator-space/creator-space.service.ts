@@ -54,7 +54,7 @@ export class CreatorSpaceService {
     }
 
     public getMonthLiveStreaming(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/liveStreaming/me/montly`).toPromise()
+        return this.http.get(`${environment.apiUrl}/live-streams/me/montly`).toPromise()
     }
 
     errorMgmt(error: HttpErrorResponse) {

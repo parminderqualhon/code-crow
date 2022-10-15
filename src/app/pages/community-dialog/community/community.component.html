@@ -33,23 +33,6 @@
             </mat-expansion-panel>
         </div>
 
-        <!-- <div class="friends-card bg-seagreen"
-            *ngIf='!friendService.isShowingSearchResults && friendService.receivedRequests.length'>
-            <mat-expansion-panel [expanded]="true">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Received Requests</mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div class="app-friends-list-item">
-                    <div class="custom-scroll" [@cardAnimation]="friendService.receivedRequests.length">
-                        <div *ngFor="let item of friendService.receivedRequests">
-                            <app-friend-item [friend]="item"></app-friend-item>
-                        </div>
-                    </div>
-                </div>
-            </mat-expansion-panel>
-        </div> -->
-
         <!-- <div class="bg-green" *ngIf="!friendService.isShowingSearchResults && groupChats.length">
             <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header>
@@ -62,23 +45,6 @@
                             <app-friend-item [friendGroup]="item" [isGroupItem]="false"
                                 (leaveGroup)="removeGroup($event)">
                             </app-friend-item>
-                        </div>
-                    </div>
-                </div>
-            </mat-expansion-panel>
-        </div> -->
-
-        <!-- <div class="friends-card bg-purple"
-            *ngIf='!friendService.isShowingSearchResults && friendService.sentRequests.length'>
-            <mat-expansion-panel [expanded]="true">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Sent Requests</mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div class="app-friends-list-item">
-                    <div class="custom-scroll" [@cardAnimation]="friendService.sentRequests.length">
-                        <div *ngFor="let item of friendService.sentRequests">
-                            <app-friend-item [friend]="item"></app-friend-item>
                         </div>
                     </div>
                 </div>

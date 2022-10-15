@@ -10,7 +10,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { UserService } from '../../services/user.service'
 import { Title, Meta } from '@angular/platform-browser'
 import { environment } from '../../../environments/environment'
-import { PasswordDialogComponent } from './channel/password-dialog/password-dialog.component'
+import { WaitingRoomDialogComponent } from './channel/waiting-room-dialog/waiting-room-dialog.component'
 import { ChannelService } from '../../services/channel.service'
 import { GroupchatService } from '../../services/groupchat.service'
 import { AuthService } from '../../auth/auth.service'
@@ -76,19 +76,16 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                     )
                     return
                 } else if (
-                    channel.password &&
+                    channel.isPrivate &&
                     channel.user != this.user._id &&
-                    !channel.notificationSubscribers.includes(this.user._id) &&
-                    !this.channelService.hasAccess
+                    !channel.notificationSubscribers.includes(this.user._id)
                 ) {
                     this.router.navigate(['/'])
-                    this.showPasswordDialog(channel)
+                    this.showWaitingRoomDialog(channel)
                 } else {
                     channel = await this.channelService.enterChannel(channel)
                     this.updateMetaTags(channel)
-                    console.log(this.user)
                     this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
-                    this.channelService.hasAccess = false
                 }
 
                 this.socket.listenToRemovedUser(channel._id).subscribe((request) => {
@@ -110,8 +107,8 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         })
     }
 
-    showPasswordDialog(channel) {
-        this.dialog.open(PasswordDialogComponent, {
+    showWaitingRoomDialog(channel) {
+        this.dialog.open(WaitingRoomDialogComponent, {
             width: '400px',
             data: {
                 channel: channel

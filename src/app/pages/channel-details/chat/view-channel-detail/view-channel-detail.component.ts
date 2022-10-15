@@ -37,8 +37,6 @@ export class ViewChannelDetailComponent implements OnInit {
     public tagCtrl = new FormControl()
     separatorKeysCodes: number[] = [ENTER, COMMA]
     public isPrivate: boolean
-    public password: string
-    public makeChange: string = 'unchange'
     public isOwner: boolean = false
     @ViewChild('techStackVal') techStackVal: ElementRef
     searchText = ''
@@ -63,28 +61,24 @@ export class ViewChannelDetailComponent implements OnInit {
         this.techStack = this.channelService.currentChannel.techStack
         this.thumbnail = this.channelService.currentChannel.thumbnail
         this.tags = this.channelService.currentChannel.tags
-        this.isPrivate = this.channelService.currentChannel.password ? true : false
-        if (this.isPrivate)
-            this.password = Util.decrypt(
-                this.channelService.currentChannel.password,
-                this.channelService.currentChannel.user
-            )
+        this.isPrivate = this.channelService.currentChannel.isPrivate
         this.socket
             .listenToChannelUpdate(this.channelService.currentChannel._id)
             .subscribe((request) => {
                 this.channelService.currentChannel.description = request.channel.description
+                this.channelService.currentChannel.techStack = this.channelService.currentChannel.techStack
+                this.channelService.currentChannel.tags = this.channelService.currentChannel.tags
                 this.channelService.currentChannel.thumbnail = request.channel.thumbnail
-                this.channelService.currentChannel.password = request.channel.password
+                this.channelService.currentChannel.isPrivate = request.channel.isPrivate
                 this.channelService.currentChannel.attachments = request.channel.attachments
+
                 this.description = this.channelService.currentChannel.description
                 this.techStack = this.channelService.currentChannel.techStack
                 this.tags = this.channelService.currentChannel.tags
-                this.password = Util.decrypt(
-                    this.channelService.currentChannel.password,
-                    this.channelService.currentChannel.user
-                )
-                this.isPrivate = this.channelService.currentChannel.password ? true : false
+                this.thumbnail = this.channelService.currentChannel.thumbnail
+                this.isPrivate = this.channelService.currentChannel.isPrivate
                 this.attachments = this.channelService.currentChannel.attachments
+
                 this.sfxService.playAudio(SoundEffect.ChannelUpdates)
                 this.snackBar.open('Channel details have been updated!', null, {
                     duration: 3000
@@ -139,8 +133,7 @@ export class ViewChannelDetailComponent implements OnInit {
                     thumbnail: thumbnailUrl,
                     techStack: this.techStack,
                     tags: this.tags,
-                    password: this.password,
-                    makeChange: this.makeChange,
+                    isPrivate: this.isPrivate,
                     userId: this.channelService.currentChannel.user
                 })
                 this.channelService.currentChannel.thumbnail = channel.thumbnail
@@ -214,42 +207,18 @@ export class ViewChannelDetailComponent implements OnInit {
         }
     }
 
-    async makePublic() {
+    async togglePrivate() {
         if (this.isOwner) {
-            this.makeChange = 'public'
             let channel = await this.channelService.updateChannelInfo({
                 channelId: this.channelService.currentChannel._id,
                 description: this.description,
                 thumbnail: this.thumbnail,
                 techStack: this.techStack,
                 tags: this.tags,
-                password: this.password,
-                makeChange: this.makeChange,
+                isPrivate: this.isPrivate,
                 userId: this.channelService.currentChannel.user
             })
-            this.isPrivate = channel.password ? true : false
-            this.password = Util.decrypt(channel.password, channel.user)
-            this.makeChange = 'unchange'
-            this.socket.emitChannelUpdate(channel)
-        }
-    }
-
-    async makePrivate() {
-        if (this.isOwner) {
-            this.makeChange = 'private'
-            let channel = await this.channelService.updateChannelInfo({
-                channelId: this.channelService.currentChannel._id,
-                description: this.description,
-                thumbnail: this.thumbnail,
-                techStack: this.techStack,
-                tags: this.tags,
-                password: this.password,
-                makeChange: this.makeChange,
-                userId: this.channelService.currentChannel.user
-            })
-            this.isPrivate = channel.password ? true : false
-            this.password = Util.decrypt(channel.password, channel.user)
-            this.makeChange = 'unchange'
+            this.isPrivate = !this.isPrivate
             this.socket.emitChannelUpdate(channel)
         }
     }
@@ -261,23 +230,12 @@ export class ViewChannelDetailComponent implements OnInit {
             thumbnail: this.thumbnail,
             techStack: this.techStack,
             tags: this.tags,
-            password: this.password,
-            makeChange: this.makeChange,
+            isPrivate: this.isPrivate,
             userId: this.channelService.currentChannel.user
         })
         this.editDetail = !this.editDetail
         this.channelService.currentChannel.description = channel.description
         this.socket.emitChannelUpdate(channel)
-    }
-
-    copyToClipboard() {
-        if (this.isPrivate) {
-            navigator.clipboard
-                .writeText(this.password)
-                .then()
-                .catch((e) => console.error(e))
-            this.userService.showSnackBar('Password copied to clipboard', 3000)
-        }
     }
 
     getImagePath(techName) {
@@ -303,15 +261,14 @@ export class ViewChannelDetailComponent implements OnInit {
     }
 
     async techStackUpdate() {
-        this.techStack = this.techList.filter((x) => x.item_status).map((x) => x.item_text)
+        this.techStack = this.techList.filter(item => item.item_status).map(item => item.item_text)
         let channel = await this.channelService.updateChannelInfo({
             channelId: this.channelService.currentChannel._id,
             description: this.description,
             thumbnail: this.thumbnail,
             techStack: this.techStack,
             tags: this.tags,
-            password: this.password,
-            makeChange: this.makeChange,
+            isPrivate: this.isPrivate,
             userId: this.channelService.currentChannel.user
         })
         this.editTechStack = !this.editTechStack
@@ -387,8 +344,7 @@ export class ViewChannelDetailComponent implements OnInit {
             thumbnail: this.thumbnail,
             techStack: this.techStack,
             tags: this.tags,
-            password: this.password,
-            makeChange: this.makeChange,
+            isPrivate: this.isPrivate,
             userId: this.channelService.currentChannel.user
         })
         this.editTags = !this.editTags
