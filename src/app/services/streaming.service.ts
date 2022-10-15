@@ -105,8 +105,8 @@ export class StreamingService {
 
     getRoomMembers({ channelId, isParticipant, skip, limit }): Promise<any> {
         return this.http
-            .get(`${environment.apiUrl}/channelMembers/${channelId}`, {
-                params: { isParticipant, skip, limit }
+            .get(`${environment.apiUrl}/channel-members`, {
+                params: { channelId ,isParticipant, skip, limit }
             })
             .toPromise()
     }

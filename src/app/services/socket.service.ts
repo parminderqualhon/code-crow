@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
+import { async, Observable } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { isPlatformBrowser } from '@angular/common'
 import { Inject, PLATFORM_ID } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
+
 
 @Injectable({
     providedIn: 'root'
@@ -12,11 +14,35 @@ export class Socket {
     private isBrowser: boolean
     public socketIdentified: boolean = false
     public sessionName: string
-
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    public id: string
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, public http: HttpClient) {
         this.isBrowser = isPlatformBrowser(this.platformId)
         if (this.isBrowser) {
-            this.apiSocket = new WebSocket(`${environment.webSocketUrl}/websocket/room/websocket`)
+            let websocketId: string = ""
+            http.get(`${environment.apiUrl}/wsinit/wsid`, {responseType: 'text'}).subscribe((data: string)=>{
+                websocketId = data
+           
+                this.apiSocket = new WebSocket(`${environment.webSocketUrl}/wsinit/wsid/${websocketId}/connect`)
+            
+                this.apiSocket.addEventListener('open', (data)=> {
+                    console.log("socket connection open")
+                    console.log(data)
+                })
+                this.apiSocket.addEventListener('message', (data)=> {
+                    console.log("listening to messages")
+                    console.log(data)
+                })
+                this.apiSocket.addEventListener('error', (data)=> {
+                    console.log("socket connection error")
+                    console.log(data)
+                })
+                this.apiSocket.addEventListener('close', (data)=> {
+                    console.log("socket connection close")
+                    console.log(data)
+                })
+           
+            })
+        
         }
     }
 
@@ -173,7 +199,7 @@ export class Socket {
             JSON.stringify({
                 eventName: `channel-subscribe`,
                 channel: channelId,
-                user: userId
+                userId: userId
             })
         )
     }
