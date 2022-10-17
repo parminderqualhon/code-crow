@@ -54,7 +54,7 @@
         "rxjs": "7.5.7",
         "tslib": "^2.3.1",
         "twilio-video": "^2.24.3",
-        "util": "^0.12.4",
+        "util": "^0.12.5",
         "webpack": "^5.58.2",
         "webpack-dev-server": "^4.3.1",
         "zone.js": "~0.11.4"
