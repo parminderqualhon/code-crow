@@ -82,7 +82,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.isNotificationsEnabled =
             this.channelService.currentChannel.notificationSubscribers.includes(this.userId)
-
+        console.log(this.channelService.currentChannel._id)
         this.subscription = this.socket
             .listenToChannelMessage(this.channelService.currentChannel._id)
             .subscribe((data) => {
@@ -126,7 +126,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                         //     }
                         // })
                     } else {
-                        if (data.user._id != _id && !data.body.includes('has entered the channel'))
+                        console.log(data)
+                        if (data.userData.id != _id && !data.message.includes('has entered the channel'))
                             this.sfxService.playAudio(SoundEffect.ReceivedMessage)
                         this.chatService.messages.push(data)
                         this.hasScrolledBottom = false

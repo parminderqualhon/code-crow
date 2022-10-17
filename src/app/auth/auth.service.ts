@@ -47,7 +47,7 @@ export class AuthService {
             .then((res) => {
                 this.setUser(res['user'])
                 if (res['freshJwt']) this.setJWT(res['freshJwt'])
-                return res['user']
+                return res['user'][0]
             })
             .catch((e) => {
                 if (e.status === 401 || e.includes('Error')) this.logout()

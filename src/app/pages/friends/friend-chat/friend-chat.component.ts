@@ -122,9 +122,9 @@ export class FriendChatComponent implements OnInit, AfterViewChecked, OnDestroy 
             })
 
         this.socket.listenToChannelTyping(this.chat.chat.channel).subscribe((data) => {
-            if (data.user && this.user && data.user._id != this.user._id) {
+            if (data.userData && this.user && data.userData.id != this.user._id) {
                 this.typingUser = data.user
-                this.isTyping = data.user.isTyping
+                this.isTyping = data.isTyping
             }
         })
     }

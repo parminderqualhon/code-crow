@@ -93,7 +93,7 @@ export class ChatService {
             data.skip = chat.skip
         }
 
-        this.socket.emitHistoryToChannel(chat.chat.channel, JSON.stringify(data))
+        this.socket.emitHistoryToChannel(chat.channel, JSON.stringify(data))
     }
 
     async sendMessage(channel, attributes): Promise<any> {
@@ -117,7 +117,7 @@ export class ChatService {
                 user: user,
                 author: user.displayName
             }
-            this.socket.emitMessageToChannel(channel._id, JSON.stringify(completeMessage))
+            this.socket.emitMessageToChannel(channel._id, completeMessage)
             this.lastMessageSendDate = new Date()
             this.sendEmailAndWebNotifications(channel, user, attributes)
         }
