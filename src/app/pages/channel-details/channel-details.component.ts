@@ -86,7 +86,6 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                 } else {
                     channel = await this.channelService.enterChannel(channel)
                     this.updateMetaTags(channel)
-                    console.log(this.user)
                     this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
                     this.channelService.hasAccess = false
                 }
@@ -99,9 +98,9 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                 })
 
                 this.socket.listenToChannelTyping(channel._id).subscribe((data) => {
-                    if (data.user && data.user._id != this.user._id) {
+                    if (data.userData && data.userData.id != this.user._id) {
                         this.typingUser = data.user
-                        this.isTyping = data.user.isTyping
+                        this.isTyping = data.isTyping
                     }
                 })
             } catch (err) {
