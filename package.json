@@ -34,7 +34,7 @@
         "@ngx-pwa/local-storage": "^13.0.5",
         "@schematics/angular": "^14.2.6",
         "@solana/spl-token": "^0.1.8",
-        "@solana/web3.js": "^1.66.1",
+        "@solana/web3.js": "^1.66.2",
         "@videogular/ngx-videogular": "^6.0.0",
         "animate.css": "^4.1.1",
         "babel-runtime": "^6.26.0",
