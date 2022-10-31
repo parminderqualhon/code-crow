@@ -50,7 +50,7 @@
         "ng2-pdf-viewer": "^9.1.2",
         "ngx-infinite-scroll": "^14.0.0",
         "ngx-lottie": "^9.1.0",
-        "pdfjs-dist": "2.16.105",
+        "pdfjs-dist": "3.0.279",
         "rxjs": "7.5.7",
         "tslib": "^2.3.1",
         "twilio-video": "^2.24.3",
