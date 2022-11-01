@@ -97,7 +97,7 @@ export class ChannelService {
     async removeChannelFromUser({ channelId, userId }) {
         const userUpdate = await this.http
             .delete(`${environment.apiUrl}/users/channels?channelId=${channelId}`, {
-                params: { userId }
+                headers: { userId }
             })
             .toPromise()
         if (this.user == userId) this.authService.setUser(userUpdate)
@@ -266,8 +266,8 @@ export class ChannelService {
 
     async getChannelsByUserId({ userId, searchQuery = null, skip = 0, limit = 50 }): Promise<any> {
         return this.http
-            .get(`${environment.apiUrl}/channels/user?userId=${userId}`, {
-                params: { searchQuery, skip, limit }
+            .get(`${environment.apiUrl}/channels/user`, {
+                params: { searchQuery, skip, limit }, headers:{userId}
             })
             .toPromise()
     }
@@ -357,7 +357,7 @@ export class ChannelService {
     }
 
     async toggleNotifications({ channel, userId }) {
-        if (channel.notificationSubscribers.includes(userId)) {
+        if (channel?.notificationSubscribers?.includes(userId)) {
             await this.removeChannelFromUser({ channelId: channel._id, userId })
             await this.removeChannelNotificationSubscriber({
                 channelId: channel._id,

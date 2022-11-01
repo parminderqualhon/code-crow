@@ -52,11 +52,11 @@
                 (scrolledUp)="onScrollUp($event)">
                 <div *ngFor="let item of chat.messages">
                     <div class="app-chat-message-row d-flex justify-content-end">
-                        <app-message [Sender]="item.author" [SenderId]="item.attributes.userId"
-                            [When]="item.state.timestamp" [Content]="item.body" [Avatar]="item.attributes.avatar"
-                            [UserId]="user._id" [Message]="item" [Image]="item.attributes.media"
-                            [MimeType]="item.attributes.type" [File]="item.attributes.file"
-                            [FileName]="item.attributes.text" [oneVone]="true">
+                        <app-message [Sender]="item.userData.displayName" [SenderId]="item.userData._id"
+                            [When]="item.timestamp" [Content]="item.message" [Avatar]="item.userData.avatar"
+                            [UserId]="user._id" [Message]="item" [Image]="item?.attributes?.media"
+                            [MimeType]="item?.attributes?.type" [File]="item?.attributes?.file"
+                            [FileName]="item?.attributes?.text" [oneVone]="true">
                         </app-message>
                     </div>
                 </div>

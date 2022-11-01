@@ -93,11 +93,11 @@ export class AppComponent implements OnInit {
                     return
                 }
             })
-
-            if (this.isAuthenticated) {
+                if(this.isAuthenticated){
                 this.isLoading = false
                 await this.onInitsubMethod()
             }
+            
         } catch (e) {
             this.isLoading = false
             console.log(e)
@@ -124,15 +124,13 @@ export class AppComponent implements OnInit {
                         this.authService.setUser(request.user)
                     })
 
-                    this.socket.listenToChatMessages().subscribe(async (source2) => {
-                        this.chatService.incomingMessageActivateChatTab(source2)
+                    this.socket.listenToChatMessages().subscribe(async (data) => {
+                        this.chatService.incomingMessageActivateChatTab(data.data)
                     })
                 }
             }
-            this.socket.apiSocket.onopen = () => {
                 if (this.socket.apiSocket.readyState == WebSocket.OPEN) onConnectionSuccess()
-                this.socket.apiSocket.addEventListener('connect', onConnectionSuccess)
-            }
+            
             await this.sfxService.getAllSavedMutedSfx()
         } catch (e) {
             console.log(e)

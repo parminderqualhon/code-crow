@@ -74,7 +74,9 @@ export class ChatService {
     }
 
     getTrendingGifs(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/giphy/trending`).toPromise()
+         return this.http.get(`${environment.apiUrl}/giphy/trending`).toPromise().then((result: any)=>{
+            return this.http.get(result.url).toPromise
+        })
     }
 
     searchGifs(query): Promise<any> {
@@ -96,7 +98,7 @@ export class ChatService {
         this.socket.emitHistoryToChannel(chat.channel, JSON.stringify(data))
     }
 
-    async sendMessage(channel, attributes): Promise<any> {
+    async sendChannelMessage(channel, attributes): Promise<any> {
         const dateNow = new Date()
         const diff = Math.round(
             Math.abs((dateNow.getTime() - this.lastMessageSendDate.getTime()) / 1000)
@@ -123,9 +125,26 @@ export class ChatService {
         }
     }
 
+    async sendChatMessage(chat, attributes): Promise<any> {
+            const user = this.authService.currentUser
+            attributes.userId = user._id
+            attributes.avatar = user.avatar
+            var completeMessage = {
+                attributes: attributes,
+                body: attributes.text,
+                state: { timestamp: new Date().toISOString() },
+                user: user,
+                author: user.displayName
+            }
+            this.socket.emitChatMessage({source1: chat.source1, source2: chat.source2, message: completeMessage})
+            this.lastMessageSendDate = new Date()
+            this.sendEmailAndWebNotifications(chat._id, user, attributes)
+        
+    }
+
     async sendEmailAndWebNotifications(channel, user, attributes) {
         let notificationSubscribers = []
-        notificationSubscribers = channel.notificationSubscribers.filter((id) =>
+        notificationSubscribers = channel?.notificationSubscribers?.filter((id) =>
             id == user._id ? false : true
         )
         if (notificationSubscribers.length) {
@@ -159,25 +178,22 @@ export class ChatService {
         }
     }
 
-    emitChannelChatTypingByUser(channelId, typingUser) {
-        this.socket.emitChannelChatTypingByUser(channelId, typingUser)
+    emitChannelChatTypingByUser(typingUser, channelId?) {
+        if(!channelId){
+            this.socket.emitChatTypingByUser(typingUser)
+        }
+        else{
+            this.socket.emitChannelChatTypingByUser(channelId,typingUser)
+        }
     }
 
     async createChat({ source1, source2, user }): Promise<any> {
-        const channel = await this.channelService.createChannel(
-            `__hide__${source1}__${source2}__`,
-            `1v1_chat_${source1}__${source2}__`,
-            null,
-            [],
-            [],
-            false,
-            user
-        )
+
+
         const chat: any = await this.http
             .put(`${environment.apiUrl}/chats`, {
                 source1,
                 source2,
-                channelId: channel._id
             })
             .toPromise()
         const doesChatExist = this.chats.some((cht) => chat._id === cht._id)
@@ -277,12 +293,19 @@ export class ChatService {
                 source1: this.authService.currentUser._id,
                 source2: chat._id
             })
+            console.log("existingChat")
+
+            console.log(existingChat)
             if (!existingChat) {
+                console.log(chat)
+
                 chat = await this.createChat({
                     source1: this.authService.currentUser._id,
                     source2: chat._id,
                     user: chat
                 })
+                console.log("here creating new chat")
+                console.log(chat)
             } else {
                 chat = existingChat
             }
@@ -292,12 +315,10 @@ export class ChatService {
 
     async activateChatTab($chat) {
         const user = this.authService.currentUser
-        if (!this.activeTabs.filter((chat) => chat._id == $chat._id).length) {
-            this.socket.emitChannelSubscribeByUser($chat.chat.channel, user._id)
+            if (this.checkAlreadyExist($chat)) return
             this.activeTabs.push($chat)
             await this.clearUnreadMessageCount({ chatId: $chat.chat._id })
             $chat.chat.unreadMessageCount = 0
-        }
     }
 
     async activateGroupTab($group) {
@@ -308,21 +329,29 @@ export class ChatService {
     }
 
     checkAlreadyExist(item) {
-        return this.activeTabs.indexOf(item) !== -1
+        let chat = this.activeTabs.find((chat)=>{
+            if(chat._id === item._id || ((chat.source1===item.source1 && chat.source2 === item.source2)|| 
+            (chat.source2===item.source1 && chat.source1 === item.source2))){
+                return true
+            }
+        })
+        alert(chat)
+        return (this.activeTabs.indexOf(item) !== -1) || (chat !== undefined)
     }
 
-    async incomingMessageActivateChatTab(source2: string) {
+    async incomingMessageActivateChatTab(data: any) {
         const user = this.authService.currentUser
-        const otherUser = this.userService.getUserById(source2)
+        const otherUser = this.userService.getUserById(data.source1)
         var chat = null
         const existingChat = await this.getChat({
             source1: this.authService.currentUser._id,
-            source2
+            source2: data.source1
         })
         if (!existingChat) {
+            console.log(data.source2)
             chat = await this.createChat({
                 source1: this.authService.currentUser._id,
-                source2: chat._id,
+                source2: data.source1,
                 user: otherUser
             })
         } else {

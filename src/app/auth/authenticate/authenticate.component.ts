@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { PLATFORM_ID, Inject } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
+import { Socket } from '../../services/socket.service'
 
 @Component({
     selector: 'app-authenticate',
@@ -18,6 +19,7 @@ export class AuthenticateComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private authService: AuthService,
+        public socket: Socket,
         @Inject(PLATFORM_ID) platformId: string
     ) {
         this.isBrowser = isPlatformBrowser(platformId)
@@ -41,6 +43,18 @@ export class AuthenticateComponent implements OnInit {
                     )
                     await this.authService.logout()
                 } else {
+                    try {
+                        const onConnectionSuccess = async () => {
+                                await this.socket.emitUserConnection(user._id, true)
+                                this.socket.listenToUserConnection(user._id).subscribe(async (data) => {
+                                    this.authService.setUser(data.user)
+                                })
+                        }
+                        if (this.socket.apiSocket.readyState == WebSocket.OPEN) await onConnectionSuccess()
+                      
+                    } catch (e) {
+                        console.log(e)
+                    }
                     this.router.navigate(['/'])
                 }
             } else {

@@ -2,9 +2,9 @@
     <div class="border-bottom header-search sticky">
         <div class="app-search-bar" (click)="$event.stopPropagation()">
             <input type="search" [(ngModel)]="userService.searchQuery"
-                (change)="friendService.searchUsers(userService.searchQuery)" placeholder="Search community"
+                (change)="friendService.searchUsers(userService.searchQuery,userId)" placeholder="Search community"
                 (click)="$event.stopPropagation()" />
-            <span class="app-search-btn search-btn" (click)="friendService.searchUsers(userService.searchQuery)">
+            <span class="app-search-btn search-btn" (click)="friendService.searchUsers(userService.searchQuery,userId)">
             </span>
         </div>
     </div>
