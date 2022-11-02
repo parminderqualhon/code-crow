@@ -39,7 +39,7 @@ export class ChannelSettingsComponent implements OnInit {
             this.channelService.currentChannel = await this.channelService.getChannel({
                 channelId: this.channelService.currentChannel._id
             })
-            this.members = await this.streamingService.getRoomMembers({
+            this.members = await this.streamingService.getMembers({
                 channelId: this.channelService.currentChannel._id,
                 isParticipant: false,
                 skip: this.skip,
@@ -74,7 +74,7 @@ export class ChannelSettingsComponent implements OnInit {
     async onScroll(e) {
         var { scrollHeight, scrollTop, clientHeight } = e.srcElement
         if (scrollHeight - clientHeight <= scrollTop) {
-            const members = await this.streamingService.getRoomMembers({
+            const members = await this.streamingService.getMembers({
                 channelId: this.channelService.currentChannel._id,
                 isParticipant: false,
                 skip: this.skip,

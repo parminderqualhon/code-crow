@@ -64,12 +64,12 @@
             <mat-card class="stream-details my-0 mat-elevation-z8 Position-static user-action-item">
                 <span class="social-icons" [matTooltip]="!isUserList ? 'Show participants' : 'Hide participants'">
                     <i class="participants" (click)="isUserList=!isUserList"></i>
-                    &nbsp;{{ channelService.currentChannel.memberCount }}
+                    &nbsp;{{ streamingService.roomMembers.length }}
                 </span>
                 <div class="separator"></div>
                 <span [matTooltip]="'View all members'">
                     <i class="channel-users cursor-pointer" (click)="showChannelSettingsDialog()"></i>
-                    &nbsp;{{ channelService.currentChannel.memberCount }}
+                    &nbsp;{{ streamingService.channelMembersCount }}
                 </span>
                 <div class="separator"></div>
                 <!-- <span [matTooltip]="'Tip channel host'" *ngIf="host && host.walletAddress"><img
@@ -87,17 +87,19 @@
             <mat-card class="stream-controls mat-elevation-z8 Position-static user-action-item"
                 *ngIf="streamingService.userData.userType === 'host'">
                 <button mat-button class="half text-center" (click)="
-                        streamingService.userData.screenStream
-                            ? streamingService.stopScreenStream()
-                            : streamingService.startScreenStream()
-                    "
-                    [disabled]="!streamingService.streamOptions.hasWaitedOneSecondScreen || !streamingService.streamOptions.hasWaitedOneSecondWebcam || !streamingService.streamOptions.hasWaitedOneSecondAudio"
-                    [matTooltip]="'Import stream'">
+                        streamingService.userData.obsStream
+                            ? streamingService.stopObsStream()
+                            : streamingService.startObsStream()
+                    " [disabled]="!streamingService.streamOptions.hasWaitedOneSecondObs 
+                    || !streamingService.streamOptions.hasWaitedOneSecondScreen 
+                    || !streamingService.streamOptions.hasWaitedOneSecondWebcam 
+                    || !streamingService.streamOptions.hasWaitedOneSecondAudio"
+                    [matTooltip]="streamingService.userData.obsStream ? 'Stop sharing' : 'Import stream'">
                     <div class="row justify-content-center">
                         <i class="stream-control-icon stream-control-stop-import-source"
-                            *ngIf="streamingService.userData.screenStream"></i>
+                            *ngIf="streamingService.userData.obsStream"></i>
                         <i class="stream-control-icon stream-control-start-import-source"
-                            *ngIf="!streamingService.userData.screenStream"></i>
+                            *ngIf="!streamingService.userData.obsStream"></i>
                     </div>
                 </button>
                 <div class="separator"></div>
@@ -176,20 +178,22 @@
             <mat-card class="stream-controls mat-elevation-z8 Position-static user-action-item"
                 *ngIf="streamingService.userData.userType !== 'host'">
                 <button mat-button class="half text-center" (click)="
-                                                        streamingService.userData.screenStream
-                                                            ? streamingService.stopScreenStream()
-                                                            : streamingService.startScreenStream()
-                                                    " [disabled]="streamingService.userData.screenState === 'restricted' 
+                                                        streamingService.userData.obsStream
+                                                            ? streamingService.stopObsStream()
+                                                            : streamingService.startObsStream()
+                                                    " [disabled]="streamingService.userData.obsState === 'restricted' 
+                    || !streamingService.streamOptions.hasWaitedOneSecondObs
                     || !streamingService.streamOptions.hasWaitedOneSecondScreen 
                     || !streamingService.streamOptions.hasWaitedOneSecondWebcam 
                     || !streamingService.streamOptions.hasWaitedOneSecondAudio
                     || streamingService.userData.userType === 'listener' 
-                    || streamingService.streamOptions.isEveryoneSilenced" [matTooltip]="'Import stream'">
+                    || streamingService.streamOptions.isEveryoneSilenced"
+                    [matTooltip]="streamingService.userData.obsStream ? 'Stop sharing' : 'Import stream'">
                     <div class="row justify-content-center">
                         <i class="stream-control-icon stream-control-stop-import-source"
-                            *ngIf="streamingService.userData.screenStream"></i>
+                            *ngIf="streamingService.userData.obsStream"></i>
                         <i class="stream-control-icon stream-control-start-import-source"
-                            *ngIf="!streamingService.userData.screenStream"></i>
+                            *ngIf="!streamingService.userData.obsStream"></i>
                     </div>
                 </button>
                 <div class="separator"></div>

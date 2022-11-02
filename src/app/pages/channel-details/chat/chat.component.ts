@@ -251,10 +251,11 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                 if (result) {
                     this.sharedService.wasHomePressed = true
                     await this.chatService.deleteAllMessages(this.channelService.currentChannel._id)
-                    await this.streamingService.deleteAllCompositions({
-                        roomSid: this.streamingService.videoRoom.sid,
-                        channelId: this.channelService.currentChannel._id
-                    })
+                    //TODO: delete all channel videos
+                    // await this.streamingService.deleteAllCompositions({
+                    //     roomSid: this.streamingService.videoRoom.sid,
+                    //     channelId: this.channelService.currentChannel._id
+                    // })
                     await this.channelService.leaveChannel(this.userId, true)
                     this.router.navigate(['/'])
                 }
