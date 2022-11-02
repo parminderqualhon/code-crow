@@ -67,15 +67,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         this.activatedRoute.params.subscribe(async ({ channelId }) => {
             try {
                 var channel = await this.channelService.getChannel({ channelId })
-                if (channel.memberCount > 49) {
-                    this.router.navigate(['/'])
-                    this.snackBar.open(
-                        'This channel has reached its 50-user capacity. This limit will be lifted after beta',
-                        null,
-                        { duration: 5000 }
-                    )
-                    return
-                } else if (
+                if (
                     channel.isPrivate &&
                     channel.user != this.user._id &&
                     !channel.notificationSubscribers.includes(this.user._id)
