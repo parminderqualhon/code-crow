@@ -71,7 +71,7 @@
         "@angular/language-service": "^14.2.8",
         "@types/jasmine": "~4.3.0",
         "@types/jasminewd2": "^2.0.10",
-        "@types/lodash": "^4.14.169",
+        "@types/lodash": "^4.14.187",
         "@typescript-eslint/eslint-plugin": "5.42.0",
         "@typescript-eslint/parser": "5.42.0",
         "config": "^3.3.6",
