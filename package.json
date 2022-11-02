@@ -29,7 +29,7 @@
         "@angular/pwa": "^14.2.7",
         "@angular/router": "^14.2.8",
         "@angular/service-worker": "^14.2.8",
-        "@babel/runtime": "^7.20.0",
+        "@babel/runtime": "^7.20.1",
         "@ctrl/ngx-emoji-mart": "^7.0.0",
         "@ngx-pwa/local-storage": "^13.0.5",
         "@schematics/angular": "^14.2.8",
