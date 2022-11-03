@@ -106,7 +106,7 @@ export class Util {
             author: 'Code Crow Corp',
             title: 'Code Crow',
             description:
-                'A Web3 Network - Code Crow is a Stream-and-Earn platform for web3 gaming, software development, and DeFi analysis',
+                'A Web3 Network - Code Crow is a Stream-and-Earn platform for web3 gamers and developers',
             imageSrc: `${environment.hostUrl}/assets/images/logo_2.png`,
             imageWidth: '664',
             imageHeight: '358',

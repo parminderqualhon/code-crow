@@ -1,23 +1,83 @@
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
+import { async, Observable } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { isPlatformBrowser } from '@angular/common'
 import { Inject, PLATFORM_ID } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class Socket {
-    public apiSocket
+    public apiSocket: WebSocket
+    public channelSocket: WebSocket
     private isBrowser: boolean
     public socketIdentified: boolean = false
     public sessionName: string
-
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    public id: string
+    public websocketId: string
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, public http: HttpClient) {
         this.isBrowser = isPlatformBrowser(this.platformId)
-        if (this.isBrowser) {
-            this.apiSocket = new WebSocket(`${environment.webSocketUrl}/websocket/room/websocket`)
+        if (!this.isBrowser) return
+        this.http.get(`${environment.apiUrl}/wsinit/wsid`, { responseType: 'text' }).subscribe(async (data: string) => {
+            await this.setupWebsocketConnection(data, false)
+        })
+    }
+
+    async setupWebsocketConnection(websocketId, isChannelConnection) {
+        if (!isChannelConnection) {
+            return new Promise((resolve) => {
+                this.apiSocket = new WebSocket(`${environment.webSocketUrl}/wsinit/wsid/${websocketId}/connect`)
+
+                this.apiSocket.addEventListener('open', (data) => {
+                    console.log("socket connection open")
+                    console.log(data)
+                    resolve(true)
+                })
+                this.apiSocket.addEventListener('message', (data) => {
+                    console.log("listening to messages")
+                    console.log(data)
+                })
+                this.apiSocket.addEventListener('error', (data) => {
+                    console.log("socket connection error")
+                    console.log(data)
+                })
+                this.apiSocket.addEventListener('close', (data) => {
+                    console.log("socket connection close")
+                    console.log(data)
+                })
+            })
         }
+        if (isChannelConnection) {
+
+            return new Promise((resolve) => {
+                this.channelSocket = new WebSocket(`${environment.webSocketUrl}/wsinit/channelid/${websocketId}/connect`)
+
+                this.channelSocket.addEventListener('open', (data) => {
+                    console.log("channel socket connection open")
+                    console.log(data)
+                    resolve(true)
+                })
+                this.channelSocket.addEventListener('message', (data) => {
+                    console.log("listening to messages")
+                    console.log(data)
+                })
+                this.channelSocket.addEventListener('error', (data) => {
+                    console.log("socket connection error")
+                    console.log(data)
+                })
+                this.channelSocket.addEventListener('close', (data) => {
+                    console.log("socket connection close")
+                    console.log(data)
+                })
+            })
+
+        }
+    }
+
+    setupChannelSocketConnection(channelId) {
+        return this.http.get(`${environment.apiUrl}/wsinit/channelid?channelId=${channelId}`, { responseType: 'text' }).toPromise()
     }
 
     async emitUserConnection(userId: string, isOnline: boolean) {
@@ -36,9 +96,9 @@ export class Socket {
     listenToUserConnection(userId: string): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.userId === userId && data.eventName === 'user-connection') {
-                    this.sessionName = data.userId
-                    observer.next(data)
+                if (JSON.parse(data.data).eventName === `user-connection-${userId}`) {
+                    this.sessionName = JSON.parse(data.data).user.userId
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
@@ -47,8 +107,8 @@ export class Socket {
     listenToMaintenanceMode(): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === 'maintenance-mode') {
-                    observer.next(data)
+                if (JSON.parse(data.data).eventName === 'maintenance-mode') {
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
@@ -60,37 +120,36 @@ export class Socket {
 
     listenToRemovedUser(channelId): Observable<any> {
         return new Observable((observer) => {
-            this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `user-removed` && data.channel === channelId) {
-                    observer.next(data)
+            this.channelSocket.addEventListener(`message`, (data) => {
+                if (JSON.parse(data.data).eventName === `user-removed-${channelId}`) {
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
     emitRemovedUser(channelId, userId) {
-        this.apiSocket.send(JSON.stringify({ eventName: `user-removed`, channelId, userId }))
+        this.channelSocket.send(JSON.stringify({ eventName: `user-removed`, channelId, userId }))
     }
 
     listenToChannelUpdate(channelId): Observable<any> {
         return new Observable((observer) => {
-            this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `channel-update` && data.channelId === channelId) {
-                    observer.next(data)
+            this.channelSocket.addEventListener(`message`, (data) => {
+                if (JSON.parse(data.data).eventName === `channel-update-${channelId}`) {
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
     emitChannelUpdate(channelId) {
-        this.apiSocket.send(JSON.stringify({ eventName: `channel-update`, channelId }))
+        this.channelSocket.send(JSON.stringify({ eventName: `channel-update`, channelId }))
     }
 
     listenToChannelAccessRequest({ channelId }): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `channel-access-request`
-                    && data.channelId === channelId) {
+                if (JSON.parse(data.data).eventName === `channel-access-request` && JSON.parse(data.data).channelId === channelId) {
                     observer.next(data)
                 }
             })
@@ -110,8 +169,7 @@ export class Socket {
     listenToChannelAccessResponse({ channelId }): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `channel-access-response`
-                    && data.channelId === channelId) {
+                if (JSON.parse(data.data).eventName === `channel-access-response` && JSON.parse(data.data).channelId === channelId) {
                     observer.next(data)
                 }
             })
@@ -139,8 +197,8 @@ export class Socket {
     listenToVideoRecordingStarted({ channelId }): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `video-recording-started` && data.channelId === channelId) {
-                    observer.next(data)
+                if (JSON.parse(data.data).eventName === `video-recording-started` && JSON.parse(data.data).channelId === channelId) {
+                    observer.next(JSON.parse(data.data))
                     return data
                 }
             })
@@ -157,10 +215,10 @@ export class Socket {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
                 if (
-                    data.eventName === `composition-status-update` &&
-                    data.channelId === channelId
+                    JSON.parse(data.data).eventName === `composition-status-update` &&
+                    JSON.parse(data.data).channelId === channelId
                 ) {
-                    observer.next(data)
+                    observer.next(JSON.parse(data.data))
                     return data
                 }
             })
@@ -176,8 +234,8 @@ export class Socket {
     listenToCompositionDeleted({ channelId }): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `composition-deleted` && data.channelId === channelId) {
-                    observer.next(data)
+                if (JSON.parse(data.data).eventName === `composition-deleted` && JSON.parse(data.data).channelId === channelId) {
+                    observer.next(JSON.parse(data.data))
                     return data
                 }
             })
@@ -189,47 +247,67 @@ export class Socket {
     listenToChatMessages(): Observable<any> {
         return new Observable((observer) => {
             this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `message-received` && data.userId === this.sessionName) {
-                    observer.next(data)
+                if (JSON.parse(data.data).eventName === `message-received`) {
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
-    emitChatMessage({ source1, source2 }) {
-        this.apiSocket.send(JSON.stringify({ eventName: `message-sent`, source1, source2 }))
+    emitChatMessage({ source1, source2, message }) {
+        this.apiSocket.send(JSON.stringify({ eventName: `message-sent`, source1, source2, message }))
+    }
+
+    listenToChatTyping(): Observable<any> {
+        return new Observable((observer) => {
+            this.apiSocket.addEventListener(`message`, (data) => {
+                if (JSON.parse(data.data).eventName === `chat-typing`) {
+                    observer.next(JSON.parse(data.data))
+                }
+            })
+        })
+    }
+
+    emitChatTypingByUser(userId) {
+        this.apiSocket.send(
+            JSON.stringify({
+                eventName: `channel-chat-typing`,
+                user: userId
+            })
+        )
     }
 
     /************ Channel chat ****************/
 
     listenToChannelMessage(channelId): Observable<any> {
         return new Observable((observer) => {
-            this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `channel-message-${channelId}`) {
-                    observer.next(data)
+            this.channelSocket.addEventListener(`message`, (data) => {
+                if (JSON.parse(data.data).eventName === `channel-message-${channelId}`) {
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
     emitChannelSubscribeByUser(channelId, userId) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: `channel-subscribe`,
                 channel: channelId,
-                user: userId
+                userId: userId
             })
         )
+        debugger
     }
 
     emitMessageToChannel(channelId, message) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({ eventName: `channel-message`, channel: channelId, message })
         )
     }
 
     emitDeleteMessageToChannel(channelId, message) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: `delete-channel-message`,
                 channel: channelId,
@@ -239,13 +317,13 @@ export class Socket {
     }
 
     emitDeleteAllMessagesToChannel(channelId) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({ eventName: `delete-all-channel-messages`, channel: channelId })
         )
     }
 
     emitHistoryToChannel(channelId, message) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: `channel-message-history`,
                 channel: channelId,
@@ -256,16 +334,16 @@ export class Socket {
 
     listenToChannelTyping(channelId): Observable<any> {
         return new Observable((observer) => {
-            this.apiSocket.addEventListener(`message`, (data) => {
-                if (data.eventName === `typing` && data.channelId === channelId) {
-                    observer.next(data)
+            this.channelSocket.addEventListener(`message`, (data) => {
+                if (JSON.parse(data.data).eventName === `typing` && JSON.parse(data.data).channelId === channelId) {
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
     emitChannelChatTypingByUser(channelId, userId) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: `channel-chat-typing`,
                 channel: channelId,
@@ -278,23 +356,18 @@ export class Socket {
 
     listenToRoomMemberUpdate({ channelId }): Observable<any> {
         return new Observable((observer) => {
-            this.apiSocket.addEventListener(`message`, (data) => {
+            this.channelSocket.addEventListener(`message`, (data) => {
                 if (
-                    data.eventName === `channel-streaming-room-member-update` &&
-                    data.channelId === channelId
+                    JSON.parse(data.data).eventName === `channel-streaming-room-member-update-${channelId}`
                 ) {
-                    observer.next(data)
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
     emitRoomMemberUpdate({ channelId, userData, isNewUser }) {
-        userData.screenStream = null
-        userData.screenAudioStream = null
-        userData.webcamStream = null
-        userData.audioStream = null
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: 'channel-streaming-room-member-update',
                 channel: channelId,
@@ -306,23 +379,19 @@ export class Socket {
 
     listenToUserActions({ channelId }): Observable<any> {
         return new Observable((observer) => {
-            this.apiSocket.addEventListener(`message`, (data) => {
+            this.channelSocket.addEventListener(`message`, (data) => {
                 if (
-                    data.eventName === `channel-streaming-user-actions` &&
-                    data.channelId === channelId
+                    JSON.parse(data.data).eventName === `channel-streaming-user-actions` &&
+                    JSON.parse(data.data).channelId === channelId
                 ) {
-                    observer.next(data)
+                    observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
     emitUserActions({ channelId, userData, message }) {
-        userData.screenStream = null
-        userData.screenAudioStream = null
-        userData.webcamStream = null
-        userData.audioStream = null
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: `channel-streaming-user-actions`,
                 channel: channelId,
@@ -333,7 +402,7 @@ export class Socket {
     }
 
     emitReactToMessage(channelId: string, message: Object, user: Object, reaction: string) {
-        this.apiSocket.send(
+        this.channelSocket.send(
             JSON.stringify({
                 eventName: `react-to-message`,
                 channel: channelId,

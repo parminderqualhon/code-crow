@@ -81,8 +81,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.chatService.isGettingMessages = true
 
         this.isNotificationsEnabled =
-            this.channelService.currentChannel.notificationSubscribers.includes(this.userId)
-
+            this.channelService.currentChannel?.notificationSubscribers?.includes(this.userId) || true
+        console.log(this.channelService.currentChannel._id)
         this.subscription = this.socket
             .listenToChannelMessage(this.channelService.currentChannel._id)
             .subscribe((data) => {
@@ -93,7 +93,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                         if (!this.hasInitialMessages) {
                             this.hasScrolledBottom = false
                             this.hasInitialMessages = true
-                            this.chatService.sendMessage(this.channelService.currentChannel, {
+                            this.chatService.sendChannelMessage(this.channelService.currentChannel, {
                                 text: `${displayName} has entered the channel`
                             })
                         }
@@ -126,8 +126,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                         //     }
                         // })
                     } else {
-                        if (data.user._id != _id && !data.body.includes('has entered the channel'))
-                            this.sfxService.playAudio(SoundEffect.ReceivedMessage)
+                        console.log(data)
+                        //TODO: this.sfxService.playAudio should be fixed 
+                        //if (data.userData.id != _id && !data.message.includes('has entered the channel'))
+                          //  this.sfxService.playAudio(SoundEffect.ReceivedMessage)
                         this.chatService.messages.push(data)
                         this.hasScrolledBottom = false
                     }
@@ -250,10 +252,11 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                 if (result) {
                     this.sharedService.wasHomePressed = true
                     await this.chatService.deleteAllMessages(this.channelService.currentChannel._id)
-                    await this.streamingService.deleteAllCompositions({
-                        roomSid: this.streamingService.videoRoom.sid,
-                        channelId: this.channelService.currentChannel._id
-                    })
+                    //TODO: delete all channel videos
+                    // await this.streamingService.deleteAllCompositions({
+                    //     roomSid: this.streamingService.videoRoom.sid,
+                    //     channelId: this.channelService.currentChannel._id
+                    // })
                     await this.channelService.leaveChannel(this.userId, true)
                     this.router.navigate(['/'])
                 }

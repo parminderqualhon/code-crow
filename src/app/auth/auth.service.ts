@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment'
 export class AuthService {
     constructor(public http: HttpClient, private tokenStorage: TokenStorage) {}
 
-    public currentUser: any = false
+    public currentUser: any
     private userPromise: any
 
     logout() {
@@ -44,10 +44,10 @@ export class AuthService {
                 }
             })
             .toPromise()
-            .then((res) => {
-                this.setUser(res['user'])
-                if (res['freshJwt']) this.setJWT(res['freshJwt'])
-                return res['user']
+            .then((res: any) => {
+                this.setUser(res.user)
+                if (res.freshJwt) this.setJWT(res.freshJwt)
+                return res.user
             })
             .catch((e) => {
                 if (e.status === 401 || e.includes('Error')) this.logout()

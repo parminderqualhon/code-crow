@@ -1,18 +1,16 @@
 import { SharedService } from './shared.service'
 import { SfxService, SoundEffect } from './sfx.service'
 import { Injectable } from '@angular/core'
-import { v4 as uuidv4 } from 'uuid'
 import { HttpClient } from '@angular/common/http'
 import { TokenStorage } from '../auth/token.storage'
 import { Socket } from './socket.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
-import { UserService } from './user.service'
 import { AuthService } from '../auth/auth.service'
 import { environment } from '../../environments/environment'
-import { connect, LocalVideoTrack, LocalAudioTrack, LocalDataTrack } from 'twilio-video'
 import { ChannelService } from './channel.service'
-import { BehaviorSubject, Subscription } from 'rxjs'
-import { InAppSnackBarService } from './inAppSnackBar.service'
+import { Subscription, lastValueFrom } from 'rxjs'
+import { DialogService } from './dialog.service'
+import { WHIPClient } from "@eyevinn/whip-web-client"
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +19,7 @@ export class StreamingService {
     public videoStreamId: string
     public isShowingRecordedVideos: boolean = false
     public roomMembers: any = []
-    public videoRoom: any
+    public channelMembersCount: number = 0
     public hasActiveTracks: boolean = false
     roomMembersSubscription: Subscription
     userActionsSubscription: Subscription
@@ -32,35 +30,38 @@ export class StreamingService {
         customUsername: any
         displayName: string
         userType: string
+        obsState: string
         screenState: string
         webcamState: string
         audioState: string
         isHandRaised: boolean
+        obsStream: any
         screenStream: any
-        screenAudioStream: any
         webcamStream: any
         audioStream: any
     } = {
-        id: null,
-        avatar: null,
-        customUsername: null,
-        displayName: null,
-        userType: 'listener',
-        screenState: 'restricted',
-        webcamState: 'restricted',
-        audioState: 'restricted',
-        isHandRaised: false,
-        screenStream: null,
-        screenAudioStream: null,
-        webcamStream: null,
-        audioStream: null
-    }
+            id: null,
+            avatar: null,
+            customUsername: null,
+            displayName: null,
+            userType: 'listener',
+            obsState: 'restricted',
+            screenState: 'restricted',
+            webcamState: 'restricted',
+            audioState: 'restricted',
+            isHandRaised: false,
+            obsStream: null,
+            screenStream: null,
+            webcamStream: null,
+            audioStream: null
+        }
 
     public streamOptions: {
         isRecording: boolean
         isLiveStreaming: boolean
         isEveryoneSilenced: boolean
         duration: number
+        hasWaitedOneSecondObs: boolean
         hasWaitedOneSecondScreen: boolean
         hasWaitedOneSecondWebcam: boolean
         hasWaitedOneSecondAudio: boolean
@@ -70,57 +71,62 @@ export class StreamingService {
         isTimedOut: boolean
         isMaxLimitReached: boolean
     } = {
-        isRecording: false,
-        isLiveStreaming: false,
-        isEveryoneSilenced: true,
-        duration: 0,
-        hasWaitedOneSecondScreen: true,
-        hasWaitedOneSecondWebcam: true,
-        hasWaitedOneSecondAudio: true,
-        hasWaitedOneSecondRecord: true,
-        hasWaitedOneSecondRaiseHand: true,
-        hasWaitedOneSecondSilence: true,
-        isTimedOut: false,
-        isMaxLimitReached: false
-    }
+            isRecording: false,
+            isLiveStreaming: false,
+            isEveryoneSilenced: true,
+            duration: 0,
+            hasWaitedOneSecondObs: true,
+            hasWaitedOneSecondScreen: true,
+            hasWaitedOneSecondWebcam: true,
+            hasWaitedOneSecondAudio: true,
+            hasWaitedOneSecondRecord: true,
+            hasWaitedOneSecondRaiseHand: true,
+            hasWaitedOneSecondSilence: true,
+            isTimedOut: false,
+            isMaxLimitReached: false
+        }
 
     constructor(
         public http: HttpClient,
         public tokenStorage: TokenStorage,
         private socket: Socket,
         private snackBar: MatSnackBar,
-        private userService: UserService,
         private authService: AuthService,
         private channelService: ChannelService,
         private sfxService: SfxService,
         private sharedService: SharedService,
-        private inAppSnackBarService: InAppSnackBarService
+        private dialogService: DialogService
     ) {}
 
     /************ STREAMING ************/
 
-    getVideoToken({ channelId }): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/twilio/video/token/${channelId}`).toPromise()
+    async getMembers({ channelId, isParticipant, skip, limit }): Promise<any> {
+        return await lastValueFrom(this.http
+            .get(`${environment.apiUrl}/channel-members`, {
+                params: { channelId, isParticipant, skip, limit }
+            }))
     }
 
-    getRoomMembers({ channelId, isParticipant, skip, limit }): Promise<any> {
-        return this.http
-            .get(`${environment.apiUrl}/channelMembers/${channelId}`, {
-                params: { isParticipant, skip, limit }
-            })
-            .toPromise()
+    async getChannelMembersCount({ channelId }): Promise<any> {
+        return await lastValueFrom(this.http
+            .get(`${environment.apiUrl}/channel-members/count`, {
+                params: { channelId }
+            }))
     }
 
     async initRoomMembers() {
-        this.roomMembers = await this.getRoomMembers({
+        this.roomMembers = await this.getMembers({
             channelId: this.channelService.currentChannel._id,
             isParticipant: true,
             skip: 0,
-            limit: 50
+            limit: 10
+        })
+        this.channelMembersCount = await this.getChannelMembersCount({
+            channelId: this.channelService.currentChannel._id
         })
         Object.assign(this.userData, this.getMember(this.authService.currentUser))
         const doesUserExist = this.roomMembers.some((member) => member.id == this.userData.id)
-        if (this.channelService.currentChannel.user == this.userData.id && !doesUserExist) {
+        if (this.channelService.currentChannel.user === this.userData.id && !doesUserExist) {
             this.roomMembers.push(this.userData)
         }
         this.socket.emitRoomMemberUpdate({
@@ -130,6 +136,19 @@ export class StreamingService {
         })
         this.listenToRoomMemberUpdate()
         this.listenToUserActions()
+
+        this.streamOptions.isEveryoneSilenced =
+            this.channelService.currentChannel.isEveryoneSilenced
+        if (this.channelService.currentChannel.user === this.authService.currentUser._id) {
+            await this.createLiveStream(
+                this.channelService.currentChannel._id,
+                `${this.channelService.currentChannel.title}-${this.channelService.currentChannel.user}`
+            )
+            await this.channelService.updateIsStreaming({
+                channelId: this.channelService.currentChannel._id,
+                isStreaming: true
+            })
+        }
     }
 
     listenToRoomMemberUpdate() {
@@ -158,7 +177,10 @@ export class StreamingService {
                             this.userData = data.userData
                         }
                     }
-                    this.channelService.currentChannel.memberCount = data.memberCount
+                    this.channelMembersCount = await this.getChannelMembersCount({
+                        channelId: this.channelService.currentChannel._id
+                    })
+                    this.channelService.currentChannel.memberCount = this.channelMembersCount
                 }
             })
     }
@@ -173,17 +195,10 @@ export class StreamingService {
                 var member = this.roomMembers.find((member) => member.id == messageData.userId)
                 if (!member) member = data.userData
                 switch (messageData.type) {
+                    case 'toggleTrack':
+                        break;
                     case 'toggleRaiseHand':
-                        // if (member.id === messageData.userId) {
-                        //     member.isHandRaised = messageData.isHandRaised
-                        // if (messageData.isHandRaised && this.roomMembers.length > 3) {
-                        //     const index = this.roomMembers.findIndex(member => member.id == messageData.userId)
-                        //     if (index > -1) this.roomMembers.splice(index, 1)
-                        //     this.roomMembers.splice(2, 0, member)
-                        // }
-                        // }
-                        if (
-                            this.channelService.currentChannel.user == this.userData.id &&
+                        if (this.channelService.currentChannel.user == this.userData.id &&
                             this.userData.id != messageData.userId &&
                             messageData.isHandRaised
                         ) {
@@ -205,26 +220,23 @@ export class StreamingService {
                     case 'toggleSilenceOnEveryone':
                         this.streamOptions.isEveryoneSilenced = messageData.isEveryoneSilenced
                         if (this.userData.id !== this.channelService.currentChannel.user) {
+                            await this.stopObsStream()
                             await this.stopScreenStream()
                             await this.stopWebcamStream()
                             await this.stopAudioStream()
                         }
                         break
-                    // case 'toggleUserType':
-                    //     if (member.id === messageData.userId) {
-                    //         member.userType = messageData.userType
-                    //         member.isHandRaised = false
-                    //     }
-                    //     if (this.userData.id === messageData.userId) {
-                    //         this.userData.userType = messageData.userType
-                    //         this.userData.isHandRaised = false
-                    //         await this.stopScreenStream()
-                    //         await this.stopWebcamStream()
-                    //         await this.stopAudioStream()
-                    //     }
-                    //     break
                     case 'toggleRestriction':
                         switch (messageData.featureType) {
+                            case 'obs':
+                                if (member.id === messageData.userId) {
+                                    member.obsState = messageData.featureState
+                                }
+                                if (this.userData.id === messageData.userId) {
+                                    this.userData.obsState = messageData.featureState
+                                    await this.stopObsStream(this.userData.obsState)
+                                }
+                                break
                             case 'screen':
                                 if (member.id === messageData.userId) {
                                     member.screenState = messageData.featureState
@@ -259,197 +271,71 @@ export class StreamingService {
             })
     }
 
-    async connect() {
-        this.streamOptions.isEveryoneSilenced =
-            this.channelService.currentChannel.isEveryoneSilenced
-        const videoToken = await this.getVideoToken({
-            channelId: this.channelService.currentChannel._id
-        })
-        connect(videoToken, {
-            name: this.channelService.currentChannel._id,
-            audio: false,
-            video: false
-        }).then(async (room) => {
-            room.participants.forEach((participant) => this.participantConnected(participant))
-            room.on('participantConnected', (participant) => this.participantConnected(participant))
-            room.on('participantDisconnected', (participant) =>
-                this.participantDisconnected(participant)
-            )
-            room.once('disconnected', (error) => this.disconnected(error))
-            this.videoRoom = room
-
-            if (this.channelService.currentChannel.user == this.authService.currentUser._id) {
-                await this.createLiveStream(
-                    this.channelService.currentChannel._id,
-                    `${this.channelService.currentChannel.title}-${this.channelService.currentChannel.user}`
-                )
-                await this.channelService.updateIsStreaming({
-                    channelId: this.channelService.currentChannel._id,
-                    isStreaming: true
-                })
-            }
-        })
-    }
-
-    async participantConnected(participant) {
-        const user = await this.userService.getUserById(participant.identity)
-        const member = this.getMember(user)
-        this.participantTrackSubscriptions(participant, member)
-        // this.sfxService.playAudio(SoundEffect.UserJoinedChannel)
-    }
-
-    async participantDisconnected(participant) {
-        participant.tracks.forEach((publication) => {
-            if (publication.isSubscribed) {
-                this.stopAndDetachTrack(publication.track)
-                publication.unpublish()
-            }
-        })
-        // this.sfxService.playAudio(SoundEffect.UserLeftChannel)
-    }
-
-    disconnected(error) {
-        console.log('disconnected', error)
-        if (error.code === 20104) {
-            console.log('Signaling reconnection failed due to expired AccessToken!')
-            window.location.reload()
-        } else if (error.code === 53000) {
-            console.log('Signaling reconnection attempts exhausted!')
-            window.location.reload()
-        } else if (error.code === 53002) {
-            console.log('Signaling reconnection took too long!')
-            window.location.reload()
-        } else if (!error.code) {
-            if (!this.sharedService.wasHomePressed) {
-                window.location.href = '/'
-            }
-            // if (this.streamOptions.isTimedOut || this.streamOptions.isMaxLimitReached) {
-            //     if (this.streamOptions.isTimedOut) this.snackBar.open("You have been removed due to inactivity", null, { duration: 5000 })
-            //     if (this.streamOptions.isMaxLimitReached) this.snackBar.open("You have reached the 15-min time limit. This limit will be lifted after beta", null, { duration: 5000 })
-            //     this.streamOptions.isTimedOut = false
-            //     this.streamOptions.isMaxLimitReached = false
-            // }
-
-            this.streamOptions = {
-                isRecording: false,
-                isLiveStreaming: false,
-                isEveryoneSilenced: false,
-                duration: 0,
-                hasWaitedOneSecondScreen: true,
-                hasWaitedOneSecondWebcam: true,
-                hasWaitedOneSecondAudio: true,
-                hasWaitedOneSecondRecord: true,
-                hasWaitedOneSecondRaiseHand: true,
-                hasWaitedOneSecondSilence: true,
-                isTimedOut: false,
-                isMaxLimitReached: false
-            }
-            this.videoStreamId = null
-            this.isShowingRecordedVideos = false
-            this.roomMembers = []
-            this.videoRoom = null
-            this.hasActiveTracks = false
-            this.sharedService.wasHomePressed = false
-
-            this.socket.emitRoomMemberUpdate({
-                channelId: this.channelService.currentChannel._id,
-                userData: this.userData,
-                isNewUser: false
-            })
+    disconnected() {
+        console.log('disconnected')
+        if (!this.sharedService.wasHomePressed) {
+            window.location.href = '/'
         }
+        // if (this.streamOptions.isTimedOut || this.streamOptions.isMaxLimitReached) {
+        //     if (this.streamOptions.isTimedOut) this.snackBar.open("You have been removed due to inactivity", null, { duration: 5000 })
+        //     if (this.streamOptions.isMaxLimitReached) this.snackBar.open("You have reached the 15-min time limit. This limit will be lifted after beta", null, { duration: 5000 })
+        //     this.streamOptions.isTimedOut = false
+        //     this.streamOptions.isMaxLimitReached = false
+        // }
 
-        if (
-            this.authService.currentUser &&
-            this.channelService.currentChannel.user == this.authService.currentUser._id
-        ) {
+        this.streamOptions = {
+            isRecording: false,
+            isLiveStreaming: false,
+            isEveryoneSilenced: false,
+            duration: 0,
+            hasWaitedOneSecondObs: true,
+            hasWaitedOneSecondScreen: true,
+            hasWaitedOneSecondWebcam: true,
+            hasWaitedOneSecondAudio: true,
+            hasWaitedOneSecondRecord: true,
+            hasWaitedOneSecondRaiseHand: true,
+            hasWaitedOneSecondSilence: true,
+            isTimedOut: false,
+            isMaxLimitReached: false
+        }
+        this.videoStreamId = null
+        this.isShowingRecordedVideos = false
+        this.roomMembers = []
+        this.hasActiveTracks = false
+        this.sharedService.wasHomePressed = false
+
+        this.socket.emitRoomMemberUpdate({
+            channelId: this.channelService.currentChannel._id,
+            userData: this.userData,
+            isNewUser: false
+        })
+
+        if (this.authService.currentUser && this.channelService.currentChannel.user == this.authService.currentUser._id) {
             this.updateLiveStream()
             this.channelService.updateIsStreaming({
                 channelId: this.channelService.currentChannel._id,
                 isStreaming: false
             })
         }
-        this.endRecording()
+        // this.endRecording()
     }
 
-    getMember({ _id, avatar, customUsername, displayName }) {
+    getMember({ _id, avatar, customUsername, displayName, obsStream, screenStream, webcamStream, audioStream }) {
         return {
             id: _id,
             avatar: avatar,
             customUsername: customUsername,
             displayName: displayName,
             userType: _id == this.channelService.currentChannel.user ? 'host' : 'listener',
+            obsState: 'hibernate',
             screenState: 'hibernate',
             webcamState: 'hibernate',
             audioState: 'hibernate',
             isHandRaised: false,
-            screenStream: null,
-            screenAudioStream: null,
-            webcamStream: null,
-            audioStream: null
-        }
-    }
-
-    participantTrackSubscriptions(participant, member) {
-        participant.tracks.forEach((publication) => {
-            if (publication.isSubscribed) {
-                this.setParticipantTrack(publication.track, member, 'live')
-            }
-        })
-
-        participant.on('trackSubscribed', (track) => {
-            this.setParticipantTrack(track, member, 'live')
-        })
-
-        participant.on('trackUnsubscribed', (track) => {
-            this.setParticipantTrack(track, member, 'hibernate')
-        })
-    }
-
-    setParticipantTrack(track, member, state) {
-        this.checkForActiveTracks()
-        if (track.name.includes('screen-host') || track.name.includes('screen')) {
-            if (member.screenState != 'restricted') member.screenState = state
-            if (member.screenState === 'live') {
-                member.screenStream = track
-                this.attachScreen(member.screenStream)
-            } else {
-                track.detach().forEach((element) => element.remove())
-                member.screenStream = null
-            }
-            this.updateUserInRoom({
-                id: member.id,
-                screenState: member.screenState,
-                screenStream: member.screenStream,
-                screenAudioStream: member.screenAudioStream
-            })
-        } else if (track.name.includes('webcam')) {
-            if (member.webcamState != 'restricted') member.webcamState = state
-            if (member.webcamState === 'live') {
-                member.webcamStream = track
-                this.attachScreen(member.webcamStream)
-            } else {
-                track.detach().forEach((element) => element.remove())
-                member.webcamStream = null
-            }
-            this.updateUserInRoom({
-                id: member.id,
-                webcamState: member.webcamState,
-                webcamStream: member.webcamStream
-            })
-        } else if (track.name.includes('audio')) {
-            if (member.audioState != 'restricted') member.audioState = state
-            if (member.audioState === 'live') {
-                member.audioStream = track
-                this.attachAudio(member.audioStream)
-            } else {
-                track.detach().forEach((element) => element.remove())
-                member.audioStream = null
-            }
-            this.updateUserInRoom({
-                id: member.id,
-                audioState: member.audioState,
-                audioStream: member.audioStream
-            })
+            obsStream,
+            screenStream,
+            webcamStream,
+            audioStream
         }
     }
 
@@ -462,6 +348,39 @@ export class StreamingService {
         }
     }
 
+    async startObsStream() {
+        if (this.streamOptions.hasWaitedOneSecondObs) {
+            this.waitOneSecondObs()
+            var trackName = `obs-${this.userData.id}`
+            var obsStream = await this.getLiveInput({ meta: { name: trackName }, recording: { mode: "automatic" } })
+            this.userData.obsStream = obsStream
+            this.userData.obsState = 'live'
+            this.updateUserInRoom(this.userData)
+            this.sendDataToRoom({ type: 'toggleTrack' })
+            this.streamOptions.isLiveStreaming = true
+            this.sfxService.playAudio(SoundEffect.StartedSharingScreen)
+            this.waitOneSecondObs()
+            this.checkForActiveTracks()
+            this.dialogService.openDialog({
+                title: 'Streaming Information',
+                message: `URL: + ${obsStream.url} \nKey: ${obsStream.streamKey}`,
+                okText: 'OK'
+            }, {
+                disableClose: true
+            })
+        }
+    }
+
+    async stopObsStream(state = 'hibernate') {
+        this.streamOptions.isLiveStreaming = false
+        this.userData.obsStream = null
+        this.userData.obsState = state
+        this.updateUserInRoom(this.userData)
+        this.sendDataToRoom({ type: 'toggleTrack' })
+        this.checkForActiveTracks()
+        await this.deleteLiveInput({ inputId: this.userData.obsStream.uid })
+    }
+
     async startScreenStream() {
         if (this.streamOptions.hasWaitedOneSecondScreen) {
             this.waitOneSecondScreen()
@@ -471,30 +390,21 @@ export class StreamingService {
                     audio: true
                 })
                 .then(async (screenStream) => {
-                    var trackName =
-                        this.channelService.currentChannel.user == this.userData.id
-                            ? `screen-host-sess-${this.channelService.currentChannel.sessionCounter}`
-                            : `screen-sess-${this.channelService.currentChannel.sessionCounter}`
-                    this.userData.screenStream = new LocalVideoTrack(
-                        screenStream.getVideoTracks()[0],
-                        { name: trackName, logLevel: 'error' }
-                    )
+                    var trackName = `screen-${this.userData.id}`
+                    var liveInput = await this.getLiveInput({ meta: { name: trackName }, recording: { mode: "automatic" } })
+                    this.userData.screenStream = liveInput
+                    const url = liveInput.webRTC.url
+                    // const videoIngest: any = document.getElementById(`screenStream-${this.userData.id}`)
+                    const client = new WHIPClient({
+                        endpoint: url,
+                        opts: { debug: true, iceServers: [{ urls: "stun:stun.cloudflare.com:3478" }] }
+                    })
+                    await client.setIceServersFromEndpoint()
+                    // videoIngest.srcObject = screenStream
+                    await client.ingest(screenStream)
                     this.userData.screenState = 'live'
                     this.updateUserInRoom(this.userData)
-                    this.attachScreen(this.userData.screenStream)
-                    this.videoRoom.localParticipant.publishTrack(this.userData.screenStream)
-
-                    if (screenStream.getAudioTracks().length > 0) {
-                        this.userData.screenAudioStream = new LocalAudioTrack(
-                            screenStream.getAudioTracks()[0],
-                            { name: 'audio-' + trackName, logLevel: 'error' }
-                        )
-                        this.attachAudio(this.userData.screenAudioStream)
-                        this.videoRoom.localParticipant.publishTrack(
-                            this.userData.screenAudioStream
-                        )
-                    }
-
+                    this.sendDataToRoom({ type: 'toggleTrack' })
                     this.userData.screenStream.on('stopped', () => {
                         this.stopScreenStream()
                     })
@@ -507,70 +417,57 @@ export class StreamingService {
         }
     }
 
-    attachScreen(track) {
-        const container = document.getElementById('screen_container')
-        const screenNativeElement = track.attach()
-        const { matches: isMobile } = window.matchMedia('(max-width: 767px)')
-        if (screenNativeElement) {
-            if (isMobile) {
-                screenNativeElement.style.width = '80%'
-                screenNativeElement.style.cssText =
-                    'scroll-snap-align: center; width: 80%!important; margin: 0 0.5rem;'
-            } else {
-                screenNativeElement.style.width = '100%'
-            }
-            screenNativeElement.addEventListener('dblclick', (event) => {
-                if (document.fullscreenElement) {
-                    document.exitFullscreen()
-                } else {
-                    if (screenNativeElement.requestFullscreen) {
-                        screenNativeElement.requestFullscreen()
-                    } else {
-                        screenNativeElement.webkitRequestFullscreen()
-                    }
-                }
-            })
-            screenNativeElement.addEventListener('click', (event) => {
-                event.preventDefault()
-                event.stopPropagation()
-                screenNativeElement.scrollIntoView()
-            })
-        }
-        container.append(screenNativeElement)
-        if (isMobile) {
-            const allVideoElements = Array.prototype.slice.call(
-                container.getElementsByTagName('video')
-            )
-            allVideoElements.forEach((element, i) => {
-                if (i === 0) element.style.marginLeft = '10%'
-                else element.style.marginLeft = '0.5rem'
-                if (allVideoElements.length === i + 1) element.style.marginRight = '10%'
-                else element.style.marginRight = '0.5rem'
-            })
-        }
-    }
+    // attachScreen(track) {
+    //     const container = document.getElementById('screen_container')
+    //     const screenNativeElement = track.attach()
+    //     const { matches: isMobile } = window.matchMedia('(max-width: 767px)')
+    //     if (screenNativeElement) {
+    //         if (isMobile) {
+    //             screenNativeElement.style.width = '80%'
+    //             screenNativeElement.style.cssText =
+    //                 'scroll-snap-align: center; width: 80%!important; margin: 0 0.5rem;'
+    //         } else {
+    //             screenNativeElement.style.width = '100%'
+    //         }
+    //         screenNativeElement.addEventListener('dblclick', (event) => {
+    //             if (document.fullscreenElement) {
+    //                 document.exitFullscreen()
+    //             } else {
+    //                 if (screenNativeElement.requestFullscreen) {
+    //                     screenNativeElement.requestFullscreen()
+    //                 } else {
+    //                     screenNativeElement.webkitRequestFullscreen()
+    //                 }
+    //             }
+    //         })
+    //         screenNativeElement.addEventListener('click', (event) => {
+    //             event.preventDefault()
+    //             event.stopPropagation()
+    //             screenNativeElement.scrollIntoView()
+    //         })
+    //     }
+    //     container.append(screenNativeElement)
+    //     if (isMobile) {
+    //         const allVideoElements = Array.prototype.slice.call(
+    //             container.getElementsByTagName('video')
+    //         )
+    //         allVideoElements.forEach((element, i) => {
+    //             if (i === 0) element.style.marginLeft = '10%'
+    //             else element.style.marginLeft = '0.5rem'
+    //             if (allVideoElements.length === i + 1) element.style.marginRight = '10%'
+    //             else element.style.marginRight = '0.5rem'
+    //         })
+    //     }
+    // }
 
     async stopScreenStream(state = 'hibernate') {
-        this.videoRoom.localParticipant.videoTracks.forEach((publication) => {
-            if (publication.track.name.includes('screen')) {
-                this.stopAndDetachTrack(publication.track)
-                publication.unpublish()
-            }
-        })
-
-        this.videoRoom.localParticipant.audioTracks.forEach((publication) => {
-            if (publication.track.name.includes('audio-screen')) {
-                this.stopAndDetachTrack(publication.track)
-                publication.unpublish()
-            }
-        })
-
         this.streamOptions.isLiveStreaming = false
         this.userData.screenStream = null
-        this.userData.screenAudioStream = null
         this.userData.screenState = state
         this.updateUserInRoom(this.userData)
+        this.sendDataToRoom({ type: 'toggleTrack' })
         this.checkForActiveTracks()
+        await this.deleteLiveInput({ inputId: this.userData.screenStream.uid })
     }
 
     async startWebcamStream() {
@@ -581,49 +478,42 @@ export class StreamingService {
                     video: true,
                     audio: false
                 })
-                .then((webcamStream) => {
-                    var trackName =
-                        this.channelService.currentChannel.user == this.userData.id
-                            ? `webcam-host-sess-${this.channelService.currentChannel.sessionCounter}`
-                            : `webcam-sess-${this.channelService.currentChannel.sessionCounter}`
-                    this.userData.webcamStream = new LocalVideoTrack(
-                        webcamStream.getVideoTracks()[0],
-                        { name: trackName, logLevel: 'error' }
-                    )
-                    this.userData.webcamState = 'live'
+                .then(async (webcamStream) => {
+                    var trackName = `webcam-${this.userData.id}`
+                    var liveInput = await this.getLiveInput({ meta: { name: trackName }, recording: { mode: "automatic" } })
+                    this.userData.webcamStream = liveInput
+                    const url = liveInput.webRTC.url
+                    // const videoIngest: any = document.getElementById(`webcamStream-${this.userData.id}`)
+                    const client = new WHIPClient({
+                        endpoint: url,
+                        opts: { debug: true, iceServers: [{ urls: "stun:stun.cloudflare.com:3478" }] }
+                    })
+                    await client.setIceServersFromEndpoint()
+                    // videoIngest.srcObject = webcamStream
+                    await client.ingest(webcamStream)
+                    this.userData.screenState = 'live'
                     this.updateUserInRoom(this.userData)
-                    this.attachScreen(this.userData.webcamStream)
-                    this.videoRoom.localParticipant.publishTrack(this.userData.webcamStream)
+                    this.sendDataToRoom({ type: 'toggleTrack' })
                     this.userData.webcamStream.on('stopped', () => {
                         this.stopWebcamStream()
                     })
                     this.waitOneSecondWebcam()
                     this.checkForActiveTracks()
+                    this.sendDataToRoom({
+                        type: 'toggleTrack'
+                    })
                 })
                 .catch((err) => console.error('failed. ', err))
         }
     }
 
-    // attachWebcam(track, userId) {
-    //     setTimeout(() => {
-    //         const container = document.getElementById(`webcam_${userId}`)
-    //         const webcamNativeElement = track.attach()
-    //         webcamNativeElement.style.width = "100%"
-    //         container.append(webcamNativeElement)
-    //     })
-    // }
-
     async stopWebcamStream(state = 'hibernate') {
-        this.videoRoom.localParticipant.videoTracks.forEach((publication) => {
-            if (publication.track.name.includes('webcam')) {
-                this.stopAndDetachTrack(publication.track)
-                publication.unpublish()
-            }
-        })
         this.userData.webcamStream = null
         this.userData.webcamState = state
         this.updateUserInRoom(this.userData)
+        this.sendDataToRoom({ type: 'toggleTrack' })
         this.checkForActiveTracks()
+        await this.deleteLiveInput({ inputId: this.userData.webcamStream.uid })
     }
 
     async startAudioStream() {
@@ -638,16 +528,22 @@ export class StreamingService {
                         deviceId: 'default'
                     }
                 })
-                .then((audioStream) => {
-                    var trackName = `audio-sess-${this.channelService.currentChannel.sessionCounter}`
-                    this.userData.audioStream = new LocalAudioTrack(
-                        audioStream.getAudioTracks()[0],
-                        { name: trackName, logLevel: 'error' }
-                    )
+                .then(async (audioStream) => {
+                    var trackName = `audio-${this.userData.id}`
+                    var liveInput = await this.getLiveInput({ meta: { name: trackName }, recording: { mode: "automatic" } })
+                    this.userData.audioStream = liveInput
+                    const url = liveInput.webRTC.url
+                    // const videoIngest: any = document.getElementById(`audioStream-${this.userData.id}`)
+                    const client = new WHIPClient({
+                        endpoint: url,
+                        opts: { debug: true, iceServers: [{ urls: "stun:stun.cloudflare.com:3478" }] }
+                    })
+                    await client.setIceServersFromEndpoint()
+                    // videoIngest.srcObject = audioStream
+                    await client.ingest(audioStream)
                     this.userData.audioState = 'live'
                     this.updateUserInRoom(this.userData)
-                    this.attachAudio(this.userData.audioStream)
-                    this.videoRoom.localParticipant.publishTrack(this.userData.audioStream)
+                    this.sendDataToRoom({ type: 'toggleTrack' })
                     this.userData.audioStream.onended = () => {
                         this.stopAudioStream()
                     }
@@ -658,33 +554,13 @@ export class StreamingService {
         }
     }
 
-    attachAudio(track) {
-        const container = document.getElementById('audio_container')
-        container.append(track.attach())
-    }
-
     async stopAudioStream(state = 'hibernate') {
-        this.videoRoom.localParticipant.audioTracks.forEach((publication) => {
-            if (
-                publication.track.name.includes('audio') &&
-                !publication.track.name.includes('screen')
-            ) {
-                this.stopAndDetachTrack(publication.track)
-                publication.unpublish()
-            }
-        })
         this.userData.audioStream = null
         this.userData.audioState = state
         this.updateUserInRoom(this.userData)
+        this.sendDataToRoom({ type: 'toggleTrack' })
         this.checkForActiveTracks()
-    }
-
-    stopAndDetachTrack(track) {
-        if (track) {
-            track.disable()
-            track.stop()
-            track.detach().forEach((element) => element.remove())
-        }
+        await this.deleteLiveInput({ inputId: this.userData.audioStream.uid })
     }
 
     //TODO: uncomment when adding video recording or when time limit for live streams
@@ -694,17 +570,16 @@ export class StreamingService {
     }
 
     async leaveRoom() {
-        if (this.videoRoom) {
-            this.stopScreenStream()
-            this.stopWebcamStream()
-            this.stopAudioStream()
-            this.videoRoom.disconnect()
-            if (this.roomMembersSubscription) {
-                this.roomMembersSubscription.unsubscribe()
-            }
-            if (this.userActionsSubscription) {
-                this.userActionsSubscription.unsubscribe()
-            }
+        this.disconnected()
+        this.stopObsStream()
+        this.stopScreenStream()
+        this.stopWebcamStream()
+        this.stopAudioStream()
+        if (this.roomMembersSubscription) {
+            this.roomMembersSubscription.unsubscribe()
+        }
+        if (this.userActionsSubscription) {
+            this.userActionsSubscription.unsubscribe()
         }
     }
 
@@ -752,7 +627,6 @@ export class StreamingService {
                 isNewUser: false
             })
         }
-        // this.sendDataToRoom({ type: 'toggleUserType', userId: user.id, userType: user.userType })
     }
 
     toggleRestriction(user, featureType) {
@@ -799,6 +673,13 @@ export class StreamingService {
         })
     }
 
+    public waitOneSecondObs() {
+        this.streamOptions.hasWaitedOneSecondObs = false
+        setTimeout(async () => {
+            this.streamOptions.hasWaitedOneSecondObs = true
+        }, 1500)
+    }
+
     public waitOneSecondScreen() {
         this.streamOptions.hasWaitedOneSecondScreen = false
         setTimeout(async () => {
@@ -841,45 +722,38 @@ export class StreamingService {
         }, 3000)
     }
 
-    createLiveStream(channelId, title): Promise<any> {
-        return this.http
-            .post(`${environment.apiUrl}/liveStreaming`, {
+    async createLiveStream(channelId, title): Promise<any> {
+        return await lastValueFrom(this.http
+            .post(`${environment.apiUrl}/live-streams`, {
                 channel: channelId,
                 title
-            })
-            .toPromise()
-            .then((res: any) => {
+            })).then((res: any) => {
                 this.videoStreamId = res._id
             })
     }
 
-    updateLiveStream(): Promise<any> {
-        return this.videoStreamId
-            ? this.http
-                  .patch(`${environment.apiUrl}/liveStreaming/${this.videoStreamId}/end`, {})
-                  .toPromise()
-            : null
+    async updateLiveStream(): Promise<any> {
+        if (this.videoStreamId) {
+            return await lastValueFrom(this.http
+                .patch(`${environment.apiUrl}/live-streams/${this.videoStreamId}/end`, {}))
+        }
     }
 
-    // async addParticipant(userId): Promise<any> {
-    // 	const startDate = new Date()
-    // 	return await this.http.post(`${environment.apiUrl}/liveStreaming/${this.videoStreamId}/participant`, { startDate, userId })
-    // 		.toPromise()
-    // 		.then(res => {
-    // 			return res
-    // 		})
-    // }
+    async getLiveInput(trackData): Promise<any> {
+        return await lastValueFrom(this.http
+            .post(`${environment.apiUrl}/cloudflare/live-input`, { trackData }))
+    }
 
-    // async endParticipant(userId): Promise<any> {
-    // 	return await this.http.patch(`${environment.apiUrl}/liveStreaming/${this.videoStreamId}/participant/end`, { userId })
-    // 		.toPromise()
-    // 		.then(res => {
-    // 			return res
-    // 		})
-    // }
+    async deleteLiveInput({ inputId }): Promise<any> {
+        return await lastValueFrom(this.http
+            .delete(`${environment.apiUrl}/cloudflare/live-input`, { params: inputId }))
+    }
 
     /************ VIDEO RECORDING ************/
 
+    /**
+    * @deprecated The method should not be used
+    */
     public async toggleMediaRecorder() {
         if (this.streamOptions.isRecording) {
             this.endRecording()
@@ -903,6 +777,9 @@ export class StreamingService {
         }
     }
 
+    /**
+    * @deprecated The method should not be used
+    */
     public async endRecording() {
         if (this.streamOptions.isRecording) {
             this.streamOptions.isRecording = false
@@ -913,22 +790,28 @@ export class StreamingService {
         }
     }
 
-    getCompositions({ channelId }): Promise<any> {
-        return this.http
-            .get(`${environment.apiUrl}/twilio/video/${channelId}/compositions`)
-            .toPromise()
+    /**
+    * @deprecated The method should not be used
+    */
+    async getCompositions({ channelId }): Promise<any> {
+        return await lastValueFrom(this.http
+            .get(`${environment.apiUrl}/twilio/video/${channelId}/compositions`))
     }
 
-    deleteAllCompositions({ roomSid, channelId }): Promise<any> {
-        return this.http
-            .delete(`${environment.apiUrl}/twilio/video/${channelId}/compositions/${roomSid}`, {})
-            .toPromise()
+    /**
+    * @deprecated The method should not be used
+    */
+    async deleteAllCompositions({ roomSid, channelId }): Promise<any> {
+        return await lastValueFrom(this.http
+            .delete(`${environment.apiUrl}/twilio/video/${channelId}/compositions/${roomSid}`, {}))
     }
 
+    /**
+    * @deprecated The method should not be used
+    */
     async downloadComposition(compositionSid) {
-        const url: any = await this.http
-            .get(`${environment.apiUrl}/twilio/video/compositions/${compositionSid}/download`)
-            .toPromise()
+        const url: any = await lastValueFrom(this.http
+            .get(`${environment.apiUrl}/twilio/video/compositions/${compositionSid}/download`))
         window.open(url, '_blank')
     }
 }

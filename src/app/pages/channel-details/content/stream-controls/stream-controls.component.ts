@@ -37,7 +37,6 @@ export class StreamControlsComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         await this.streamingService.initRoomMembers()
-        await this.streamingService.connect()
         this.host = await this.userService.getUserById(this.channelService.currentChannel.user)
 
         if (this.host._id === this.streamingService.userData.id) {

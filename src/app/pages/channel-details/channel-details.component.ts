@@ -55,7 +55,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         try {
             this.user = this.authService.currentUser
             if (this.user) {
-                await this.connectToChannel(this.user)
+                this.connectToChannel()
                 this.sharedService.wasHomePressed = true
             }
         } catch (err) {
@@ -63,45 +63,43 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    connectToChannel(user) {
+    connectToChannel() {
         this.activatedRoute.params.subscribe(async ({ channelId }) => {
             try {
                 var channel = await this.channelService.getChannel({ channelId })
-                if (channel.memberCount > 49) {
-                    this.router.navigate(['/'])
-                    this.snackBar.open(
-                        'This channel has reached its 50-user capacity. This limit will be lifted after beta',
-                        null,
-                        { duration: 5000 }
-                    )
-                    return
-                } else if (
+                if (
                     channel.isPrivate &&
-                    channel.user != user._id &&
-                    !channel.notificationSubscribers.includes(user._id)
+                    channel.user != this.user._id &&
+                    !channel?.notificationSubscribers?.includes(this.user._id)
                 ) {
                     this.router.navigate(['/'])
                     this.showWaitingRoomDialog(channel)
                 } else {
+                    const channelsocket = await this.socket.setupChannelSocketConnection(channelId)
+                    await this.socket.setupWebsocketConnection(channelsocket, true)
+                    if(this.socket.channelSocket.readyState===1){
+                        console.log('ready state')
+                    }
+                    this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
                     channel = await this.channelService.enterChannel(channel)
                     this.updateMetaTags(channel)
-                    this.socket.emitChannelSubscribeByUser(channelId, user._id)
                 }
 
-                this.socket.listenToRemovedUser(channel._id).subscribe((request) => {
-                    if (!user.isAdmin && request.userId == user._id) {
-                        this.channelService.leaveChannel(user._id)
+                this.socket.listenToRemovedUser(channelId).subscribe((request) => {
+                    if (!this.user.isAdmin && request.userId == this.user._id) {
+                        this.channelService.leaveChannel(this.user._id)
                         this.router.navigate(['/'])
                     }
                 })
 
-                this.socket.listenToChannelTyping(channel._id).subscribe((data) => {
-                    if (data.user && data.user._id != user._id) {
+                this.socket.listenToChannelTyping(channelId).subscribe((data) => {
+                    if (data.userData && data.userData.id != this.user._id) {
                         this.typingUser = data.user
-                        this.isTyping = data.user.isTyping
+                        this.isTyping = data.isTyping
                     }
                 })
             } catch (err) {
+                console.log(err)
                 this.router.navigate(['/404'])
             }
         })
@@ -126,7 +124,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         if (
             this.channelService.currentChannel &&
             this.channelService.currentChannel.user != _id &&
-            !this.channelService.currentChannel.notificationSubscribers.includes(_id)
+            !this.channelService.currentChannel?.notificationSubscribers?.includes(_id)
         ) {
             await this.channelService.leaveChannel(_id, true)
         }

@@ -59,19 +59,22 @@ export class ProfileComponent implements OnInit {
             await this.channelService.getTechList()
             this.data = this.channelService.techList
             this.otherUser = await this.userService.getUserByCustomUsername(customUsername)
+            console.log(this.otherUser)
             if (this.otherUser) {
                 this.isCurrentUser = this.otherUser._id == this.authService.currentUser._id
                 if (!this.channelService.techList.length) {
                     await this.channelService.getTechList()
                 }
+                if(this.otherUser.techStack){
                 this.otherUser.techStack.forEach(async (techName) => {
                     const tech = this.channelService.techList.find(
                         (item) => item.item_text === techName
                     )
                     if (tech) this.techStackUrls.push(tech.item_image)
                 })
+            }
                 await this.getChannels(true)
-                this.channelCount = this.otherUser.hostChannelIds.length
+                this.channelCount = this.otherUser?.hostChannelIds?.length || 0
                 if (!this.isCurrentUser) {
                     const relationship = await this.followService.getFollowRelationship({
                         source: this.otherUser._id

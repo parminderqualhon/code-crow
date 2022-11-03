@@ -11,7 +11,10 @@ export class VideoComponent implements OnInit {
     @ViewChild('screenContainer') screenContainer: ElementRef
     public hint: string
 
-    constructor(private hintService: HintService) {}
+    constructor(
+        private hintService: HintService,
+        public streamingService: StreamingService
+    ) {}
 
     async ngOnInit() {
         const hint = await this.hintService.getRandomHint()

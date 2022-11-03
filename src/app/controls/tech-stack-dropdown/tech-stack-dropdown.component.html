@@ -3,7 +3,7 @@
         <input (click)="stopPropagation($event)" class="mt-2 mb-0" matInput type="text" placeholder="Search"
             style="margin-left: 5px" [(ngModel)]="searchQuery" #input (keyup)="search(searchQuery)" />
 
-        <div style="right: 0; top: 42%" class="text-right ab-v-m" *ngIf="checkedList.length">
+        <div style="right: 0; top: 42%" class="text-right ab-v-m" *ngIf="checkedList?.length">
             <span title="Remove all technologies" class="cursor-pointer color-pink font-14 font-w-500"
                 (click)="onRemoveAllFilters()">
                 <img class="mt-n1 me-1" src="/assets/images/trash.svg" />

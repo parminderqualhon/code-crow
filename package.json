@@ -1,6 +1,6 @@
 {
     "name": "cro-website",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "MIT",
     "type": "module",
     "scripts": {
@@ -31,6 +31,7 @@
         "@angular/service-worker": "^14.2.8",
         "@babel/runtime": "^7.20.1",
         "@ctrl/ngx-emoji-mart": "^7.0.0",
+        "@eyevinn/whip-web-client": "^1.1.0",
         "@ngx-pwa/local-storage": "^13.0.5",
         "@schematics/angular": "^14.2.8",
         "@solana/spl-token": "^0.1.8",
@@ -53,7 +54,6 @@
         "pdfjs-dist": "3.0.279",
         "rxjs": "7.5.7",
         "tslib": "^2.4.1",
-        "twilio-video": "^2.24.3",
         "util": "^0.12.5",
         "webpack": "^5.58.2",
         "webpack-dev-server": "^4.3.1",
