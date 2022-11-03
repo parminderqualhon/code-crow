@@ -1,0 +1,23 @@
+<div class="mt-dialog-container">
+    <h2 mat-dialog-title>Private Channel</h2>
+    <button mat-icon-button mat-dialog-close class="close">
+        <mat-icon>close</mat-icon>
+    </button>
+    <mat-dialog-content>
+        <span class="app-waiting-room-dialog-title">
+            <strong>{{ data.channel.title }}</strong>
+        </span>
+        <div class="app-waiting-room-dialog-description">
+            {{ data.channel.description }}
+        </div>
+        <div class="app-waiting-room-dialog-name app-waiting-room-dialog-name-padding">
+            <img class="app-waiting-room-dialog-avatar" [src]="data.channel.avatar" alt="channel_avatar" />
+            <span>{{ data.channel.createdBy }}</span>
+        </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions class="justify-content-center mt-4 mb-0">
+        <button mat-raised-button mat-dialog-close class="btn-cancel">Cancel</button>
+        <button mat-raised-button class="btn btn-primary" (click)="requestAccess()"
+            [disabled]="hasRequestedAccess">Request Access</button>
+    </div>
+</div>

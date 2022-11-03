@@ -37,8 +37,38 @@ export class StreamControlsComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         await this.streamingService.initRoomMembers()
-        await this.streamingService.connect()
         this.host = await this.userService.getUserById(this.channelService.currentChannel.user)
+
+        if (this.host._id === this.streamingService.userData.id) {
+            this.socket.listenToChannelAccessRequest({ channelId: this.channelService.currentChannel })
+                .subscribe(async (data) => {
+                    const dialogData: DialogData = {
+                        title: 'Access Request',
+                        message: `${data.user.username} wants to join your channel. Do you want to let them in?`,
+                        okText: 'Yes',
+                        cancelText: 'No'
+                    }
+
+                    const dialogRef = this.dialogService.openDialog(dialogData, {
+                        disableClose: true
+                    })
+
+                    dialogRef.afterClosed().subscribe(async (result) => {
+                        try {
+                            if (result) {
+                                this.socket.emitChannelAccessResponse({
+                                    channelId: this.channelService.currentChannel._id,
+                                    userId: data.user.id,
+                                    isGrantedAccess: result
+                                })
+                            }
+                        } catch (err) {
+                            this.userService.showError()
+                        }
+                    })
+                })
+        }
+
         // setInterval(async () => {
         //     if (
         //         this.streamingService?.streamOptions.isRecording ||
@@ -151,54 +181,6 @@ export class StreamControlsComponent implements OnInit, OnDestroy {
                 this.userService.showError()
             }
         })
-    }
-
-    getButtonTooltip(userType, currentState, state): string {
-        const tooltipText = {
-            audioState: {
-                host: {
-                    live: 'Restrict Audio',
-                    hibernate: 'Restrict Audio',
-                    restricted: 'Unrestrict Audio'
-                },
-                nonHost: {
-                    live: 'Unmuted',
-                    hibernate: 'Muted',
-                    restricted: 'Restricted'
-                }
-            },
-            screenState: {
-                host: {
-                    live: 'Restrict Screen Sharing',
-                    hibernate: 'Restrict Screen Sharing',
-                    restricted: 'Unrestrict'
-                },
-                nonHost: {
-                    live: 'Screen Sharing Enabled',
-                    hibernate: 'Screen Sharing Disabled',
-                    restricted: 'Restricted'
-                }
-            },
-            webcamState: {
-                host: {
-                    live: 'Restrict Webcam',
-                    hibernate: 'Restrict Webcam',
-                    restricted: 'Unrestrict'
-                },
-                nonHost: {
-                    live: 'Webcam Enabled',
-                    hibernate: 'Webcam Disabled',
-                    restricted: 'Restricted'
-                }
-            }
-        }
-        return tooltipText[state][
-            this.streamingService.userData.userType == 'host'
-                ? userType == 'host'
-                    ? 'nonHost'
-                    : 'host'
-                : 'nonHost'
-        ][currentState]
     }
 
     tweetLiveStream() {

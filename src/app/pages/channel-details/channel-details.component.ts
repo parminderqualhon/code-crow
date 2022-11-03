@@ -10,7 +10,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { UserService } from '../../services/user.service'
 import { Title, Meta } from '@angular/platform-browser'
 import { environment } from '../../../environments/environment'
-import { PasswordDialogComponent } from './channel/password-dialog/password-dialog.component'
+import { WaitingRoomDialogComponent } from './channel/waiting-room-dialog/waiting-room-dialog.component'
 import { ChannelService } from '../../services/channel.service'
 import { GroupchatService } from '../../services/groupchat.service'
 import { AuthService } from '../../auth/auth.service'
@@ -67,22 +67,13 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         this.activatedRoute.params.subscribe(async ({ channelId }) => {
             try {
                 var channel = await this.channelService.getChannel({ channelId })
-                if (channel.memberCount > 49) {
-                    this.router.navigate(['/'])
-                    this.snackBar.open(
-                        'This channel has reached its 50-user capacity. This limit will be lifted after beta',
-                        null,
-                        { duration: 5000 }
-                    )
-                    return
-                } else if (
-                    channel.password &&
+                if (
+                    channel.isPrivate &&
                     channel.user != this.user._id &&
-                    !channel?.notificationSubscribers?.includes(this.user._id) &&
-                    !this.channelService.hasAccess
+                    !channel?.notificationSubscribers?.includes(this.user._id)
                 ) {
                     this.router.navigate(['/'])
-                    this.showPasswordDialog(channel)
+                    this.showWaitingRoomDialog(channel)
                 } else {
                     const channelsocket = await this.socket.setupChannelSocketConnection(channelId)
                     await this.socket.setupWebsocketConnection(channelsocket, true)
@@ -90,7 +81,6 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                         console.log('ready state')
                     }
                     this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
-                    this.channelService.hasAccess = false
                     channel = await this.channelService.enterChannel(channel)
                     this.updateMetaTags(channel)
                 }
@@ -115,8 +105,8 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         })
     }
 
-    showPasswordDialog(channel) {
-        this.dialog.open(PasswordDialogComponent, {
+    showWaitingRoomDialog(channel) {
+        this.dialog.open(WaitingRoomDialogComponent, {
             width: '400px',
             data: {
                 channel: channel

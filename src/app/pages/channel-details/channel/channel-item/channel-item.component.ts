@@ -1,4 +1,4 @@
-import { PasswordDialogComponent } from '../password-dialog/password-dialog.component'
+import { WaitingRoomDialogComponent } from '../waiting-room-dialog/waiting-room-dialog.component'
 import { Component, OnInit, Input, ViewChild } from '@angular/core'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { LoadingDialogComponent } from '../../../../controls/loading-dialog/loading-dialog.component'
@@ -61,11 +61,11 @@ export class ChannelItemComponent implements OnInit {
                 })
             } else {
                 if (
-                    channel.password &&
+                    channel.isPrivate &&
                     channel.user != this.user._id &&
                     !channel?.notificationSubscribers?.includes(this.user._id)
                 ) {
-                    this.showPasswordDialog()
+                    this.showWaitingRoomDialog()
                 } else {
                     this.showLoadingDialog()
                     this.router.navigate(['/channel', channel._id])
@@ -79,8 +79,8 @@ export class ChannelItemComponent implements OnInit {
         }
     }
 
-    showPasswordDialog() {
-        this.dialog.open(PasswordDialogComponent, {
+    showWaitingRoomDialog() {
+        this.dialog.open(WaitingRoomDialogComponent, {
             width: '400px',
             data: {
                 channel: this.channel

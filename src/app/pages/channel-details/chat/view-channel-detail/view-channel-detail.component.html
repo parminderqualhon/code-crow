@@ -152,14 +152,9 @@
     <span class="channel-detail-icon-color">Users</span>
 </div>
 
-<div class="d-flex align-items-center justify-content-start backgroundColor setting" *ngIf="isPrivate"
-    (click)="copyToClipboard()">
-    <mspan class="right-margin channel-lock" (click)="makePublic()"></mspan>
-    <span class="channel-detail-icon-color">{{ password }}</span>
-</div>
-<div class="d-flex align-items-center justify-content-start backgroundColor setting" *ngIf="!isPrivate">
-    <span class="right-margin channel-unlock" (click)="makePrivate()"></span>
-    <span class="channel-detail-icon-color">Public</span>
+<div class="d-flex align-items-center justify-content-start backgroundColor setting" (click)="togglePrivate()">
+    <span class="right-margin channel-lock"></span>
+    <span class="channel-detail-icon-color">{{isPrivate ? 'Private' : 'Public'}</span>
 </div>
 
 <!--TODO: show if replying to a video-->

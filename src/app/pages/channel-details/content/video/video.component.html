@@ -2,9 +2,23 @@
     <span>Fun fact: {{ hint }}</span>
 </div>
 <div class="media-container fading-edges custom-scroll">
-    <div #screenContainer id="screen_container" [class]="screenContainer.childNodes.length ==1?'single-video':''" [ngClass]="{'video__container': screenContainer.childNodes.length > 0}">
+    <div #screenContainer id="screen_container" [class]="screenContainer.childNodes.length ==1?'single-video':''"
+        [ngClass]="{'video__container': screenContainer.childNodes.length > 0}">
+        <div *ngFor="let member of streamingService.roomMembers">
+            <cloudflare-stream *ngIf="member.obsStream" [controls]="true" [autoplay]="true" src="member.obsStream.uid">
+            </cloudflare-stream>
+            <cloudflare-stream *ngIf="member.screenStream" id="{'screenStream-'member.id}" [controls]="true"
+                [autoplay]="true" src="member.screenStream.uid"></cloudflare-stream>
+            <cloudflare-stream *ngIf="member.webcamStream" id="{'webcamStream-'member.id}" [controls]="true"
+                [autoplay]="true" src="member.webcamStream.uid"></cloudflare-stream>
+        </div>
     </div>
-    <div id="audio_container"></div>
+    <div id="audio_container">
+        <ng-template *ngFor="let member of streamingService.roomMembers">
+            <cloudflare-stream *ngIf="member.audioStream" id="{'audioStream-'member.id}" [controls]="true"
+                [autoplay]="true" src="member.audioStream.uid"></cloudflare-stream>
+        </ng-template>
+    </div>
     <div *ngIf="screenContainer.childNodes.length > 2" class="navigation">
         <button (click)="sideScroll('left')"></button>
         <button (click)="sideScroll('right')"></button>
