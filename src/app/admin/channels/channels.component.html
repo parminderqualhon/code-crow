@@ -29,7 +29,7 @@
                                         <div class="col-4 text-center">
                                             <mat-icon>group</mat-icon>
                                             <span>{{
-                                                element.notificationSubscribers.length
+                                                element?.notificationSubscribers?.length
                                                 }}</span>
                                         </div>
                                         <div class="col-4 text-center">
@@ -67,7 +67,7 @@
                 <div class="row">
                     <div class="col-4 text-center">
                         <mat-icon>group</mat-icon>
-                        <span>{{ channel.notificationSubscribers.length }}</span>
+                        <span>{{ channel?.notificationSubscribers?.length }}</span>
                     </div>
                     <!-- TODO: admin
                 <div class="col-4 text-center">

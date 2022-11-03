@@ -31,7 +31,7 @@ export class TechStackDropdownComponent {
 
     // check if tech stack is already added to the profile
     checkIfAlreadySelected(tech: string) {
-        return this.checkedList.findIndex((el) => el.item_text === tech) > -1 ? true : false
+        return this.checkedList?.findIndex((el) => el.item_text === tech) > -1 ? true : false
     }
 
     // getSelectedValue(status: Boolean, text: String, src: String) {

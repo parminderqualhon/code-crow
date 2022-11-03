@@ -70,30 +70,36 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                 if (
                     channel.isPrivate &&
                     channel.user != this.user._id &&
-                    !channel.notificationSubscribers.includes(this.user._id)
+                    !channel?.notificationSubscribers?.includes(this.user._id)
                 ) {
                     this.router.navigate(['/'])
                     this.showWaitingRoomDialog(channel)
                 } else {
+                    const channelsocket = await this.socket.setupChannelSocketConnection(channelId)
+                    await this.socket.setupWebsocketConnection(channelsocket, true)
+                    if(this.socket.channelSocket.readyState===1){
+                        console.log('ready state')
+                    }
+                    this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
                     channel = await this.channelService.enterChannel(channel)
                     this.updateMetaTags(channel)
-                    this.socket.emitChannelSubscribeByUser(channelId, this.user._id)
                 }
 
-                this.socket.listenToRemovedUser(channel._id).subscribe((request) => {
+                this.socket.listenToRemovedUser(channelId).subscribe((request) => {
                     if (!this.user.isAdmin && request.userId == this.user._id) {
                         this.channelService.leaveChannel(this.user._id)
                         this.router.navigate(['/'])
                     }
                 })
 
-                this.socket.listenToChannelTyping(channel._id).subscribe((data) => {
+                this.socket.listenToChannelTyping(channelId).subscribe((data) => {
                     if (data.userData && data.userData.id != this.user._id) {
                         this.typingUser = data.user
                         this.isTyping = data.isTyping
                     }
                 })
             } catch (err) {
+                console.log(err)
                 this.router.navigate(['/404'])
             }
         })
@@ -118,7 +124,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         if (
             this.channelService.currentChannel &&
             this.channelService.currentChannel.user != _id &&
-            !this.channelService.currentChannel.notificationSubscribers.includes(_id)
+            !this.channelService.currentChannel?.notificationSubscribers?.includes(_id)
         ) {
             await this.channelService.leaveChannel(_id, true)
         }

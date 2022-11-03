@@ -28,7 +28,7 @@
                 <h3 *ngIf="!isDescriptionEditable" (click)="isDescriptionEditable = isCurrentUser ? true : false">
                     {{ otherUser.description }}
                 </h3>
-                <div *ngIf="isCurrentUser && (isDescriptionEditable || otherUser.description.length < 1)">
+                <div *ngIf="isCurrentUser && (isDescriptionEditable || (otherUser?.description?.length < 1 || true))">
                     <input [(ngModel)]="otherUser.description" type="text" class="form-control h3"
                         (blur)="onBlurDescription()" maxlength="65" (keyup.enter)="onBlurDescription()"
                         placeholder="description" minlength="3" />
@@ -51,11 +51,11 @@
                     </div>
                     <div class="framework-icons cursor-pointer" #techMenuTrigger="matMenuTrigger"
                         [matMenuTriggerFor]="techMenu" *ngIf="isCurrentUser">
-                        <ng-container *ngIf="otherUser.techStack.length > 0">
+                        <ng-container *ngIf="otherUser?.techStack?.length > 0 || false">
                             <img class="tech-stack-icons" *ngFor="let stack of otherUser.techStack"
                                 [src]="stack.item_image" />
                         </ng-container>
-                        <span class="menu-label" *ngIf="otherUser.techStack.length < 1">
+                        <span class="menu-label" *ngIf="otherUser?.techStack?.length < 1">
                             Add category
                         </span>
                     </div>

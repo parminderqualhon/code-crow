@@ -78,7 +78,7 @@ export class ChannelsComponent implements OnInit {
             // this.channelService.enterChannel(channel._id, user)
             //   .then(async () => {
             this.channelUsers = await this.userService.getUsersByIds(
-                channel.notificationSubscribers
+                channel?.notificationSubscribers
             )
             // this.lineChartData[0].data = this.getWeekActivity(this.chatService.messages, 'timestamp', 'lineChartLabels', 'lastWeekMessages')
 

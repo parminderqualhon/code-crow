@@ -62,7 +62,7 @@ export class FriendService {
         return this.allUsers
     }
 
-    async searchUsers(query) {
+    async searchUsers(query, userId) {
         try {
             if (!query) {
                 // await this.getFriendList()
@@ -76,6 +76,9 @@ export class FriendService {
                             searchQuery: encodeURIComponent(query),
                             skip: '0',
                             limit: '100'
+                        },
+                        headers:{
+                            userId: userId
                         }
                     })
                     .toPromise()
