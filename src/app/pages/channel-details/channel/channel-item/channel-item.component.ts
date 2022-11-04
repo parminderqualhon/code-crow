@@ -63,7 +63,7 @@ export class ChannelItemComponent implements OnInit {
                 if (
                     channel.isPrivate &&
                     channel.user != this.user._id &&
-                    !channel.notificationSubscribers.includes(this.user._id)
+                    !channel?.notificationSubscribers?.includes(this.user._id)
                 ) {
                     this.showWaitingRoomDialog()
                 } else {

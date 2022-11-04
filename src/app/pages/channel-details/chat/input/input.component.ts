@@ -97,10 +97,13 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
             if (keyCode == 13 && !$event.shiftKey) {
                 $event.preventDefault()
                 typingUser.isTyping = false
-                this.chatService.emitChannelChatTypingByUser(this.channel._id, typingUser)
+                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
+                : this.chatService.emitChannelChatTypingByUser(this.channel._id, typingUser)
             } else {
+                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
+                : this.chatService.emitChannelChatTypingByUser(this.channel._id, typingUser)
+                    
                 typingUser.isTyping = true
-                this.chatService.emitChannelChatTypingByUser(this.channelId, typingUser)
             }
         }
     }
@@ -114,7 +117,8 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
         }
         if (typingUser) {
             this.timer = window.setTimeout(() => {
-                this.chatService.emitChannelChatTypingByUser(this.channelId, typingUser)
+                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
+                : this.chatService.emitChannelChatTypingByUser(this.channel._id, typingUser)
             }, 1000)
         }
     }
@@ -219,8 +223,12 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
             })
             this.socket.emitChatMessage({
                 source1: this.user._id,
-                source2: this.channel._id
+                source2: this.channel._id,
+                message:completeMessage
             })
+        }
+        else{
+            this.socket.emitMessageToChannel(this.channelId, JSON.stringify(completeMessage))
         }
         this.showGiphySearch = false
     }
@@ -253,7 +261,6 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
                 author: this.user.displayName,
                 channelId: this.channelId
             }
-            this.socket.emitMessageToChannel(this.channelId, JSON.stringify(completeMessage))
             if (!this.isGroupChat && this.isOneToOneChat) {
                 this.chatService.updateChatProperties({
                     chatId: this.channel.chat._id,
@@ -266,10 +273,23 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
                 this.chatService.incrementUnreadMessageCount({
                     chatId: this.channel.chat._id
                 })
+                alert("emitting message!")
+                console.log({
+                    source1: this.user._id,
+                    source2: this.channel,
+                    message: completeMessage,
+                    messages: this.chatService.chats,
+                    chatMessage: this.chatMessage
+
+                })
                 this.socket.emitChatMessage({
                     source1: this.user._id,
-                    source2: this.channel._id
+                    source2: this.channel._id,
+                    message: completeMessage
                 })
+            }
+            else{
+                this.socket.emitMessageToChannel(this.channelId, JSON.stringify(completeMessage))
             }
             this.chatMessage = null
             this.showEmojiPicker = false

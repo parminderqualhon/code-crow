@@ -1,6 +1,7 @@
 import { DialogService } from './../../../services/dialog.service'
 import { Component, OnInit, ViewChild, Inject } from '@angular/core'
 import { AdminService } from '../../../services/admin.service'
+import { AuthService } from '../../../auth/auth.service'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
@@ -23,6 +24,7 @@ export class AddAdminComponent implements OnInit {
 
     constructor(
         private adminService: AdminService,
+        private authService: AuthService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<AddAdminComponent>,
         private friendService: FriendService,
@@ -58,7 +60,7 @@ export class AddAdminComponent implements OnInit {
     }
 
     async applyFilter(filterValue: string) {
-        this.users = await this.friendService.searchUsers(filterValue)
+        this.users = await this.friendService.searchUsers(filterValue,this.authService.currentUser._id)
         this.dataSource = new MatTableDataSource(this.users.map((user) => user.user))
         this.dataSource.paginator = this.paginator
         this.dataSource.sort = this.sort

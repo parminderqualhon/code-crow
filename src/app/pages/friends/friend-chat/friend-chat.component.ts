@@ -89,17 +89,18 @@ export class FriendChatComponent implements OnInit, AfterViewChecked, OnDestroy 
         }
 
         this.channel = await this.channelService.getChannel({
-            channelId: this.chat.chat.channel
+            channelId: this.chat.chat.channel || this
         })
         this.isNotificationsEnabled =
-            this.user && this.channel.notificationSubscribers.includes(this.user._id)
+            this.user && this.channel?.notificationSubscribers?.includes(this.user._id)
         this.isHost = this.user && this.user._id == this.channel.user
 
         this.subscription = this.socket
-            .listenToChannelMessage(this.chat.chat.channel)
-            .subscribe((data) => {
+            .listenToChatMessages()
+            .subscribe((result) => {
                 this.isLoading = false
-                if (data) {
+                const data = result.data
+                if (data.source2 === this.user._id || data.source1 === this.user._id) {
                     if (data.isMessageHistory) {
                         if (data.data.length == 100) {
                             this.hasPrevPage = true
@@ -109,7 +110,9 @@ export class FriendChatComponent implements OnInit, AfterViewChecked, OnDestroy 
                         if (this.chat.messages.length == 0) {
                             this.hasScrolledBottom = false
                         }
+                        console.log(data)
                         this.chat.messages = data.data.concat(this.chat.messages)
+                        console.log(this.chat.messages)
                     } else if (data.isMessageDeleted) {
                         this.chat.messages = this.chat.messages.filter(
                             (item) => item.state.timestamp !== data.data.state.timestamp
@@ -121,9 +124,9 @@ export class FriendChatComponent implements OnInit, AfterViewChecked, OnDestroy 
                 }
             })
 
-        this.socket.listenToChannelTyping(this.chat.chat.channel).subscribe((data) => {
-            if (data.userData && this.user && data.userData.id != this.user._id) {
-                this.typingUser = data.user
+        this.socket.listenToChatTyping().subscribe((data) => {
+            if (data.data.userData && this.user && data.data.source2 === this.user._id) {
+                this.typingUser = data.data.userData
                 this.isTyping = data.isTyping
             }
         })
