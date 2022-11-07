@@ -102,9 +102,10 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                     }
                 })
 
-                this.socket.listenToChannelTyping(channelId).subscribe((data) => {
+                this.socket.listenToChannelTyping().subscribe((data) => {
                     if (data.userData && data.userData.id != this.user._id) {
-                        this.typingUser = data.user
+                        console.log("typing")
+                        this.typingUser = data.userData
                         this.isTyping = data.isTyping
                     }
                 })

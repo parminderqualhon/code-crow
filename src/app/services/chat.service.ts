@@ -28,6 +28,7 @@ export class ChatService {
     public isShowingSearchResults: boolean = false
     public isChatsEnabled: boolean = false
     public activeTabs: any[] = []
+    public initIncomingMessage: any
 
     constructor(
         public http: HttpClient,
@@ -91,11 +92,11 @@ export class ChatService {
         if (chatType == 'channelChat') {
             this.skip = this.skip + this.limit
             data.skip = this.skip
+            this.socket.emitHistoryToChannel(chat.channel, data.skip)
         } else if (chatType == 'oneToOneChat') {
             data.skip = chat.skip
         }
 
-        this.socket.emitHistoryToChannel(chat.channel, JSON.stringify(data))
     }
 
     async sendChannelMessage(channel, attributes): Promise<any> {
@@ -147,7 +148,7 @@ export class ChatService {
         notificationSubscribers = channel?.notificationSubscribers?.filter((id) =>
             id == user._id ? false : true
         )
-        if (notificationSubscribers.length) {
+        if (notificationSubscribers?.length) {
             const sendNotificationsTo = []
             // const sendEmailsTo = []
             notificationSubscribers = await this.userService.getUsersByIds(notificationSubscribers)
@@ -297,15 +298,11 @@ export class ChatService {
 
             console.log(existingChat)
             if (!existingChat) {
-                console.log(chat)
-
                 chat = await this.createChat({
                     source1: this.authService.currentUser._id,
                     source2: chat._id,
                     user: chat
                 })
-                console.log("here creating new chat")
-                console.log(chat)
             } else {
                 chat = existingChat
             }
@@ -319,6 +316,7 @@ export class ChatService {
             this.activeTabs.push($chat)
             await this.clearUnreadMessageCount({ chatId: $chat.chat._id })
             $chat.chat.unreadMessageCount = 0
+            console.log(this.activeTabs)
     }
 
     async activateGroupTab($group) {
@@ -335,7 +333,6 @@ export class ChatService {
                 return true
             }
         })
-        alert(chat)
         return (this.activeTabs.indexOf(item) !== -1) || (chat !== undefined)
     }
 
@@ -348,7 +345,6 @@ export class ChatService {
             source2: data.source1
         })
         if (!existingChat) {
-            console.log(data.source2)
             chat = await this.createChat({
                 source1: this.authService.currentUser._id,
                 source2: data.source1,
@@ -359,6 +355,7 @@ export class ChatService {
         }
         if (!user.isDoNotDisturbEnabled) {
             chat.isUserRequestingToOpenChat = true
+            this.initIncomingMessage = data
             this.activateChatTab(chat)
         }
     }

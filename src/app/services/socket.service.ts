@@ -231,7 +231,7 @@ export class Socket {
     emitChatTypingByUser(userId) {
         this.apiSocket.send(
             JSON.stringify({
-                eventName: `channel-chat-typing`,
+                eventName: `chat-typing`,
                 user: userId
             })
         )
@@ -282,32 +282,32 @@ export class Socket {
         )
     }
 
-    emitHistoryToChannel(channelId, message) {
+    emitHistoryToChannel(channelId, skip) {
         this.channelSocket.send(
             JSON.stringify({
                 eventName: `channel-message-history`,
                 channel: channelId,
-                message
+                skip
             })
         )
     }
 
-    listenToChannelTyping(channelId): Observable<any> {
+    listenToChannelTyping(): Observable<any> {
         return new Observable((observer) => {
             this.channelSocket.addEventListener(`message`, (data) => {
-                if (JSON.parse(data.data).eventName === `typing` && JSON.parse(data.data).channelId === channelId) {
+                if (JSON.parse(data.data).eventName === `typing`) {
                     observer.next(JSON.parse(data.data))
                 }
             })
         })
     }
 
-    emitChannelChatTypingByUser(channelId, userId) {
+    emitChannelChatTypingByUser(channelId, typingUser) {
         this.channelSocket.send(
             JSON.stringify({
                 eventName: `channel-chat-typing`,
                 channel: channelId,
-                user: userId
+                typingUser
             })
         )
     }
