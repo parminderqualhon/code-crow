@@ -96,14 +96,15 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
         if (typingUser) {
             if (keyCode == 13 && !$event.shiftKey) {
                 $event.preventDefault()
-                typingUser.isTyping = false
-                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
-                : this.chatService.emitChannelChatTypingByUser(this.channel._id, typingUser)
-            } else {
-                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
-                : this.chatService.emitChannelChatTypingByUser(this.channel._id, typingUser)
-                    
                 typingUser.isTyping = true
+                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
+                : this.chatService.emitChannelChatTypingByUser(typingUser, this.channel._id)
+            } else {
+                typingUser.isTyping = true
+
+                this.isOneToOneChat ? this.chatService.emitChannelChatTypingByUser(typingUser)
+                : this.chatService.emitChannelChatTypingByUser(typingUser, this.channel._id)
+                    
             }
         }
     }
@@ -273,7 +274,6 @@ export class InputComponent implements OnInit, OnChanges, AfterViewChecked {
                 this.chatService.incrementUnreadMessageCount({
                     chatId: this.channel.chat._id
                 })
-                alert("emitting message!")
                 console.log({
                     source1: this.user._id,
                     source2: this.channel,

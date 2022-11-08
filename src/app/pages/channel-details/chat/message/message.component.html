@@ -20,7 +20,7 @@
             </div>
 
             <button mat-icon-button #emojiMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="emojiMenu"
-                [matMenuTriggerData]="{ message: Message, trigger: emojiMenuTrigger }"
+                [matMenuTriggerData]="{ message: Message, when: When, senderId: SenderId, trigger: emojiMenuTrigger }"
                 class="emoji__reaction material-symbols-outlined">
                 <img src="assets/images/add-emoji-reaction.svg" />
             </button>
@@ -70,7 +70,7 @@
                 </p>
             </div>
             <button mat-icon-button #emojiMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="emojiMenu"
-                [matMenuTriggerData]="{ message: Message, trigger: emojiMenuTrigger }"
+                [matMenuTriggerData]="{ message: Message, when: When, senderId: SenderId, trigger: emojiMenuTrigger }"
                 class="emoji__reaction material-symbols-outlined">
                 <img src="assets/images/add-emoji-reaction.svg" />
             </button>

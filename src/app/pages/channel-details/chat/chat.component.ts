@@ -105,14 +105,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                             (item) => item.state.timestamp !== data.data.state.timestamp
                         )
                     } else if (data.emojiReacted) {
+                        console.log(data.messageObject)
                         let messageIndex = this.chatService.messages.findIndex(
                             (msgEl: any) =>
-                                msgEl.state.timestamp == data.data.state.timestamp &&
-                                msgEl.attributes.userId == data.data.attributes.userId
+                                msgEl.timestamp == data.messageObject.timestamp &&
+                                msgEl.userData.id == data.messageObject.userData.id
                         )
 
                         if (messageIndex > -1) {
-                            this.chatService.messages[messageIndex] = data.data
+                            this.chatService.messages[messageIndex] = data.messageObject
                             console.log(this.chatService.messages[messageIndex])
                         }
                         // this.chatService.messages = this.chatService.messages.filter((msgEl: any) => {
@@ -306,12 +307,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         })
     }
 
-    async onReactToMessage(event: any, Message: any) {
+    async onReactToMessage(event: any, Message: any, When: any, SenderId: any) {
         try {
             let channel = this.channelService.currentChannel
             const reaction = event.emoji.native
             if (channel) {
-                this.socket.emitReactToMessage(channel._id, Message, this.currentUser, reaction)
+                
+                this.socket.emitReactToMessage(channel._id, {Message, When, SenderId}, this.currentUser, reaction)
                 // console.log(this.Message, channel._id, reaction, this.CurrentUser);
             }
         } catch (e) {
