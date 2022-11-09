@@ -33,7 +33,7 @@
         "@ctrl/ngx-emoji-mart": "^7.0.0",
         "@eyevinn/whip-web-client": "^1.1.0",
         "@ngx-pwa/local-storage": "^13.0.5",
-        "@schematics/angular": "^14.2.8",
+        "@schematics/angular": "^14.2.9",
         "@solana/spl-token": "^0.1.8",
         "@solana/web3.js": "^1.66.2",
         "@videogular/ngx-videogular": "^6.0.0",
