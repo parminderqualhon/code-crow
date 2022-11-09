@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Util } from '../util/util'
 import { AuthService } from '../auth/auth.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { environment } from '../../environments/environment'
@@ -262,7 +261,7 @@ export class ChannelService {
     async getChannelsByUserId({ userId, searchQuery = null, skip = 0, limit = 50 }): Promise<any> {
         return this.http
             .get(`${environment.apiUrl}/channels/user`, {
-                params: { searchQuery, skip, limit }, headers:{userId}
+                params: { searchQuery, skip, limit }, headers: { userId }
             })
             .toPromise()
     }

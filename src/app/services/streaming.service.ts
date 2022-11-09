@@ -570,16 +570,18 @@ export class StreamingService {
     }
 
     async leaveRoom() {
-        this.disconnected()
-        this.stopObsStream()
-        this.stopScreenStream()
-        this.stopWebcamStream()
-        this.stopAudioStream()
-        if (this.roomMembersSubscription) {
-            this.roomMembersSubscription.unsubscribe()
-        }
-        if (this.userActionsSubscription) {
-            this.userActionsSubscription.unsubscribe()
+        if (this.channelService.currentChannel) {
+            this.disconnected()
+            this.stopObsStream()
+            this.stopScreenStream()
+            this.stopWebcamStream()
+            this.stopAudioStream()
+            if (this.roomMembersSubscription) {
+                this.roomMembersSubscription.unsubscribe()
+            }
+            if (this.userActionsSubscription) {
+                this.userActionsSubscription.unsubscribe()
+            }
         }
     }
 
