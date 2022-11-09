@@ -21,7 +21,7 @@
     "private": true,
     "dependencies": {
         "@angular/cdk": "^14.2.3",
-        "@angular/compiler": "^14.2.9",
+        "@angular/compiler": "^14.2.10",
         "@angular/forms": "^14.2.9",
         "@angular/material": "^14.2.6",
         "@angular/platform-browser": "^14.2.9",
