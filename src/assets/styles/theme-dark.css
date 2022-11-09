@@ -3359,16 +3359,8 @@ mat-ink-bar.mat-ink-bar {
     background: url(/assets/images/twitter.svg);
 }
 
-.social-icons .linkedin {
-    background: url(/assets/images/linkedin.svg);
-}
-
 .social-icons .discord {
     background: url(/assets/images/discord.svg);
-}
-
-.social-icons .producthunt {
-    background: url(/assets/images/producthunt.svg);
 }
 
 .social-icons .github {
@@ -3377,6 +3369,10 @@ mat-ink-bar.mat-ink-bar {
 
 .social-icons .magiceden {
     background: url(/assets/images/magiceden.png);
+}
+
+.social-icons .dexlab {
+    background: url(/assets/images/dexlab.svg);
 }
 
 .channel-icon {

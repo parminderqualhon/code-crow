@@ -3175,24 +3175,12 @@ a {
     background: url(/assets/images/mute-notifications-light.svg);
 }
 
-.social-icons .facebook {
-    background: url(/assets/images/facebook.svg);
-}
-
 .social-icons .twitter {
     background: url(/assets/images/twitter.svg);
 }
 
-.social-icons .linkedin {
-    background: url(/assets/images/linkedin.svg);
-}
-
 .social-icons .discord {
     background: url(/assets/images/discord.svg);
-}
-
-.social-icons .producthunt {
-    background: url(/assets/images/producthunt.svg);
 }
 
 .social-icons .github {
@@ -3201,6 +3189,10 @@ a {
 
 .social-icons .magiceden {
     background: url(/assets/images/magiceden.png);
+}
+
+.social-icons .dexlab {
+    background: url(/assets/images/dexlab.svg);
 }
 
 .channel-icon {
