@@ -140,16 +140,6 @@ export class UserService {
         this.authService.setUser(userUpdate)
     }
 
-    async updateStripe({ accountId, currency }: { accountId: string; currency: string }) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/stripe`, {
-                accountId,
-                currency
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
     async updateWebNotificationSubscription({ sub, userId }) {
         const userUpdate = await this.http
             .patch(`${environment.apiUrl}/users/current/notification`, {
