@@ -28,7 +28,7 @@
                 <h3 *ngIf="!isDescriptionEditable" (click)="isDescriptionEditable = isCurrentUser ? true : false">
                     {{ otherUser.description }}
                 </h3>
-                <div *ngIf="isCurrentUser && (isDescriptionEditable || (otherUser?.description?.length < 1 || true))">
+                <div *ngIf="isCurrentUser && (isDescriptionEditable || otherUser.description.length < 1)">
                     <input [(ngModel)]="otherUser.description" type="text" class="form-control h3"
                         (blur)="onBlurDescription()" maxlength="65" (keyup.enter)="onBlurDescription()"
                         placeholder="description" minlength="3" />

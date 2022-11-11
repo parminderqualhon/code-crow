@@ -65,14 +65,14 @@ export class ProfileComponent implements OnInit {
                 if (!this.channelService.techList.length) {
                     await this.channelService.getTechList()
                 }
-                if(this.otherUser.techStack){
-                this.otherUser.techStack.forEach(async (techName) => {
-                    const tech = this.channelService.techList.find(
-                        (item) => item.item_text === techName
-                    )
-                    if (tech) this.techStackUrls.push(tech.item_image)
-                })
-            }
+                if (this.otherUser.techStack) {
+                    this.otherUser.techStack.forEach(async (techName) => {
+                        const tech = this.channelService.techList.find(
+                            (item) => item.item_text === techName
+                        )
+                        if (tech) this.techStackUrls.push(tech.item_image)
+                    })
+                }
                 await this.getChannels(true)
                 this.channelCount = this.otherUser?.hostChannelIds?.length || 0
                 if (!this.isCurrentUser) {
@@ -235,9 +235,8 @@ export class ProfileComponent implements OnInit {
 
     openGitProfile(user) {
         const { providerType, username } = user
-        const url = `https://${providerType}${
-            providerType == 'Bitbucket' ? '.org' : '.com'
-        }/${username}`
+        const url = `https://${providerType}${providerType == 'Bitbucket' ? '.org' : '.com'
+            }/${username}`
         const win = window.open(url, '_blank')
         win.focus()
     }

@@ -44,7 +44,7 @@ export class ChannelService {
         tags,
         isPrivate: boolean = false,
         user,
-        isGroupChat: boolean = false
+        channelType
     ) {
         const channel: any = await this.http
             .post(`${environment.apiUrl}/channel`, {
@@ -58,10 +58,10 @@ export class ChannelService {
                 createdBy: user.displayName,
                 avatar: user.avatar,
                 isHostActive: true,
-                isGroupChat
+                channelType
             })
             .toPromise()
-        if (!title.includes('__hide__') && !isGroupChat) {
+        if (channelType === "channel") {
             await this.addHostChannelToUser({ hostChannelId: channel._id })
             this.currentChannel = channel
         }

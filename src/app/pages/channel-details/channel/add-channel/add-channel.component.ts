@@ -153,7 +153,8 @@ export class AddChannelComponent implements OnInit {
                     this.selectedTech.map((item) => item.item_text),
                     this.selectedTags,
                     this.addChannelForm.value.isPrivate,
-                    user
+                    user,
+                    'channel'
                 )
                 this.onNoClick()
                 this.router.navigate(['/channel', channel._id])
