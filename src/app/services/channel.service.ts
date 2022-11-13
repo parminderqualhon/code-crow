@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { environment } from '../../environments/environment'
 import { BehaviorSubject } from 'rxjs'
+import { lastValueFrom } from 'rxjs'
 
 @Injectable({
     providedIn: 'root'
@@ -46,7 +47,7 @@ export class ChannelService {
         user,
         channelType
     ) {
-        const channel: any = await this.http
+        const channel: any = await lastValueFrom(this.http
             .post(`${environment.apiUrl}/channel`, {
                 title,
                 description,
@@ -59,8 +60,7 @@ export class ChannelService {
                 avatar: user.avatar,
                 isHostActive: true,
                 channelType
-            })
-            .toPromise()
+            }))
         if (channelType === "channel") {
             await this.addHostChannelToUser({ hostChannelId: channel._id })
             this.currentChannel = channel
@@ -68,163 +68,133 @@ export class ChannelService {
         return channel
     }
 
-    deleteChannel({ channelId }): Promise<any> {
-        return this.http
+    async deleteChannel({ channelId }): Promise<any> {
+        return await lastValueFrom(this.http
             .delete(`${environment.apiUrl}/channels/${channelId}`, {
                 params: { bucketName: 'attachments' }
-            })
-            .toPromise()
+            }))
     }
 
-    getChannel({ channelId }): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/channel?channelId=${channelId}`).toPromise()
+    async getChannel({ channelId }): Promise<any> {
+        return await lastValueFrom(this.http.get(`${environment.apiUrl}/channel?channelId=${channelId}`))
     }
 
-    getFriendChannel({ title }): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/channels/friend?title=${title}`).toPromise()
+    async getFriendChannel({ title }): Promise<any> {
+        return await lastValueFrom(this.http.get(`${environment.apiUrl}/channels/friend?title=${title}`))
     }
 
     async addChannelToUser({ channelId }) {
-        const userUpdate = await this.http
-            .put(`${environment.apiUrl}/users/channels?channelId=${channelId}`, {})
-            .toPromise()
+        const userUpdate = await lastValueFrom(this.http
+            .put(`${environment.apiUrl}/users/channels?channelId=${channelId}`, {}))
         this.authService.setUser(userUpdate)
         this.user = userUpdate
     }
 
     async removeChannelFromUser({ channelId, userId }) {
-        const userUpdate = await this.http
+        const userUpdate = await lastValueFrom(this.http
             .delete(`${environment.apiUrl}/users/channels?channelId=${channelId}`, {
                 headers: { userId }
-            })
-            .toPromise()
+            }))
         if (this.user == userId) this.authService.setUser(userUpdate)
     }
 
     async addHostChannelToUser({ hostChannelId }) {
-        const userUpdate = await this.http
-            .put(`${environment.apiUrl}/users/hostChannels?hostChannelId=${hostChannelId}`, {})
-            .toPromise()
+        const userUpdate = await lastValueFrom(this.http
+            .put(`${environment.apiUrl}/users/hostChannels?hostChannelId=${hostChannelId}`, {}))
         this.authService.setUser(userUpdate)
         this.user = userUpdate
     }
 
     async removeHostChannelFromUser({ hostChannelId }) {
-        const userUpdate = await this.http
-            .delete(`${environment.apiUrl}/users/hostChannels?hostChannelId=${hostChannelId}`, {})
-            .toPromise()
+        const userUpdate = await lastValueFrom(this.http
+            .delete(`${environment.apiUrl}/users/hostChannels?hostChannelId=${hostChannelId}`, {}))
         this.authService.setUser(userUpdate)
         this.user = userUpdate
     }
 
-    blockUserFromChannel({ channelId, userId }): Promise<any> {
-        return this.http
+    async blockUserFromChannel({ channelId, userId }): Promise<any> {
+        return await lastValueFrom(this.http
             .patch(
                 `${environment.apiUrl}/channels/blocked-users?channelId=${channelId}&userId=${userId}`,
                 {}
-            )
-            .toPromise()
+            ))
     }
 
-    unblockUserFromChannel({ channelId, userId }): Promise<any> {
-        return this.http
+    async unblockUserFromChannel({ channelId, userId }): Promise<any> {
+        return await lastValueFrom(this.http
             .delete(
                 `${environment.apiUrl}/channels/blocked-users?channelId=${channelId}&userId=${userId}`,
                 {}
-            )
-            .toPromise()
+            ))
     }
 
-    updateIsHostActive({ channelId, isHostActive }): Promise<any> {
-        return this.http
-            .patch(`${environment.apiUrl}/channels?channelId=${channelId}`, { isHostActive })
-            .toPromise()
+    async updateIsHostActive({ channelId, isHostActive }): Promise<any> {
+        return await lastValueFrom(this.http
+            .patch(`${environment.apiUrl}/channels?channelId=${channelId}`, { isHostActive }))
     }
 
-    updateIsStreaming({ channelId, isStreaming }): Promise<any> {
-        return this.http
-            .patch(`${environment.apiUrl}/channels?channelId=${channelId}`, { isStreaming })
-            .toPromise()
+    async updateIsStreaming({ channelId, isStreaming }): Promise<any> {
+        return await lastValueFrom(this.http
+            .patch(`${environment.apiUrl}/channels?channelId=${channelId}`, { isStreaming }))
     }
 
-    updateIsEveryoneSilenced({ channelId, isEveryoneSilenced }): Promise<any> {
-        return this.http
+    async updateIsEveryoneSilenced({ channelId, isEveryoneSilenced }): Promise<any> {
+        return await lastValueFrom(this.http
             .patch(`${environment.apiUrl}/channels?channelId=${channelId}`, {
                 isEveryoneSilenced
-            })
-            .toPromise()
+            }))
     }
 
     isUserBlockedFromChannel(userId) {
         return this.currentChannel.blockedUsers.some((user) => !!(user == userId))
     }
 
-    addAttachments({ channelId, attachmentUrl }): Promise<any> {
-        return this.http
+    async addAttachments({ channelId, attachmentUrl }): Promise<any> {
+        return await lastValueFrom(this.http
             .put(
                 `${environment.apiUrl
                 }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
                     attachmentUrl
                 )}`,
                 {}
-            )
-            .toPromise()
+            ))
     }
 
-    deleteAttachment({ channelId, attachmentUrl }): Promise<any> {
-        return this.http
+    async deleteAttachment({ channelId, attachmentUrl }): Promise<any> {
+        return await lastValueFrom(this.http
             .delete(
                 `${environment.apiUrl
                 }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
                     attachmentUrl
                 )}`
-            )
-            .toPromise()
+            ))
     }
 
-    updateChannelInfo({
-        channelId,
-        description,
-        thumbnail,
-        techStack,
-        tags,
-        isPrivate,
-        userId
-    }): Promise<any> {
-        return this.http
-            .patch(`${environment.apiUrl}/channels`, {
-                channelId,
-                description,
-                thumbnail,
-                techStack,
-                tags,
-                isPrivate,
-                userId
-            })
-            .toPromise()
+    async updateChannel(body): Promise<any> {
+        return await lastValueFrom(this.http
+            .patch(`${environment.apiUrl}/channels`, body))
     }
 
-    addChannelNotificationSubscriber({ channelId, userId }) {
-        return this.http
+    async addChannelNotificationSubscriber({ channelId, userId }) {
+        return await lastValueFrom(this.http
             .put(
                 `${environment.apiUrl}/channels/notification-subscribers?channelId=${channelId}&userId=${userId}`,
                 {}
-            )
-            .toPromise()
+            ))
     }
 
-    removeChannelNotificationSubscriber({ channelId, userId }) {
-        return this.http
+    async removeChannelNotificationSubscriber({ channelId, userId }) {
+        return await lastValueFrom(this.http
             .delete(
                 `${environment.apiUrl}/channels/notification-subscribers?channelId=${channelId}&userId=${userId}`
-            )
-            .toPromise()
+            ))
     }
 
-    deleteChannelMembers({ channelId }): Promise<any> {
-        return this.http
-            .delete(`${environment.apiUrl}/channelMembers?channelId=${channelId}`)
-            .toPromise()
+    async deleteMembers({ channelId }): Promise<any> {
+        return await lastValueFrom(this.http
+            .delete(`${environment.apiUrl}/channel-members`, {
+                params: { channelId }
+            }))
     }
 
     resetSkipLimit() {
@@ -250,27 +220,26 @@ export class ChannelService {
     }
 
     async getMyChannels(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/channels/me/hosted`, {
+        return await lastValueFrom(this.http.get(`${environment.apiUrl}/channels/me/hosted`, {
             headers: {
                 userId: localStorage.getItem('userId'),
                 authorization: localStorage.getItem('jwt')
             }
-        }).toPromise()
+        }))
     }
 
     async getChannelsByUserId({ userId, searchQuery = null, skip = 0, limit = 50 }): Promise<any> {
-        return this.http
+        return await lastValueFrom(this.http
             .get(`${environment.apiUrl}/channels/user`, {
                 params: { searchQuery, skip, limit }, headers: { userId }
-            })
-            .toPromise()
+            }))
     }
 
     async getChannels(isRefresh = false) {
         if (isRefresh) {
             this.resetSkipLimit()
         }
-        const channels: any = await this.http
+        const channels: any = await lastValueFrom(this.http
             .get(`${environment.apiUrl}/channels`, {
                 params: {
                     searchQuery: this.searchQuery,
@@ -282,8 +251,7 @@ export class ChannelService {
                     userId: localStorage.getItem('userId'),
                     authorization: localStorage.getItem('jwt')
                 }
-            })
-            .toPromise()
+            }))
         if (channels.length) {
             this.skip += this.limit
             this.channels.push(...channels)
@@ -318,7 +286,7 @@ export class ChannelService {
                         hostChannelId: this.currentChannel._id
                     })
                     await this.deleteChannel({ channelId: this.currentChannel._id })
-                    await this.deleteChannelMembers({
+                    await this.deleteMembers({
                         channelId: this.currentChannel._id
                     })
                 }
@@ -361,33 +329,27 @@ export class ChannelService {
     }
 
     async sendToken({ channelId }) {
-        this.http
+        await lastValueFrom(this.http
             .get(`${environment.apiUrl}/token/sendToken?channelId=${channelId}`, {
                 headers: { Authorization: localStorage.getItem('jwt') },
                 responseType: 'text'
-            })
-            .toPromise()
-            .then((res) => {
+            })).then((res) => {
                 return this.snackBar.open('You received 1 recursion Token', null, {
                     duration: 2500
                 })
-            })
-            .catch((err) => {
+            }).catch((err) => {
                 console.log('Err', err)
             })
     }
 
     async getTechList() {
         if (this.techList.length < 1) {
-            var web2Assets: any = await this.http
-                .get(`${environment.hostUrl}/assets/images/web2/_techStackWeb2.json`)
-                .toPromise()
-            var web3Assets: any = await this.http
-                .get(`${environment.hostUrl}/assets/images/web3/_techStackWeb3.json`)
-                .toPromise()
-            var gameAssets: any = await this.http
-                .get(`${environment.hostUrl}/assets/images/games/_techStackGames.json`)
-                .toPromise()
+            var web2Assets: any = await lastValueFrom(this.http
+                .get(`${environment.hostUrl}/assets/images/web2/_techStackWeb2.json`))
+            var web3Assets: any = await lastValueFrom(this.http
+                .get(`${environment.hostUrl}/assets/images/web3/_techStackWeb3.json`))
+            var gameAssets: any = await lastValueFrom(this.http
+                .get(`${environment.hostUrl}/assets/images/games/_techStackGames.json`))
             web3Assets.forEach((file) => {
                 var fileName = file.item_image.substring(file.item_image.lastIndexOf('/') + 1)
                 fileName = fileName.substring(0, fileName.indexOf('.'))

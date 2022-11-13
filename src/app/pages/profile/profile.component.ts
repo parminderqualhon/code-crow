@@ -191,7 +191,7 @@ export class ProfileComponent implements OnInit {
     async onBlurDisplayName() {
         if (this.otherUser.displayName.length > 2) {
             this.isDisplayNameEditable = false
-            await this.userService.updateDisplayName({
+            await this.userService.updateUser({
                 displayName: this.otherUser.displayName
             })
         } else {
@@ -223,7 +223,7 @@ export class ProfileComponent implements OnInit {
     async onBlurDescription() {
         if (this.otherUser.description.length > 2) {
             this.isDescriptionEditable = false
-            await this.userService.updateDescription({
+            await this.userService.updateUser({
                 description: this.otherUser.description
             })
         } else {
@@ -270,7 +270,7 @@ export class ProfileComponent implements OnInit {
     }
 
     async submitTechStack(selectedTechStack: any[]) {
-        await this.userService.updateTeckStack({ techStack: selectedTechStack })
+        await this.userService.updateUser({ techStack: selectedTechStack })
         this.otherUser = this.authService.currentUser
         this.snackBar.open('Categories updated', null, {
             duration: 5000

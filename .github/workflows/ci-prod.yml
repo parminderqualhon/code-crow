@@ -36,7 +36,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.15.1
+          node-version: 17
 
       - name: Install NPM and build
         run: npm install && npm run build-prod
@@ -44,9 +44,9 @@ jobs:
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
         with:
-            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            command: pages publish "dist/code-crow/browser" --project-name=cro-website
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages publish "dist/code-crow/browser" --project-name=cro-website
 
   create-tag:
     if: ${{ github.actor != 'dependabot[bot]' }}
@@ -60,7 +60,7 @@ jobs:
       - name: Get NPM version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
-        
+
       - name: Create a tag and release
         uses: ncipollo/release-action@v1.11.1
         with:

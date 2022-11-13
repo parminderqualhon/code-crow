@@ -31,7 +31,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.15.1
+          node-version: 17
 
       - name: Install NPM and build
         run: npm install && npm run build-dev
@@ -39,6 +39,6 @@ jobs:
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
         with:
-            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            command: pages publish "dist/code-crow/browser" --project-name=cro-website
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages publish "dist/code-crow/browser" --project-name=cro-website
