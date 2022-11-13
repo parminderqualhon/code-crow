@@ -75,7 +75,7 @@ export class ChatService {
     }
 
     getTrendingGifs(): Promise<any> {
-         return this.http.get(`${environment.apiUrl}/giphy/trending`).toPromise().then((result: any)=>{
+        return this.http.get(`${environment.apiUrl}/giphy/trending`).toPromise().then((result: any) => {
             return this.http.get(result.url).toPromise
         })
     }
@@ -127,20 +127,20 @@ export class ChatService {
     }
 
     async sendChatMessage(chat, attributes): Promise<any> {
-            const user = this.authService.currentUser
-            attributes.userId = user._id
-            attributes.avatar = user.avatar
-            var completeMessage = {
-                attributes: attributes,
-                body: attributes.text,
-                state: { timestamp: new Date().toISOString() },
-                user: user,
-                author: user.displayName
-            }
-            this.socket.emitChatMessage({source1: chat.source1, source2: chat.source2, message: completeMessage})
-            this.lastMessageSendDate = new Date()
-            this.sendEmailAndWebNotifications(chat._id, user, attributes)
-        
+        const user = this.authService.currentUser
+        attributes.userId = user._id
+        attributes.avatar = user.avatar
+        var completeMessage = {
+            attributes: attributes,
+            body: attributes.text,
+            state: { timestamp: new Date().toISOString() },
+            user: user,
+            author: user.displayName
+        }
+        this.socket.emitChatMessage({ source1: chat.source1, source2: chat.source2, message: completeMessage })
+        this.lastMessageSendDate = new Date()
+        this.sendEmailAndWebNotifications(chat._id, user, attributes)
+
     }
 
     async sendEmailAndWebNotifications(channel, user, attributes) {
@@ -180,11 +180,11 @@ export class ChatService {
     }
 
     emitChannelChatTypingByUser(typingUser, channelId?) {
-        if(!channelId){
+        if (!channelId) {
             this.socket.emitChatTypingByUser(typingUser)
         }
-        else{
-            this.socket.emitChannelChatTypingByUser(channelId,typingUser)
+        else {
+            this.socket.emitChannelChatTypingByUser(channelId, typingUser)
         }
     }
 
@@ -312,11 +312,11 @@ export class ChatService {
 
     async activateChatTab($chat) {
         const user = this.authService.currentUser
-            if (this.checkAlreadyExist($chat)) return
-            this.activeTabs.push($chat)
-            await this.clearUnreadMessageCount({ chatId: $chat.chat._id })
-            $chat.chat.unreadMessageCount = 0
-            console.log(this.activeTabs)
+        if (this.checkAlreadyExist($chat)) return
+        this.activeTabs.push($chat)
+        await this.clearUnreadMessageCount({ chatId: $chat.chat._id })
+        $chat.chat.unreadMessageCount = 0
+        console.log(this.activeTabs)
     }
 
     async activateGroupTab($group) {
@@ -327,9 +327,9 @@ export class ChatService {
     }
 
     checkAlreadyExist(item) {
-        let chat = this.activeTabs.find((chat)=>{
-            if(chat._id === item._id || ((chat.source1===item.source1 && chat.source2 === item.source2)|| 
-            (chat.source2===item.source1 && chat.source1 === item.source2))){
+        let chat = this.activeTabs.find((chat) => {
+            if (chat._id === item._id || ((chat.source1 === item.source1 && chat.source2 === item.source2) ||
+                (chat.source2 === item.source1 && chat.source1 === item.source2))) {
                 return true
             }
         })

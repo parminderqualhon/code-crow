@@ -130,7 +130,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                         console.log(data)
                         //TODO: this.sfxService.playAudio should be fixed 
                         //if (data.userData.id != _id && !data.message.includes('has entered the channel'))
-                          //  this.sfxService.playAudio(SoundEffect.ReceivedMessage)
+                        //  this.sfxService.playAudio(SoundEffect.ReceivedMessage)
                         this.chatService.messages.push(data)
                         this.hasScrolledBottom = false
                     }
@@ -312,8 +312,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
             let channel = this.channelService.currentChannel
             const reaction = event.emoji.native
             if (channel) {
-                
-                this.socket.emitReactToMessage(channel._id, {Message, When, SenderId}, this.currentUser, reaction)
+
+                this.socket.emitReactToMessage(channel._id, { Message, When, SenderId }, this.currentUser, reaction)
                 // console.log(this.Message, channel._id, reaction, this.CurrentUser);
             }
         } catch (e) {

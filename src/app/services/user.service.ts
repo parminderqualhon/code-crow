@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core'
 import { PaymentService } from './payment.service'
 import { AuthService } from '../auth/auth.service'
 import { environment } from '../../environments/environment'
+import { lastValueFrom } from 'rxjs'
 
 @Injectable({
     providedIn: 'root'
@@ -21,26 +22,22 @@ export class UserService {
         private authService: AuthService
     ) {}
 
-    getUserById(userId): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/users?userId=${userId}`, {}).toPromise()
+    async getUserById(userId): Promise<any> {
+        return await lastValueFrom(this.http.get(`${environment.apiUrl}/users?userId=${userId}`, {}))
     }
 
-    getUsersByIds(userIds: Array<string>): Promise<any> {
-        return this.http.post(`${environment.apiUrl}/users/search/ids`, { userIds }).toPromise()
+    async getUsersByIds(userIds: Array<string>): Promise<any> {
+        return await lastValueFrom(this.http.post(`${environment.apiUrl}/users/search/ids`, { userIds }))
     }
 
-    getUsersByName(name): Promise<any> {
-        return this.http
-            .get(`${environment.apiUrl}/users/search/name`, { params: { name } })
-            .toPromise()
+    async getUsersByName(name): Promise<any> {
+        return await lastValueFrom(this.http
+            .get(`${environment.apiUrl}/users/search/name`, { params: { name } }))
     }
 
-    getUserByCustomUsername(customUsername): Promise<any> {
-        return this.http
-            .get(
-                `${environment.apiUrl}/users/search/custom-username?customUserName=${customUsername}`
-            )
-            .toPromise()
+    async getUserByCustomUsername(customUsername): Promise<any> {
+        return await lastValueFrom(this.http
+            .get(`${environment.apiUrl}/users/search/custom-username?customUserName=${customUsername}`))
     }
 
     // async getPlan() {
@@ -73,6 +70,32 @@ export class UserService {
     // 	})
     // }
 
+    async updateUser(body) {
+        const userUpdate = await lastValueFrom(this.http
+            .patch(`${environment.apiUrl}/users/current`, body))
+        this.authService.setUser(userUpdate)
+    }
+
+    async updateAvatar({ fileToUpload, fileName }) {
+        const formData: FormData = new FormData()
+        formData.append('file', fileToUpload, fileName)
+        formData.append('bucketName', 'avatars')
+        const userUpdate = await lastValueFrom(this.http
+            .put(`${environment.apiUrl}/users/current/avatar`, formData))
+        this.authService.setUser(userUpdate)
+    }
+
+    async updateCustomUsername({ customUsername }) {
+        const userUpdate: any = await lastValueFrom(this.http
+            .patch(`${environment.apiUrl}/users/current/custom-username`, {
+                customUsername
+            }))
+        if (!userUpdate.exists) {
+            this.authService.setUser(userUpdate)
+        }
+        return userUpdate
+    }
+
     showError() {
         this.snackBar.open('An error has occured, please try again later', null, {
             duration: 2000
@@ -81,127 +104,5 @@ export class UserService {
 
     showSnackBar(message: string, duration: number) {
         this.snackBar.open(message, null, { duration: duration })
-    }
-
-    async updateIsEmailNotificationsEnabled(isEnabled) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/email-notifications`, {
-                isEnabled
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateIsWebNotificationsEnabled(isEnabled) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/web-notifications`, {
-                isEnabled
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateIsDoNotDisturbEnabled(isEnabled) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/do-not-disturb`, {
-                isEnabled
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateIsMessageGuardEnabled(isEnabled) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/message-guard`, { isEnabled })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateIsOnline(isOnline) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/online`, { isOnline })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateEmail(email: string) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/email`, { email })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateWalletAddress(walletAddress: string) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/wallet-address`, {
-                walletAddress
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateStripe({ accountId, currency }: { accountId: string; currency: string }) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/stripe`, {
-                accountId,
-                currency
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateWebNotificationSubscription({ sub, userId }) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/notification`, {
-                sub,
-                userId
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateAvatar({ fileToUpload, fileName }) {
-        const formData: FormData = new FormData()
-        formData.append('file', fileToUpload, fileName)
-        formData.append('bucketName', 'avatars')
-        const userUpdate = await this.http
-            .put(`${environment.apiUrl}/users/current/avatar`, formData)
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateDisplayName({ displayName }) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/display-name`, {
-                displayName
-            })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateCustomUsername({ customUsername }) {
-        const userUpdate: any = await this.http
-            .patch(`${environment.apiUrl}/users/current/custom-username`, {
-                customUsername
-            })
-            .toPromise()
-        if (!userUpdate.exists) {
-            this.authService.setUser(userUpdate)
-        }
-        return userUpdate
-    }
-
-    async updateTeckStack({ techStack }) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/tech-stack`, { techStack })
-            .toPromise()
-        this.authService.setUser(userUpdate)
-    }
-
-    async updateDescription({ description }) {
-        const userUpdate = await this.http
-            .patch(`${environment.apiUrl}/users/current/description`, { description })
-            .toPromise()
-        this.authService.setUser(userUpdate)
     }
 }

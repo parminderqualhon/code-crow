@@ -1,81 +1,54 @@
-<div
-	class="col-sm-12 app-input-menu"
-	[ngClass]="{
+<div class="col-sm-12 app-input-menu" [ngClass]="{
 		showGiphySearch: showGiphySearch,
 		showEmojiPicker: showEmojiPicker,
 		showAttachment: showAttachment,
 		'bottom-for-one-to-one': isOneToOneChat
-	}"
-	*ngIf="showGiphySearch || showEmojiPicker || showAttachment">
-	<div class="col-12 app-attachment-close-button-container" *ngIf="isMenuOpen">
-		<button
-			class="app-attachment-close-button"
-			(click)="closeMenu()"
-			mat-icon-button
-			matTooltip="Close menu"
-			matTooltipPosition="above">
-			<mat-icon>clear</mat-icon>
-		</button>
-	</div>
+	}" *ngIf="showGiphySearch || showEmojiPicker || showAttachment">
+    <div class="col-12 app-attachment-close-button-container" *ngIf="isMenuOpen">
+        <button class="app-attachment-close-button" (click)="closeMenu()" mat-icon-button matTooltip="Close menu"
+            matTooltipPosition="above">
+            <mat-icon>clear</mat-icon>
+        </button>
+    </div>
 
-	<div *ngIf="showAttachment" class="form-group">
-		<button
-			for="file"
-			ngf-select
-			ng-model="file"
-			class="btn btn-primary"
-			(click)="fileInput.click()">
-			Choose File
-		</button>
-		{{ fileToUploadName }}
-		<input
-			#fileInput
-			style="display: none"
-			type="file"
-			id="file"
-			(change)="seletedFiles($event.target.files)"
-			accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*, 
+    <div *ngIf="showAttachment" class="form-group">
+        <button for="file" ngf-select ng-model="file" class="btn btn-primary" (click)="fileInput.click()">
+            Choose File
+        </button>
+        {{ fileToUploadName }}
+        <input #fileInput style="display: none" type="file" id="file" (change)="seletedFiles($event.target.files)"
+            accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*, 
             application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
             application/vnd.openxmlformats-officedocument.presentationml.slideshow, .mp3, audio/*, video/mp4,video/x-m4v,video/*" />
-		<button *ngIf="fileToUpload" mat-button (click)="clearFile()">
-			<mat-icon>delete</mat-icon>
-		</button>
-	</div>
+        <button *ngIf="fileToUpload" mat-button (click)="clearFile()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
 
-	<div *ngIf="showGiphySearch">
-		<div class="md-form app-gif-search-bar" (click)="$event.stopPropagation()">
-			<input
-				type="search"
-				[(ngModel)]="giphySearchTerm"
-				(change)="searchGifs()"
-				placeholder="Search for a GIF"
-				name="giphy"
-				(click)="$event.stopPropagation()" />
-		</div>
+    <div *ngIf="showGiphySearch">
+        <div class="md-form app-gif-search-bar" (click)="$event.stopPropagation()">
+            <input type="search" [(ngModel)]="giphySearchTerm" (change)="searchGifs()" placeholder="Search for a GIF"
+                name="giphy" (click)="$event.stopPropagation()" />
+        </div>
 
-		<div class="search-results giphy-search custom-scroll">
-			<div class="gif-result" *ngFor="let result of giphyResults.data">
-				<img
-					src="{{ result.images.downsized_large.url }}"
-					(click)="sendGif(result.title, result.images.original.url)" />
-			</div>
-		</div>
+        <div class="search-results giphy-search custom-scroll">
+            <div class="gif-result" *ngFor="let result of giphyResults.data">
+                <img src="{{ result.images.downsized_large.url }}"
+                    (click)="sendGif(result.title, result.images.original.url)" />
+            </div>
+        </div>
 
-		<div class="gif-logo-container"></div>
-	</div>
+        <div class="gif-logo-container"></div>
+    </div>
 
-	<div *ngIf="showEmojiPicker">
-		<emoji-mart
-			#emojiPicker
-			set="google"
-			(emojiSelect)="addEmoji($event)"
-			title="Change color. . .">
-		</emoji-mart>
-	</div>
+    <div *ngIf="showEmojiPicker">
+        <emoji-mart #emojiPicker set="google" (emojiSelect)="addEmoji($event)" title="Change color. . .">
+        </emoji-mart>
+    </div>
 </div>
 <div class="app-attachment-content">
-	<div class="input-button-row">
-		<!-- <div class="col-12 ms-3">
+    <div class="input-button-row">
+        <!-- <div class="col-12 ms-3">
             <button mat-mini-fab color="primary" (click)="toggleAttachment()" matTooltip="Attachments"
                 matTooltipPosition="above">
                 <mat-icon>attach_file</mat-icon>
@@ -89,71 +62,37 @@
                 <mat-icon>gif</mat-icon>
             </button>
         </div> -->
-		<div>
-			<button
-				(click)="toggleAttachment()"
-				class="app-message-attachment-btn"
-				matTooltip="Attachments"
-				matTooltipPosition="above">
-				<span class="chat-toolbar-icon tool-attachment"></span>
-			</button>
-		</div>
-		<div>
-			<button
-				(click)="toggleEmojiPicker()"
-				class="app-message-attachment-btn"
-				matTooltip="Emojis"
-				matTooltipPosition="above">
-				<span class="chat-toolbar-icon tool-emoji"></span>
-			</button>
-		</div>
-		<div>
-			<button
-				(click)="toggleGiphySearch()"
-				class="app-message-attachment-btn"
-				matTooltip="Gifs"
-				matTooltipPosition="above">
-				<span class="chat-toolbar-icon tool-gif"></span>
-			</button>
-		</div>
-	</div>
+        <div>
+            <button (click)="toggleAttachment()" class="app-message-attachment-btn" matTooltip="Attachments"
+                matTooltipPosition="above">
+                <span class="chat-toolbar-icon tool-attachment"></span>
+            </button>
+        </div>
+        <div>
+            <button (click)="toggleEmojiPicker()" class="app-message-attachment-btn" matTooltip="Emojis"
+                matTooltipPosition="above">
+                <span class="chat-toolbar-icon tool-emoji"></span>
+            </button>
+        </div>
+        <div>
+            <button (click)="toggleGiphySearch()" class="app-message-attachment-btn" matTooltip="Gifs"
+                matTooltipPosition="above">
+                <span class="chat-toolbar-icon tool-gif"></span>
+            </button>
+        </div>
+    </div>
 </div>
 
 <div class="app-chat-input md-form md-outline" *ngIf="show">
-	<div class="input-group">
-		<div class="col-10">
-			<textarea
-				[(ngModel)]="chatMessage"
-				name="chatMessage"
-				id="input_text"
-				type="text"
-				rows="{{ isExpanded ? '3' : '2' }}"
-				placeholder="Type a message..."
-				aria-describedby="button-addon2"
-				class="form-control rounded-0 border-0"
-				(keydown)="emitTyping($event)"
-				(keyup)="stopTyping($event)"
-				(keydown.enter)="sendMessage()"
-				matTextareaAutosize
-				matAutosizeMinRows="2"
-				matAutosizeMaxRows="2"
-				matInput>
+    <div class="input-group">
+        <textarea [(ngModel)]="chatMessage" name="chatMessage" id="input_text" type="text"
+            rows="{{ isExpanded ? '3' : '2' }}" placeholder="Type a message..." aria-describedby="button-addon2"
+            class="form-control rounded-0 border-0 input-chat" (keydown)="emitTyping($event)"
+            (keyup)="stopTyping($event)" (keydown.enter)="sendMessage()" matTextareaAutosize matAutosizeMinRows="2"
+            matAutosizeMaxRows="2" matInput>
 			</textarea>
-		</div>
-		<div class="input-group-append flex-center">
-			<button
-				mat-mini-fab
-				color="primary"
-				class="form-control"
-				class="app-message-send-btn"
-				(click)="sendMessage()"
-				matTooltip="Send"
-				matTooltipPosition="above">
-				<!-- <mat-icon>send</mat-icon> -->
-			</button>
-		</div>
-	</div>
-	<!-- <div class="app-input-container">
+    </div>
+    <!-- <div class="app-input-container">
         <div class="input-button-row">
             <div class="col-12">
                 <textarea [(ngModel)]="chatMessage" name="chatMessage"

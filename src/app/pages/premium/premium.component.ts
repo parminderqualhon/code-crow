@@ -179,12 +179,12 @@ export class PremiumComponent implements OnInit {
         if (status == 'Connect Wallet') {
             var address = await Wallet()
             address = address.publicKey.toString()
-            await this.userService.updateWalletAddress(address)
+            await this.userService.updateUser({ wallet: address })
             this.walletAddress = address
             this.userService.showSnackBar(`Wallet Linked`, 3000)
             this.isConnected = true
         } else {
-            await this.userService.updateWalletAddress('')
+            await this.userService.updateUser({ wallet: '' })
             this.walletAddress = 'Connect Wallet'
             this.userService.showSnackBar(`Wallet Unlinked`, 3000)
             this.isConnected = false

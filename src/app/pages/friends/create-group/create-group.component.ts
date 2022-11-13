@@ -74,7 +74,7 @@ export class CreateGroupComponent implements OnInit {
                 [],
                 true,
                 user,
-                true
+                'group'
             )
 
             if (channel) {
@@ -120,7 +120,7 @@ export class CreateGroupComponent implements OnInit {
         return (this.friends = this.friendService.friendsList.filter((friend) => {
             return (
                 friend.user.customUsername.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >=
-                    0 && !this.selectedMembers.find((e) => e._id === friend.user._id)
+                0 && !this.selectedMembers.find((e) => e._id === friend.user._id)
             )
         }))
     }

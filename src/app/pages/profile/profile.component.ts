@@ -65,14 +65,14 @@ export class ProfileComponent implements OnInit {
                 if (!this.channelService.techList.length) {
                     await this.channelService.getTechList()
                 }
-                if(this.otherUser.techStack){
-                this.otherUser.techStack.forEach(async (techName) => {
-                    const tech = this.channelService.techList.find(
-                        (item) => item.item_text === techName
-                    )
-                    if (tech) this.techStackUrls.push(tech.item_image)
-                })
-            }
+                if (this.otherUser.techStack) {
+                    this.otherUser.techStack.forEach(async (techName) => {
+                        const tech = this.channelService.techList.find(
+                            (item) => item.item_text === techName
+                        )
+                        if (tech) this.techStackUrls.push(tech.item_image)
+                    })
+                }
                 await this.getChannels(true)
                 this.channelCount = this.otherUser?.hostChannelIds?.length || 0
                 if (!this.isCurrentUser) {
@@ -191,7 +191,7 @@ export class ProfileComponent implements OnInit {
     async onBlurDisplayName() {
         if (this.otherUser.displayName.length > 2) {
             this.isDisplayNameEditable = false
-            await this.userService.updateDisplayName({
+            await this.userService.updateUser({
                 displayName: this.otherUser.displayName
             })
         } else {
@@ -223,7 +223,7 @@ export class ProfileComponent implements OnInit {
     async onBlurDescription() {
         if (this.otherUser.description.length > 2) {
             this.isDescriptionEditable = false
-            await this.userService.updateDescription({
+            await this.userService.updateUser({
                 description: this.otherUser.description
             })
         } else {
@@ -235,9 +235,8 @@ export class ProfileComponent implements OnInit {
 
     openGitProfile(user) {
         const { providerType, username } = user
-        const url = `https://${providerType}${
-            providerType == 'Bitbucket' ? '.org' : '.com'
-        }/${username}`
+        const url = `https://${providerType}${providerType == 'Bitbucket' ? '.org' : '.com'
+            }/${username}`
         const win = window.open(url, '_blank')
         win.focus()
     }
@@ -271,7 +270,7 @@ export class ProfileComponent implements OnInit {
     }
 
     async submitTechStack(selectedTechStack: any[]) {
-        await this.userService.updateTeckStack({ techStack: selectedTechStack })
+        await this.userService.updateUser({ techStack: selectedTechStack })
         this.otherUser = this.authService.currentUser
         this.snackBar.open('Categories updated', null, {
             duration: 5000

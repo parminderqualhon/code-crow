@@ -81,23 +81,23 @@ export class UserSettingsComponent implements AfterViewInit {
     // }
 
     async onChangeDoNotDisturb() {
-        await this.userService.updateIsDoNotDisturbEnabled(
-            this.notificationForm.value.isDoNotDisturbEnabled
-        )
+        await this.userService.updateUser({
+            isDoNotDisturbEnabled: this.notificationForm.value.isDoNotDisturbEnabled
+        })
         this.isDoNotDisturbEnabled = this.notificationForm.value.isDoNotDisturbEnabled
     }
 
     async onChangeMessageGuard() {
-        await this.userService.updateIsMessageGuardEnabled(
-            this.notificationForm.value.isMessageGuardEnabled
-        )
+        await this.userService.updateUser({
+            isMessageGuardEnabled: this.notificationForm.value.isMessageGuardEnabled
+        })
         this.isMessageGuardEnabled = this.notificationForm.value.isMessageGuardEnabled
     }
 
     async saveEmail() {
         if (this.settingsForm.valid) {
             this.email = this.settingsForm.value.email
-            await this.userService.updateEmail(this.email)
+            await this.userService.updateUser({ email: this.email })
             this.userService.showSnackBar('Email saved', 3000)
             // if (!this.settingsForm.value.email) {
             //   this.notificationForm.value.isEmailNotificationsEnabled = false
