@@ -127,7 +127,7 @@ export class ViewChannelDetailComponent implements OnInit {
                 // delete old thumbnail from S3
                 if (this.thumbnail) this.deleteAttachment(this.thumbnail, true)
                 this.thumbnail = thumbnailUrl
-                let channel = await this.channelService.updateChannelInfo({
+                let channel = await this.channelService.updateChannel({
                     channelId: this.channelService.currentChannel._id,
                     description: this.description,
                     thumbnail: thumbnailUrl,
@@ -209,7 +209,7 @@ export class ViewChannelDetailComponent implements OnInit {
 
     async togglePrivate() {
         if (this.isOwner) {
-            let channel = await this.channelService.updateChannelInfo({
+            let channel = await this.channelService.updateChannel({
                 channelId: this.channelService.currentChannel._id,
                 description: this.description,
                 thumbnail: this.thumbnail,
@@ -224,7 +224,7 @@ export class ViewChannelDetailComponent implements OnInit {
     }
 
     async descriptionUpdate() {
-        let channel = await this.channelService.updateChannelInfo({
+        let channel = await this.channelService.updateChannel({
             channelId: this.channelService.currentChannel._id,
             description: this.description,
             thumbnail: this.thumbnail,
@@ -262,7 +262,7 @@ export class ViewChannelDetailComponent implements OnInit {
 
     async techStackUpdate() {
         this.techStack = this.techList.filter(item => item.item_status).map(item => item.item_text)
-        let channel = await this.channelService.updateChannelInfo({
+        let channel = await this.channelService.updateChannel({
             channelId: this.channelService.currentChannel._id,
             description: this.description,
             thumbnail: this.thumbnail,
@@ -338,7 +338,7 @@ export class ViewChannelDetailComponent implements OnInit {
     async tagsUpdate() {
         this.tags = []
         this.tempTags.forEach((tag) => this.tags.push(tag.trim()))
-        let channel = await this.channelService.updateChannelInfo({
+        let channel = await this.channelService.updateChannel({
             channelId: this.channelService.currentChannel._id,
             description: this.description,
             thumbnail: this.thumbnail,
