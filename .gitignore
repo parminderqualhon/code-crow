@@ -53,4 +53,3 @@ Thumbs.db
 /test-results/
 /playwright-report/
 /playwright/.cache/
-e2eresults.json
