@@ -42,7 +42,6 @@
         "strictInjectionParameters": true,
         "strictDomEventTypes": false,
         "types": [
-            "jasmine",
             "node"
         ]
     }

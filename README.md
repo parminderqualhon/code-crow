@@ -13,13 +13,15 @@
     &nbsp;
     <a href="https://github.com/CodeCrowCorp/cro-website/actions"><img src="https://github.com/CodeCrowCorp/cro-website/actions/workflows/ci-prod.yml/badge.svg"></a>
     &nbsp;
-    <a href="https://about.codecov.io/"><img src="https://codecov.io/gh/CodeCrowCorp/cro-website/branch/main/graph/badge.svg?token=J3XRJHNPEO"></a>
+    <a href="https://codecov.io/gh/CodeCrowCorp/cro-website/"><img src="https://codecov.io/gh/CodeCrowCorp/cro-website/branch/main/graph/badge.svg"></a>
     &nbsp;
     <a href="https://dependabot.com/"><img src="https://img.shields.io/badge/dependabot-enabled-025e8c?logo=Dependabot"></a>
     &nbsp;
 </p>
 
 <p align="center">
+    <a href="https://github.com/CodeCrowCorp/cro-website/blob/main/LICENSE.md"><img src="https://img.shields.io/badge/license-GPL3.0-00bfff.svg"></a>
+    &nbsp;
     <a href="https://discord.gg/codecrow"><img src="https://img.shields.io/discord/766681806463303680?label=discord&color=5a66f6"></a>
 	&nbsp;
     <a href="https://twitter.com/CodeCrowCorp"><img src="https://img.shields.io/badge/twitter-follow_us-1d9bf0.svg"></a>
