@@ -40,7 +40,7 @@ export class ChannelItemComponent implements OnInit {
             this.isParticipantChannel =
                 this.user.channelIds && this.user.channelIds.includes(this.channel._id)
         // this.techStackUrls = this.channelService.techList.filter(item => this.channel.techStack.includes(item.item_text)).map(item => item.item_image)
-        this.channel.techStack.forEach((techName) => {
+        this.channel.techStack?.forEach((techName) => {
             const tech = this.channelService.techList.find((item) => item.item_text === techName)
             if (tech) this.techStackUrls.push(tech.item_image)
         })
