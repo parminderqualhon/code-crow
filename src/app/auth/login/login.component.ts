@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         setTimeout(() => {
-            this.themeService.setTheme('theme-light')
+            this.themeService.setTheme('theme-dark')
             this.sharedService.isLoginPage = true
         })
     }
