@@ -16,7 +16,6 @@ const config: PlaywrightTestConfig = {
         actionTimeout: 0,
         trace: 'on-first-retry',
     },
-
     projects: [
         {
             name: 'chromium',
@@ -40,7 +39,7 @@ const config: PlaywrightTestConfig = {
         }
     ],
     webServer: {
-        command: 'npm run build && npm run dev',
+        command: 'npm run dev',
         port: 4200,
     }
 }
