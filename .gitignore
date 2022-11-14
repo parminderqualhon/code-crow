@@ -50,3 +50,7 @@ Thumbs.db
 
 *.angular
 *.vscode
+/test-results/
+/playwright-report/
+/playwright/.cache/
+e2eresults.json
