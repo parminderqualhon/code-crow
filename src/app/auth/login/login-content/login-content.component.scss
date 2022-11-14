@@ -90,3 +90,7 @@ p.app-login-para {
     color: #434f59;
     margin-top: 40px;
 }
+
+::ng-deep .mat-dialog-container {
+    background: #fff;
+}
