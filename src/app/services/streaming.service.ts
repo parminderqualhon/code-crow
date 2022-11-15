@@ -276,13 +276,6 @@ export class StreamingService {
         if (!this.sharedService.wasHomePressed) {
             window.location.href = '/'
         }
-        // if (this.streamOptions.isTimedOut || this.streamOptions.isMaxLimitReached) {
-        //     if (this.streamOptions.isTimedOut) this.snackBar.open("You have been removed due to inactivity", null, { duration: 5000 })
-        //     if (this.streamOptions.isMaxLimitReached) this.snackBar.open("You have reached the 15-min time limit. This limit will be lifted after beta", null, { duration: 5000 })
-        //     this.streamOptions.isTimedOut = false
-        //     this.streamOptions.isMaxLimitReached = false
-        // }
-
         this.streamOptions = {
             isRecording: false,
             isLiveStreaming: false,
@@ -726,7 +719,7 @@ export class StreamingService {
 
     async createLiveStream(channelId, title): Promise<any> {
         return await lastValueFrom(this.http
-            .post(`${environment.apiUrl}/live-streams`, {
+            .post(`${environment.apiUrl}/streams`, {
                 channel: channelId,
                 title
             })).then((res: any) => {
@@ -737,7 +730,7 @@ export class StreamingService {
     async updateLiveStream(): Promise<any> {
         if (this.videoStreamId) {
             return await lastValueFrom(this.http
-                .patch(`${environment.apiUrl}/live-streams/${this.videoStreamId}/end`, {}))
+                .patch(`${environment.apiUrl}/streams/${this.videoStreamId}/end`, {}))
         }
     }
 

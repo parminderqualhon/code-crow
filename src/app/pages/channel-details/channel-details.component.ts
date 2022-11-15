@@ -14,7 +14,6 @@ import { WaitingRoomDialogComponent } from './channel/waiting-room-dialog/waitin
 import { ChannelService } from '../../services/channel.service'
 import { GroupchatService } from '../../services/groupchat.service'
 import { AuthService } from '../../auth/auth.service'
-import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
     selector: 'app-channel-details',
@@ -48,7 +47,6 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         private titleService: Title,
         private metaTagService: Meta,
         private groupchatService: GroupchatService,
-        private snackBar: MatSnackBar
     ) {}
 
     async ngOnInit() {
@@ -67,8 +65,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
         this.activatedRoute.params.subscribe(async ({ channelId }) => {
             try {
                 var channel = await this.channelService.getChannel({ channelId })
-                if (
-                    channel.isPrivate &&
+                if (channel.isPrivate &&
                     channel.user != this.user._id &&
                     !channel?.notificationSubscribers?.includes(this.user._id)
                 ) {
@@ -77,7 +74,7 @@ export class ChannelDetailsComponent implements OnInit, OnDestroy {
                 } else {
                     const channelsocket = await this.socket.setupChannelSocketConnection(channelId)
                     await this.socket.setupWebsocketConnection(channelsocket, true)
-                    if(this.socket.channelSocket.readyState===1){
+                    if (this.socket.channelSocket.readyState === 1) {
                         console.log('ready state')
                     }
                     this.socket.emitChannelSubscribeByUser(channelId, this.user._id)

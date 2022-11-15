@@ -76,9 +76,6 @@ export class FriendService {
                             searchQuery: encodeURIComponent(query),
                             skip: '0',
                             limit: '100'
-                        },
-                        headers:{
-                            userId: userId
                         }
                     })
                     .toPromise()
@@ -123,19 +120,19 @@ export class FriendService {
                 friends = response.friends.map((friend) =>
                     friend.recipient && friend.recipient._id == user._id
                         ? {
-                              status: friend.status,
-                              user: friend.requester,
-                              channelId: friend.channelId,
-                              lastMessage: friend.lastMessage ? friend.lastMessage : '',
-                              unreadMessageCount: friend.unreadMessageCount
-                          }
+                            status: friend.status,
+                            user: friend.requester,
+                            channelId: friend.channelId,
+                            lastMessage: friend.lastMessage ? friend.lastMessage : '',
+                            unreadMessageCount: friend.unreadMessageCount
+                        }
                         : {
-                              status: friend.status,
-                              user: friend.recipient,
-                              channelId: friend.channelId,
-                              lastMessage: friend.lastMessage ? friend.lastMessage : '',
-                              unreadMessageCount: friend.unreadMessageCount
-                          }
+                            status: friend.status,
+                            user: friend.recipient,
+                            channelId: friend.channelId,
+                            lastMessage: friend.lastMessage ? friend.lastMessage : '',
+                            unreadMessageCount: friend.unreadMessageCount
+                        }
                 )
                 this.filterFriends(friends)
                 if (this.allUsers)

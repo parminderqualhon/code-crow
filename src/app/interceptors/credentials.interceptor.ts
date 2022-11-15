@@ -9,8 +9,11 @@ export class CredentialsInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = localStorage.getItem('jwt')
+        const userId = localStorage.getItem('userId')
+        var headers = token ? request.headers.set('Authorization', token) : request.headers
+        headers = userId ? headers.set('userId', userId) : headers
         const clonedRequest = request.clone({
-            headers: token ? request.headers.set('Authorization', token) : request.headers
+            headers
         })
         // return next.handle(clonedRequest)
 
