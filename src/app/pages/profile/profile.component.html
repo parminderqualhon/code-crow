@@ -26,9 +26,10 @@
                         (keydown.space)="$event.preventDefault()" minlength="3" placeholder="handle" />
                 </div>
                 <h3 *ngIf="!isDescriptionEditable" (click)="isDescriptionEditable = isCurrentUser ? true : false">
-                    {{ otherUser.description }}
+                    {{ otherUser.description || 'Loves Code Crow' }}
                 </h3>
-                <div *ngIf="isCurrentUser && (isDescriptionEditable || otherUser.description.length < 1)">
+                <div
+                    *ngIf="isCurrentUser && (isDescriptionEditable || (otherUser.description && otherUser.description.length < 1))">
                     <input [(ngModel)]="otherUser.description" type="text" class="form-control h3"
                         (blur)="onBlurDescription()" maxlength="65" (keyup.enter)="onBlurDescription()"
                         placeholder="description" minlength="3" />
@@ -39,15 +40,9 @@
                         (click)="chatService.openChat(otherUser)">
                         <span class="profile-chat"></span>
                     </div>
-                    <div *ngIf="otherUser.providerType === 'Github' ||
-							otherUser.providerType === 'Bitbucket' ||
-							otherUser.providerType === 'Gitlab'" class="social-icons cursor-pointer" (click)="openGitProfile(otherUser)">
-                        <img *ngIf="otherUser.providerType === 'Github'" class="fab fa-github menu-icon"
-                            src="/assets/images/profile-github.svg" />
-                        <img *ngIf="otherUser.providerType === 'Bitbucket'" class="fab fa-bitbucket menu-icon"
-                            src="/assets/images/profile-bitbucket.svg" />
-                        <img *ngIf="otherUser.providerType === 'Gitlab'" class="fab fa-gitlab menu-icon"
-                            src="/assets/images/profile-gitlab.svg" />
+                    <div *ngIf="otherUser.providerType === 'github'" class="social-icons cursor-pointer"
+                        (click)="openGitProfile(otherUser.url)">
+                        <img class="fab fa-github menu-icon" src="/assets/images/profile-github.svg" />
                     </div>
                     <div class="framework-icons cursor-pointer" #techMenuTrigger="matMenuTrigger"
                         [matMenuTriggerFor]="techMenu" *ngIf="isCurrentUser">

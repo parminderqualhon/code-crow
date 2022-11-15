@@ -3243,8 +3243,8 @@ mat-ink-bar.mat-ink-bar {
 
 /* ADD NEW CHANNEL FORM CSS END */
 .mat-raised-button {
-    padding: 12px 50px;
-    font-size: 18px;
+    padding: 12px 50px !important;
+    font-size: 18px !important;
 }
 
 .app-contact-left {

@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
         this.activatedRoute.params.subscribe(async ({ customUsername }) => {
             await this.channelService.getTechList()
             this.data = this.channelService.techList
-            this.otherUser = await this.userService.getUserByCustomUsername(customUsername)
+            this.otherUser = await this.userService.getUserByCustomUsername({ customUsername })
             console.log(this.otherUser)
             if (this.otherUser) {
                 this.isCurrentUser = this.otherUser._id == this.authService.currentUser._id
@@ -233,10 +233,7 @@ export class ProfileComponent implements OnInit {
         }
     }
 
-    openGitProfile(user) {
-        const { providerType, username } = user
-        const url = `https://${providerType}${providerType == 'Bitbucket' ? '.org' : '.com'
-            }/${username}`
+    openGitProfile(url) {
         const win = window.open(url, '_blank')
         win.focus()
     }
