@@ -11,7 +11,6 @@ import { Meta } from '@angular/platform-browser'
 import { Util } from './util/util'
 import { SharedService } from './services/shared.service'
 import { Observable, Subscription } from 'rxjs'
-import { environment } from '../environments/environment'
 import { SfxService } from './services/sfx.service'
 import { StreamingService } from './services/streaming.service'
 import { AnimationOptions } from 'ngx-lottie'
@@ -42,7 +41,6 @@ export class AppComponent implements OnInit {
         public sharedService: SharedService,
         public adminService: AdminService,
         private socket: Socket,
-        private friendService: FriendService,
         private metaTagService: Meta,
         private tokenStorage: TokenStorage,
         @Inject(PLATFORM_ID) private platformId: Object,
@@ -80,24 +78,24 @@ export class AppComponent implements OnInit {
                 this.showSideBar = this.isAuthenticated
                 await this.channelService.getTechList()
 
-                if (this.isAuthenticated) {
-                    // isPlatformBrowser(this.platformId) ?
+                if (this.isAuthenticated && this.router.url === '/') {
                     await this.streamingService.leaveRoom()
                     window.scrollTo(0, 0)
                     await this.onInitsubMethod()
                 }
-                this.showMobileSideBar = false
 
+                this.showMobileSideBar = false
                 this.isLoading = false
+
                 if (this.router.url === '/login') {
                     return
                 }
             })
-                if(this.isAuthenticated){
+            if (this.isAuthenticated) {
                 this.isLoading = false
                 await this.onInitsubMethod()
             }
-            
+
         } catch (e) {
             this.isLoading = false
             console.log(e)
@@ -129,8 +127,8 @@ export class AppComponent implements OnInit {
                     })
                 }
             }
-                if (this.socket.apiSocket.readyState == WebSocket.OPEN) onConnectionSuccess()
-            
+            if (this.socket.apiSocket.readyState == WebSocket.OPEN) onConnectionSuccess()
+
             await this.sfxService.getAllSavedMutedSfx()
         } catch (e) {
             console.log(e)

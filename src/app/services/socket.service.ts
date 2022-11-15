@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { async, Observable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { isPlatformBrowser } from '@angular/common'
 import { Inject, PLATFORM_ID } from '@angular/core'

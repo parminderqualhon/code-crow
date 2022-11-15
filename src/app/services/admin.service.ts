@@ -78,7 +78,7 @@ export class AdminService {
     }
 
     public getMonthLiveStreaming(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/live-streams/`).toPromise()
+        return this.http.get(`${environment.apiUrl}/streams/`).toPromise()
     }
 
     errorMgmt(error: HttpErrorResponse) {

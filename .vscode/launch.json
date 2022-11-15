@@ -21,7 +21,7 @@
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}/cro-client"
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "Attach Client",
@@ -29,7 +29,7 @@
             "request": "attach",
             "port": 4200,
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}/cro-client"
+            "webRoot": "${workspaceFolder}"
         }
     ],
     "compounds": [

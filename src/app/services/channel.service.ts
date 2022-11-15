@@ -92,22 +92,22 @@ export class ChannelService {
 
     async removeChannelFromUser({ channelId, userId }) {
         const userUpdate = await lastValueFrom(this.http
-            .delete(`${environment.apiUrl}/users/channels?channelId=${channelId}`, {
-                headers: { userId }
-            }))
+            .delete(`${environment.apiUrl}/users/channels?channelId=${channelId}`, {}))
         if (this.user == userId) this.authService.setUser(userUpdate)
     }
 
     async addHostChannelToUser({ hostChannelId }) {
+        console.log("userId", localStorage.getItem('userId'))
+
         const userUpdate = await lastValueFrom(this.http
-            .put(`${environment.apiUrl}/users/hostChannels?hostChannelId=${hostChannelId}`, {}))
+            .put(`${environment.apiUrl}/users/host-channels?hostChannelId=${hostChannelId}`, {}))
         this.authService.setUser(userUpdate)
         this.user = userUpdate
     }
 
     async removeHostChannelFromUser({ hostChannelId }) {
         const userUpdate = await lastValueFrom(this.http
-            .delete(`${environment.apiUrl}/users/hostChannels?hostChannelId=${hostChannelId}`, {}))
+            .delete(`${environment.apiUrl}/users/host-channels?hostChannelId=${hostChannelId}`, {}))
         this.authService.setUser(userUpdate)
         this.user = userUpdate
     }
@@ -151,13 +151,7 @@ export class ChannelService {
 
     async addAttachments({ channelId, attachmentUrl }): Promise<any> {
         return await lastValueFrom(this.http
-            .put(
-                `${environment.apiUrl
-                }/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(
-                    attachmentUrl
-                )}`,
-                {}
-            ))
+            .put(`${environment.apiUrl}/channels/attachments?channelId=${channelId}&encodeURIComponent=${encodeURIComponent(attachmentUrl)}`, {}))
     }
 
     async deleteAttachment({ channelId, attachmentUrl }): Promise<any> {
@@ -220,19 +214,12 @@ export class ChannelService {
     }
 
     async getMyChannels(): Promise<any> {
-        return await lastValueFrom(this.http.get(`${environment.apiUrl}/channels/me/hosted`, {
-            headers: {
-                userId: localStorage.getItem('userId'),
-                authorization: localStorage.getItem('jwt')
-            }
-        }))
+        return await lastValueFrom(this.http.get(`${environment.apiUrl}/channels/me/hosted`))
     }
 
     async getChannelsByUserId({ userId, searchQuery = null, skip = 0, limit = 50 }): Promise<any> {
         return await lastValueFrom(this.http
-            .get(`${environment.apiUrl}/channels/user`, {
-                params: { searchQuery, skip, limit }, headers: { userId }
-            }))
+            .get(`${environment.apiUrl}/channels/user`, { params: { searchQuery, skip, limit } }))
     }
 
     async getChannels(isRefresh = false) {
@@ -246,10 +233,6 @@ export class ChannelService {
                     techStack: this.filterTechList.map((item) => item.item_text).join(),
                     skip: this.skip,
                     limit: this.limit
-                },
-                headers: {
-                    userId: localStorage.getItem('userId'),
-                    authorization: localStorage.getItem('jwt')
                 }
             }))
         if (channels.length) {
@@ -331,7 +314,6 @@ export class ChannelService {
     async sendToken({ channelId }) {
         await lastValueFrom(this.http
             .get(`${environment.apiUrl}/token/sendToken?channelId=${channelId}`, {
-                headers: { Authorization: localStorage.getItem('jwt') },
                 responseType: 'text'
             })).then((res) => {
                 return this.snackBar.open('You received 1 recursion Token', null, {

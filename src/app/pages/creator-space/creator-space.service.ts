@@ -42,7 +42,7 @@ export class CreatorSpaceService {
     }
 
     public getChannelLiveStreams(channelId): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/channels/${channelId}/live-streams`).toPromise()
+        return this.http.get(`${environment.apiUrl}/channels/${channelId}/streams`).toPromise()
     }
 
     public toggleVideoStatus(id, status): Promise<any> {
@@ -54,7 +54,7 @@ export class CreatorSpaceService {
     }
 
     public getMonthLiveStreaming(): Promise<any> {
-        return this.http.get(`${environment.apiUrl}/live-streams/me/montly`).toPromise()
+        return this.http.get(`${environment.apiUrl}/streams/me/montly`).toPromise()
     }
 
     errorMgmt(error: HttpErrorResponse) {
