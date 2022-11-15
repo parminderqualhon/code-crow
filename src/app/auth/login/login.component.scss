@@ -850,3 +850,19 @@
     left: 8px;
     top: 12px;
 }
+
+.header-dropdown .user-menu > div,
+a,
+.custom-dropdown .user-menu > div,
+a {
+    color: var(--bs-link-color);
+    border-color: '' !important;
+}
+
+.header-dropdown .user-menu > div:hover,
+a:hover,
+.custom-dropdown .user-menu > div:hover,
+a:hover {
+    background: none;
+    color: var(--bs-link-color);
+}

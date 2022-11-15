@@ -94,3 +94,18 @@ p.app-login-para {
 ::ng-deep .mat-dialog-container {
     background: #fff;
 }
+
+.header-dropdown .user-menu > div,
+a,
+.custom-dropdown .user-menu > div,
+a {
+    color: var(--bs-link-color);
+}
+
+.header-dropdown .user-menu > div:hover,
+a:hover,
+.custom-dropdown .user-menu > div:hover,
+a:hover {
+    background: none;
+    color: var(--bs-link-color);
+}

@@ -35,9 +35,9 @@ export class UserService {
             .get(`${environment.apiUrl}/users/search/name`, { params: { name } }))
     }
 
-    async getUserByCustomUsername(customUsername): Promise<any> {
+    async getUserByCustomUsername({ customUsername }): Promise<any> {
         return await lastValueFrom(this.http
-            .get(`${environment.apiUrl}/users/search/custom-username?customUserName=${customUsername}`))
+            .get(`${environment.apiUrl}/users/search/custom-username`, { params: { customUsername } }))
     }
 
     // async getPlan() {
