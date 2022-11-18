@@ -59,90 +59,79 @@ export class TokenControlsComponent {
                 .getUserById(this.channelService.currentChannel.user)
                 .then((res) => {
                     destination = res?.walletAddress
+                    // destination = "EH452r2neFEJS4yCNKBSGZjL3LDq6zy67AEUqcWQuBHZ"
                     console.log('destination', destination)
                 })
             const mintPublicKey = new PublicKey(TOKEN_PROGRAM_ID)
-            // const mintToken = new spl_token.Token(
-            //     connection,
-            //     mintPublicKey,
-            //     spl_token.TOKEN_PROGRAM_ID,
-            //     provider.publicKey // the wallet owner will pay to transfer and to create recipients associated token account if it does not yet exist.
-            // )
-            // const fromTokenAccount = await mintToken.getOrCreateAssociatedAccountInfo(
-            //     provider.publicKey
-            // )
+            
+            const fromTokenAccount = await spl_token.getOrCreateAssociatedTokenAccount(
+                connection,
+                provider,
+                mintPublicKey,
+                provider.publicKey
+            )
 
             const destPublicKey = new PublicKey(destination)
             const secondDestPublicKey = new PublicKey(secondDestination) //  Destination wallet address
 
-            // const associatedDestinationTokenAddr = await spl_token.Token.getAssociatedTokenAddress(
-            //     mintToken.associatedProgramId,
-            //     mintToken.programId,
-            //     mintPublicKey,
-            //     destPublicKey
-            // )
+            const associatedDestinationTokenAddr = await spl_token.getAssociatedTokenAddress(
+                mintPublicKey,
+                destPublicKey
+            )
 
-            // const secondAssociatedDestinationTokenAddr =
-            //     await spl_token.Token.getAssociatedTokenAddress(
-            //         mintToken.associatedProgramId,
-            //         mintToken.programId,
-            //         mintPublicKey,
-            //         secondDestPublicKey
-            //     )
+            const secondAssociatedDestinationTokenAddr =
+                await spl_token.getAssociatedTokenAddress(
+                    mintPublicKey,
+                    secondDestPublicKey
+                )
 
-            // const receiverAccount = await connection.getAccountInfo(associatedDestinationTokenAddr)
-            // const secondReceiverAccount = await connection.getAccountInfo(
-            //     secondAssociatedDestinationTokenAddr
-            // )
+            const receiverAccount = await connection.getAccountInfo(associatedDestinationTokenAddr)
+            const secondReceiverAccount = await connection.getAccountInfo(
+                secondAssociatedDestinationTokenAddr
+            )
 
             const instructions: TransactionInstruction[] = []
 
-            // if (receiverAccount === null) {
-            //     instructions.push(
-            //         spl_token.Token.createAssociatedTokenAccountInstruction(
-            //             mintToken.associatedProgramId,
-            //             mintToken.programId,
-            //             mintPublicKey,
-            //             associatedDestinationTokenAddr,
-            //             destPublicKey,
-            //             provider.publicKey
-            //         )
-            //     )
-            // }
+            if (receiverAccount === null) {
+                instructions.push(
+                    spl_token.createAssociatedTokenAccountInstruction(
+                        provider.publicKey,
+                        associatedDestinationTokenAddr,
+                        destPublicKey,
+                        mintPublicKey,
+                    )
+                )
+            }
 
-            // if (secondReceiverAccount === null) {
-            //     instructions.push(
-            //         spl_token.Token.createAssociatedTokenAccountInstruction(
-            //             mintToken.associatedProgramId,
-            //             mintToken.programId,
-            //             mintPublicKey,
-            //             secondAssociatedDestinationTokenAddr,
-            //             secondDestPublicKey,
-            //             provider.publicKey
-            //         )
-            //     )
-            // }
+            if (secondReceiverAccount === null) {
+                instructions.push(
+                    spl_token.createAssociatedTokenAccountInstruction(
+                        provider.publicKey,
+                        secondAssociatedDestinationTokenAddr,
+                        secondDestPublicKey,
+                        mintPublicKey,
+                    )
+                )
+            }
 
-            // instructions.push(
-            //     spl_token.Token.createTransferInstruction(
-            //         spl_token.TOKEN_PROGRAM_ID,
-            //         fromTokenAccount.address,
-            //         secondAssociatedDestinationTokenAddr,
-            //         provider.publicKey,
-            //         [],
-            //         amount * 0.05 * LAMPORTS_PER_SOL
-            //     )
-            // )
-            // instructions.push(
-            //     spl_token.Token.createTransferInstruction(
-            //         spl_token.TOKEN_PROGRAM_ID,
-            //         fromTokenAccount.address,
-            //         associatedDestinationTokenAddr,
-            //         provider.publicKey,
-            //         [],
-            //         amount * 0.95 * LAMPORTS_PER_SOL
-            //     )
-            // )
+            instructions.push(
+                spl_token.createTransferInstruction(
+                    fromTokenAccount.address,
+                    secondAssociatedDestinationTokenAddr,
+                    provider.publicKey,
+                    amount * 0.05 * LAMPORTS_PER_SOL,
+                    [],
+                )
+            )
+            instructions.push(
+                spl_token.createTransferInstruction(
+                    fromTokenAccount.address,
+                    associatedDestinationTokenAddr,
+                    provider.publicKey,
+                    amount * 0.95 * LAMPORTS_PER_SOL,
+                    [],
+                )
+            )
 
             const transaction = new Transaction().add(...instructions)
 
