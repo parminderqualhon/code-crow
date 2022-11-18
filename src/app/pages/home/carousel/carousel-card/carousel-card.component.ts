@@ -46,7 +46,7 @@ export class CarouselCardComponent implements OnInit {
         }) // get updated channel data
         this.channelData = channel
         if (channel) {
-            const isUserBlocked = await channel.blockedUsers.some(
+            const isUserBlocked = await channel.blockedUsers?.some(
                 (blockedUser) => blockedUser === this.user._id
             )
             if (!this.user.isAdmin && isUserBlocked) {

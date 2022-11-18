@@ -1,6 +1,6 @@
 {
     "name": "cro-website",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "license": "MIT",
     "type": "module",
     "scripts": {
@@ -21,6 +21,7 @@
     "dependencies": {
         "@angular/cdk": "^14.2.3",
         "@angular/compiler": "^14.2.10",
+        "@angular/fire": "^7.4.1",
         "@angular/forms": "^14.2.10",
         "@angular/material": "^14.2.7",
         "@angular/platform-browser": "^14.2.10",

@@ -120,6 +120,9 @@ import { FriendItemComponent } from './pages/friends/friend-item/friend-item.com
 import { FriendsComponent } from './pages/friends/friends.component'
 import { CommunityDialogComponent } from './pages/community-dialog/community-dialog.component'
 import { CommunityComponent } from './pages/community-dialog/community/community.component'
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app'
+import { provideRemoteConfig, getRemoteConfig } from '@angular/fire/remote-config'
+// import { getAnalytics, provideAnalytics, UserTrackingService } from '@angular/fire/analytics'
 
 export function playerFactory() {
     return player
@@ -239,7 +242,10 @@ export function playerFactory() {
         InfiniteScrollModule,
         MatDialogModule,
         LottieModule.forRoot({ player: playerFactory }),
-        HomeModule
+        HomeModule,
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideRemoteConfig(() => getRemoteConfig()),
+        // provideAnalytics(() => getAnalytics())
     ],
     exports: [
         // ? HomeComponent,
@@ -255,6 +261,7 @@ export function playerFactory() {
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
+        // UserTrackingService,
         BnNgIdleService,
         ThemeService,
         TokenStorage,

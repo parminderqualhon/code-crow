@@ -1,7 +1,7 @@
 import { TokenStorage } from './auth/token.storage'
 import { ChannelService } from './services/channel.service'
 import { AdminService } from './services/admin.service'
-import { Component, OnInit, HostListener, Inject, PLATFORM_ID } from '@angular/core'
+import { Component, OnInit, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { AuthService } from './auth/auth.service'
 import { ChatService } from './services/chat.service'
@@ -15,6 +15,7 @@ import { SfxService } from './services/sfx.service'
 import { StreamingService } from './services/streaming.service'
 import { AnimationOptions } from 'ngx-lottie'
 import { ThemeService } from './services/theme.service'
+import { FirebaseService } from './services/firebase.service'
 
 @Component({
     selector: 'app-root',
@@ -43,10 +44,10 @@ export class AppComponent implements OnInit {
         private socket: Socket,
         private metaTagService: Meta,
         private tokenStorage: TokenStorage,
-        @Inject(PLATFORM_ID) private platformId: Object,
         private sfxService: SfxService,
         private streamingService: StreamingService,
-        private themeService: ThemeService
+        private themeService: ThemeService,
+        private firebaseService: FirebaseService,
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
@@ -69,7 +70,8 @@ export class AppComponent implements OnInit {
             this.addMetaTags()
             this.isAuthenticated = await this.tokenStorage.getAuthenticatedStatus()
             this.showSideBar = this.isAuthenticated
-
+            this.firebaseService.setUserPropertyAnalytics()
+            this.firebaseService.getAllRemoteConfigValues()
             this.router.events.subscribe(async (event) => {
                 if (!(event instanceof NavigationEnd)) {
                     return

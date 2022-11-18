@@ -45,7 +45,7 @@ export class ChannelSettingsComponent implements OnInit {
                 skip: this.skip,
                 limit: this.limit
             })
-            if (this.channelService.currentChannel.blockedUsers.length) {
+            if (this.channelService.currentChannel.blockedUsers?.length) {
                 this.blockedMembers = await this.userService.getUsersByIds(
                     this.channelService.currentChannel.blockedUsers
                 )
