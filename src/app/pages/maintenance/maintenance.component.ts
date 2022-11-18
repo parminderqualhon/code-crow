@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { AdminService } from '../../services/admin.service'
 
 @Component({
     selector: 'app-maintenance',
@@ -10,14 +8,9 @@ import { AdminService } from '../../services/admin.service'
 export class MaintenanceComponent implements OnInit {
     public maintenanceMessage: string
 
-    constructor(private adminService: AdminService) {}
+    constructor() {}
 
     async ngOnInit() {
-        const maintenance = await this.adminService.getMaintenanceMode()
-        if (maintenance.message) {
-            this.maintenanceMessage = maintenance.message
-        } else {
-            this.maintenanceMessage = 'Something went wrong. Please try again later!'
-        }
+        this.maintenanceMessage = 'We are performing maintenance on the app. We will be back up shortly. We appreciate your patience!'
     }
 }

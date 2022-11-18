@@ -371,7 +371,7 @@ export class ChatService {
                 userId: senderId
             })
             this.socket.emitRemovedUser(this.channelService.currentChannel._id, senderId)
-            this.channelService.currentChannel.blockedUsers.push(senderId)
+            this.channelService.currentChannel.blockedUsers?.push(senderId)
             isBlocked = this.channelService.isUserBlockedFromChannel(senderId)
         } catch (e) {
             console.log(e)
@@ -385,7 +385,7 @@ export class ChatService {
                 userId: senderId
             })
             this.channelService.currentChannel.blockedUsers =
-                this.channelService.currentChannel.blockedUsers.filter(
+                this.channelService.currentChannel.blockedUsers?.filter(
                     (user) => !!(user != senderId)
                 )
             isBlocked = this.channelService.isUserBlockedFromChannel(senderId)

@@ -146,7 +146,7 @@ export class ChannelService {
     }
 
     isUserBlockedFromChannel(userId) {
-        return this.currentChannel.blockedUsers.some((user) => !!(user == userId))
+        return this.currentChannel.blockedUsers?.some((user) => !!(user == userId))
     }
 
     async addAttachments({ channelId, attachmentUrl }): Promise<any> {
