@@ -72,11 +72,12 @@
                     &nbsp;{{ streamingService.channelMembersCount }}
                 </span>
                 <div class="separator"></div>
-                <!-- <span [matTooltip]="'Tip channel host'" *ngIf="host && host.walletAddress"><img
-                        class="cursor-pointer spacing-right" src="/assets/images/recursion.png"
+                // test
+                <span [matTooltip]="'Tip channel host'" *ngIf="host"><img
+                        class="cursor-pointer spacing-right" src="/assets/images/recursion.png"    
                         (click)="showTokenDialog()" />
                     {{ channelService.currentChannel.tips || '0' }}</span>
-                <div class="separator" *ngIf="host && host.walletAddress"></div> -->
+                <div class="separator" *ngIf="host && host.walletAddress"></div>
                 <span class="social-icons" (click)="tweetLiveStream()" [matTooltip]="'Tweet'"><i
                         class="twitter"></i></span>
                 <div class="separator mobile-only"></div>
