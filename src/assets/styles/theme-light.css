@@ -4287,3 +4287,19 @@ table .tip_ tr td {
 .premium-rcr {
     background: url(/assets/images/premium-rcr-light.svg) no-repeat center center;
 }
+
+.profile-edit-icon {
+
+    padding: 25px;
+    background: url(/assets/images/profile-edit-light.svg) no-repeat center center;
+}
+
+
+.hide-profile-edit-icon{
+    /* display: none; */
+    visibility: hidden;
+}
+.show-profile-edit-icon{
+    /* display: block; */
+    visibility: visible;
+}

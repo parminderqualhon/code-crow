@@ -32,7 +32,30 @@ export class CarouselCardComponent implements OnInit {
     ngOnInit() {
         this.user = this.authService.currentUser
     }
+    mouseDown = false;
 
+    startX: any;
+  
+    scrollLeft: any;
+    startDragging(e, flag, el) {
+        this.mouseDown = true;
+        this.startX = e.pageX - el.offsetLeft;
+        this.scrollLeft = el.scrollLeft;
+      }
+      stopDragging(e, flag) {
+        this.mouseDown = false;
+      }
+      moveEvent(e, el) {
+        e.preventDefault();
+        if (!this.mouseDown) {
+          return;
+        }
+        const x = e.pageX - el.offsetLeft;
+        const scroll = x - this.startX;
+         this.scrollLeft - scroll<0?this.prev.emit():this.next.emit();
+
+        // el.scrollLeft = this.scrollLeft - scroll;
+      }
     getImagePath(techName) {
         return this.channelService.techList
             .filter((x) => x.item_text === techName)

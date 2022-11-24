@@ -8,25 +8,28 @@
             </div>
 
             <div class="user-info-wrapper">
-                <h2 *ngIf="!isDisplayNameEditable" (click)="isDisplayNameEditable = isCurrentUser ? true : false">
-                    {{ otherUser.displayName }}
+                <h2 *ngIf="!isDisplayNameEditable"(mouseover)="showDisplayNameEditIcon=true" (mouseout)="showDisplayNameEditIcon=false" (click)="isDisplayNameEditable = isCurrentUser ? true : false">
+                    {{ otherUser.displayName }}  
+                    <span class="profile-edit-icon" [class]="showDisplayNameEditIcon?'show-profile-edit-icon':'hide-profile-edit-icon'"></span>
                 </h2>
                 <div *ngIf="isCurrentUser && (isDisplayNameEditable || otherUser.displayName.length < 1)">
                     <input [(ngModel)]="otherUser.displayName" type="text" class="form-control h2"
                         (blur)="onBlurDisplayName()" maxlength="40" (keyup.enter)="onBlurDisplayName()" minlength="3"
                         placeholder="display name" />
                 </div>
-                <h3 *ngIf="!isCustomUsernameEditable" (click)="isCustomUsernameEditable = isCurrentUser ? true : false"
+                <h3 *ngIf="!isCustomUsernameEditable"(mouseover)="showDisplayUserNameEditIcon=true" (mouseout)="showDisplayUserNameEditIcon=false" (click)="isCustomUsernameEditable = isCurrentUser ? true : false"
                     class="customUsername">
                     @{{ otherUser.customUsername }}
+                    <span class="profile-edit-icon" [class]="showDisplayUserNameEditIcon?'show-profile-edit-icon':'hide-profile-edit-icon'"></span>
                 </h3>
                 <div *ngIf="isCurrentUser && (isCustomUsernameEditable || otherUser.customUsername.length < 1)">
                     <input [(ngModel)]="otherUser.customUsername" type="text" class="customUsername form-control h3"
                         (blur)="onBlurCustomUsername()" maxlength="40" (keyup.enter)="onBlurCustomUsername()"
                         (keydown.space)="$event.preventDefault()" minlength="3" placeholder="handle" />
                 </div>
-                <h3 *ngIf="!isDescriptionEditable" (click)="isDescriptionEditable = isCurrentUser ? true : false">
+                <h3 *ngIf="!isDescriptionEditable"(mouseover)="showDisEditIcon=true" (mouseout)="showDisEditIcon=false"  (click)="isDescriptionEditable = isCurrentUser ? true : false">
                     {{ otherUser.description || 'Loves Code Crow' }}
+                    <span class="profile-edit-icon" [class]="showDisEditIcon?'show-profile-edit-icon':'hide-profile-edit-icon'"></span>
                 </h3>
                 <div
                     *ngIf="isCurrentUser && (isDescriptionEditable || (otherUser.description && otherUser.description.length < 1))">
@@ -46,10 +49,13 @@
                     </div>
                     <div class="framework-icons cursor-pointer" #techMenuTrigger="matMenuTrigger"
                         [matMenuTriggerFor]="techMenu" *ngIf="isCurrentUser">
-                        <ng-container *ngIf="otherUser?.techStack?.length > 0 || false">
+                        <ng-container *ngIf="otherUser?.techStack?.length > 0 || false" (mouseover)="showTechEditIcon=true" (mouseout)="showTechEditIcon=false" >
                             <img class="tech-stack-icons" *ngFor="let stack of otherUser.techStack"
                                 [src]="stack.item_image" />
+
+                    <span class="profile-edit-icon" [class]="showTechEditIcon?'show-profile-edit-icon':'hide-profile-edit-icon'"></span>
                         </ng-container>
+
                         <span class="menu-label" *ngIf="otherUser?.techStack?.length < 1">
                             Add category
                         </span>

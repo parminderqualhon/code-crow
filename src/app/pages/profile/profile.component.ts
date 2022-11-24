@@ -43,6 +43,11 @@ export class ProfileComponent implements OnInit {
     myControl = new FormControl()
     filteredOptions: any[] = []
 
+
+    showDisplayNameEditIcon:boolean=false;
+    showDisplayUserNameEditIcon:boolean=false;
+    showDisEditIcon:boolean=false;
+    showTechEditIcon:boolean=false;
     constructor(
         private activatedRoute: ActivatedRoute,
         public authService: AuthService,

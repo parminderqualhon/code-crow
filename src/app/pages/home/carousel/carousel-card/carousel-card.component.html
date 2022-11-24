@@ -1,4 +1,6 @@
-<div class="carousel-card-container {{ activeChannel ? 'active' : '' }}">
+<div class="carousel-card-container {{ activeChannel ? 'active' : '' }}" #elemt (mousedown)="startDragging($event, false, elemt)"
+(mouseup)="stopDragging($event, false)"
+(mouseleave)="stopDragging($event, false)" (mousemove)="moveEvent($event, elemt)">
     <div class="cover-img cursor-pointer">
         <img *ngIf="channelData.thumbnail" [src]="channelData.thumbnail || '/assets/images/logo_3.svg'"
             (click)="showDialogOrJoin()" />
@@ -32,8 +34,8 @@
             </div>
         </div>
     </div>
-    <div class="controls">
+    <!-- <div class="controls">
         <span class="prev" (click)="prev.emit()"></span>
         <span class="next" (click)="next.emit()"></span>
-    </div>
+    </div> -->
 </div>
