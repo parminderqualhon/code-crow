@@ -30,7 +30,7 @@
         "@angular/router": "^14.2.10",
         "@angular/service-worker": "^14.2.10",
         "@babel/runtime": "^7.20.1",
-        "@ctrl/ngx-emoji-mart": "^7.0.0",
+        "@ctrl/ngx-emoji-mart": "^7.1.0",
         "@eyevinn/whip-web-client": "^1.1.0",
         "@ngx-pwa/local-storage": "^13.0.5",
         "@schematics/angular": "^14.2.9",
